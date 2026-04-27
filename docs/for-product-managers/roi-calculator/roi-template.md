@@ -32,7 +32,7 @@ C_total = C_eng + C_sme + C_infra + C_maint
 V_total = V_hall + V_data + V_comp + V_feat
 ```
 
-## 3. Baseline Cost of Doing Nothing
+## 3. Baseline Without Investment
 
 Track the current cost of not introducing a semantic layer:
 
@@ -62,7 +62,7 @@ Payback = C_upfront / B_net
 
 ### Optional NPV
 
-For a more finance-friendly model, discount future monthly net benefits using your standard rate `r`.
+For a more finance-oriented model, discount future monthly net benefits using your standard rate `r`.
 
 ## 5. Executive Summary Table
 
@@ -78,7 +78,7 @@ For a more finance-friendly model, discount future monthly net benefits using yo
 
 Before publishing or pitching your business case, confirm that:
 
-- assumptions are sourced from your own team and operations
-- risk reduction is not double-counted as revenue gain
-- maintenance costs continue after launch
-- leadership understands this is a reusable product asset, not a one-off feature
+- Assumptions are sourced from your own team and operations
+- Risk reduction is not double-counted as revenue gain
+- Maintenance costs continue after launch
+- Leadership understands this is a reusable product asset, not a single-use feature

@@ -2,14 +2,14 @@
 
 > The practical starter repository for ontology-first AI products.
 
-Ontology StarterKit is a documentation-first, engineering-backed repository for teams that want to use ontologies, knowledge graphs, and GraphRAG in real AI products without getting lost in semantic-web theory.
+Ontology StarterKit is a documentation-first, engineering-backed repository for teams that want to use ontologies, knowledge graphs, and GraphRAG in real AI products without requiring deep semantic web expertise.
 
 It is intentionally opinionated:
 
 - Start with business value, not ontology purity.
 - Use modern AI tooling such as LangChain and Neo4j where it speeds adoption.
 - Treat governance, validation, and reproducibility as first-class concerns.
-- Keep the repository honest about what is implemented today versus what is planned next.
+- Clearly distinguish between what is implemented today and what is planned next.
 
 ## What Is Implemented Today
 
@@ -80,9 +80,9 @@ ontology-product-starter/
 └── tests/                        # Smoke tests for executable examples
 ```
 
-## Publishing Position
+## Project Positioning
 
-This repository is suitable as a public, docs-first starter kit. It is not presented as a finished framework or enterprise platform. Every implemented example in the repo should be runnable, reviewed, and supported by accurate documentation.
+This repository is suitable as a public, documentation-first starter kit. It is not intended to represent a complete framework or enterprise platform. Every implemented example in the repository should be runnable, reviewed, and supported by accurate documentation.
 
 ## Roadmap
 

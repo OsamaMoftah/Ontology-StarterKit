@@ -22,4 +22,4 @@ For this repository, secure defaults include:
 
 ## Scope Notes
 
-This repository contains examples and templates. Production adopters are responsible for enforcing their own authentication, authorization, secret management, and infrastructure controls.
+This repository contains examples and templates. Teams deploying this repository in production are responsible for enforcing their own authentication, authorization, secret management, and infrastructure controls.

@@ -28,7 +28,15 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install -r src/integrations/langchain/kg-rag/requirements.txt pytest
+          pip install -r src/integrations/langchain/kg-rag/requirements.txt pytest pytest-cov pip-audit
+
+      - name: Audit dependencies
+        run: |
+          # Temporary ignores for advisories that require major-version LangChain upgrades.
+          # Track removal in the next dependency upgrade cycle.
+          pip-audit -r src/integrations/langchain/kg-rag/requirements.txt \
+            --ignore-vuln GHSA-r7w7-9xr2-qq2r \
+            --ignore-vuln GHSA-fv5p-p927-qmxr
 
       - name: Compile Python example
         run: |
@@ -36,4 +44,4 @@ jobs:
 
       - name: Run tests
         run: |
-          pytest -q
+          pytest -q --cov=src/integrations/langchain/kg-rag --cov-report=term-missing --cov-fail-under=80

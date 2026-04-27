@@ -1,6 +1,6 @@
 # Investment One-Pager
 
-Use this template to summarize why your team should invest in an ontology-backed semantic layer.
+Use this template to summarize the case for investing in an ontology-backed semantic layer.
 
 ## Problem
 
@@ -18,7 +18,7 @@ Summarize the ontology, graph, and AI architecture in plain language.
 
 ## Expected Outcomes
 
-- Lower hallucination or rework rate
+- Lower rates of hallucination and rework
 - Faster feature delivery
 - Better interoperability across datasets and systems
 - Improved traceability and governance
