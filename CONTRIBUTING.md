@@ -24,6 +24,22 @@ Thanks for your interest in improving Ontology StarterKit.
 - Workflows reflect actual repository behavior and are not placeholders.
 - Sensitive values are excluded from the diff.
 
+## Ontology Schema Change Checklist
+
+Use this checklist when your PR modifies files under `src/ontology/`.
+
+- Describe the schema intent and expected impact in the PR description.
+- Update the changelog with a concise schema-impact note.
+- Confirm SHACL validation passes locally.
+- Include or update tests when runtime behavior depends on the schema change.
+
+## Release Checklist
+
+- Confirm all required CI workflows pass on `main`.
+- Verify dependency audit output and document temporary ignores.
+- Confirm changelog entries are accurate and scoped to the release.
+- Verify README quick-start commands still execute as written.
+
 ## Reporting Issues
 
 Please include:

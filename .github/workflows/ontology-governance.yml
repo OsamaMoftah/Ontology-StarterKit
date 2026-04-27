@@ -1,0 +1,41 @@
+name: Ontology Governance Checks
+
+on:
+  pull_request:
+    paths:
+      - "src/ontology/**"
+      - "CHANGELOG.md"
+
+jobs:
+  governance:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Verify changelog update for ontology changes
+        run: |
+          set -euo pipefail
+          BASE_SHA="${{ github.event.pull_request.base.sha }}"
+          HEAD_SHA="${{ github.event.pull_request.head.sha }}"
+
+          CHANGED_FILES="$(git diff --name-only "$BASE_SHA" "$HEAD_SHA")"
+          echo "Changed files:"
+          echo "$CHANGED_FILES"
+
+          ONTOLOGY_CHANGED="false"
+          if echo "$CHANGED_FILES" | grep -q '^src/ontology/'; then
+            ONTOLOGY_CHANGED="true"
+          fi
+
+          if [ "$ONTOLOGY_CHANGED" = "true" ]; then
+            if ! echo "$CHANGED_FILES" | grep -q '^CHANGELOG.md$'; then
+              echo "Ontology files changed, but CHANGELOG.md was not updated."
+              echo "Add a short ontology-impact note to CHANGELOG.md."
+              exit 1
+            fi
+          fi
+
+          echo "Ontology governance check passed."

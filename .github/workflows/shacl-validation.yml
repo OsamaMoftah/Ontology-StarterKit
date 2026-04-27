@@ -6,6 +6,7 @@ on:
       - 'src/ontology/**/*.ttl'
       - 'src/ontology/**/*.rdf'
       - 'src/ontology/**/*.owl'
+      - 'docs/governance/**'
   push:
     branches:
       - main

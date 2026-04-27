@@ -1,5 +1,15 @@
 # Changelog
 
+## Versioning Policy
+
+Ontology StarterKit follows Semantic Versioning:
+
+- `MAJOR`: Breaking changes to public behavior, CLI contracts, or repository usage expectations.
+- `MINOR`: Backward-compatible features and workflow additions.
+- `PATCH`: Backward-compatible fixes, hardening, and documentation corrections.
+
+For ontology updates, include a short impact statement in the release notes (for example: validation-only change, schema extension, or breaking semantic change).
+
 ## 0.1.0 - 2026-04-27
 
 - Renamed the project to Ontology StarterKit and aligned repository-facing terminology with the new identity.

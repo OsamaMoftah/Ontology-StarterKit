@@ -28,6 +28,11 @@ It is intentionally opinionated:
 
 - [30-day sprint guide](file:///Users/samiol/Desktop/Ontology/ontology-product-starter/docs/for-startups/30-day-sprint.md): a realistic startup execution path from problem framing to launch.
 
+### Governance and Release
+
+- [Schema change review policy](file:///Users/samiol/Desktop/Ontology/ontology-product-starter/docs/governance/schema-change-review.md): review expectations and compatibility guidance for ontology changes.
+- [Release process](file:///Users/samiol/Desktop/Ontology/ontology-product-starter/docs/governance/release-process.md): release checklist, versioning rules, and note quality standards.
+
 ## Quick Start
 
 ### 1. Clone the repository
