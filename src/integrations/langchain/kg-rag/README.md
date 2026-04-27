@@ -1,0 +1,42 @@
+# KG-RAG Example
+
+This example shows a more controlled way to combine LangChain, OpenAI, and Neo4j for graph-based retrieval-augmented generation.
+
+## What This Example Demonstrates
+
+- Environment-based configuration with no hard-coded secrets
+- Read-only Cypher validation before execution
+- Structured logging instead of ad-hoc prints
+- A testable module layout
+
+## Setup
+
+```bash
+python3 -m venv .venv
+source .venv/bin/activate
+pip install -r src/integrations/langchain/kg-rag/requirements.txt
+cp .env.example .env
+```
+
+Fill in these environment variables:
+
+```bash
+OPENAI_API_KEY=replace-me
+OPENAI_CYPHER_MODEL=gpt-4o-mini
+OPENAI_QA_MODEL=gpt-4o-mini
+NEO4J_URI=bolt://localhost:7687
+NEO4J_USERNAME=neo4j
+NEO4J_PASSWORD=replace-me
+```
+
+## Run
+
+```bash
+python3 src/integrations/langchain/kg-rag/graph_rag.py --query "Who manages the team that works on the Alpha Project?"
+```
+
+## Security Notes
+
+- Use a Neo4j account with read-only permissions for model-generated queries.
+- The example rejects write-capable or administrative Cypher keywords before execution, but database permissions are still the primary safety control.
+- Never commit your `.env` file.

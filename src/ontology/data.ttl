@@ -1,0 +1,9 @@
+@prefix ex: <http://example.org/> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+ex:Alice a ex:Person ;
+    ex:name "Alice"^^xsd:string ;
+    ex:worksOn ex:AlphaProject .
+
+ex:AlphaProject a ex:Project ;
+    ex:name "Alpha Project"^^xsd:string .
