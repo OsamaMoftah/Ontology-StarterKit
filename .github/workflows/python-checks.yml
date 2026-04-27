@@ -32,11 +32,7 @@ jobs:
 
       - name: Audit dependencies
         run: |
-          # Temporary ignores for advisories that require major-version LangChain upgrades.
-          # Track removal in the next dependency upgrade cycle.
-          pip-audit -r src/integrations/langchain/kg-rag/requirements.txt \
-            --ignore-vuln GHSA-r7w7-9xr2-qq2r \
-            --ignore-vuln GHSA-fv5p-p927-qmxr
+          pip-audit -r src/integrations/langchain/kg-rag/requirements.txt
 
       - name: Compile Python example
         run: |

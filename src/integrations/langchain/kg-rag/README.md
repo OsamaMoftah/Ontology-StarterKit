@@ -2,6 +2,8 @@
 
 This example shows a more controlled way to combine LangChain, OpenAI, and Neo4j for graph-based retrieval-augmented generation.
 
+This module currently targets the LangChain 1.x package family.
+
 ## What This Example Demonstrates
 
 - Environment-based configuration with no hard-coded secrets
