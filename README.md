@@ -15,31 +15,31 @@ It is intentionally opinionated:
 
 ### For AI Engineers
 
-- [KG-RAG example](file:///Users/samiol/Desktop/Ontology/ontology-product-starter/src/integrations/langchain/kg-rag/README.md): a safer LangChain + Neo4j example with environment validation, query guardrails, and tests.
-- [Sample ontology assets](file:///Users/samiol/Desktop/Ontology/ontology-product-starter/src/ontology/README.md): minimal SHACL shapes and RDF data so validation workflows are real.
+- [KG-RAG example](src/integrations/langchain/kg-rag/README.md): a safer LangChain + Neo4j example with environment validation, query guardrails, and tests.
+- [Sample ontology assets](src/ontology/README.md): minimal SHACL shapes and RDF data so validation workflows are real.
 
 ### For Product Managers
 
-- [ROI calculator](file:///Users/samiol/Desktop/Ontology/ontology-product-starter/docs/for-product-managers/roi-calculator/README.md): practical ROI, NPV, and payback templates.
-- [Decision framework](file:///Users/samiol/Desktop/Ontology/ontology-product-starter/docs/for-product-managers/decision-framework.md): how to choose between RDF, property graphs, and hybrid vector-graph systems.
-- [Investment one-pager](file:///Users/samiol/Desktop/Ontology/ontology-product-starter/docs/for-product-managers/investment-one-pager.md): an executive-ready summary template.
+- [ROI calculator](docs/for-product-managers/roi-calculator/README.md): practical ROI, NPV, and payback templates.
+- [Decision framework](docs/for-product-managers/decision-framework.md): how to choose between RDF, property graphs, and hybrid vector-graph systems.
+- [Investment one-pager](docs/for-product-managers/investment-one-pager.md): an executive-ready summary template.
 
 ### For Founders and Small Teams
 
-- [30-day sprint guide](file:///Users/samiol/Desktop/Ontology/ontology-product-starter/docs/for-startups/30-day-sprint.md): a realistic startup execution path from problem framing to launch.
+- [30-day sprint guide](docs/for-startups/30-day-sprint.md): a realistic startup execution path from problem framing to launch.
 
 ### Governance and Release
 
-- [Schema change review policy](file:///Users/samiol/Desktop/Ontology/ontology-product-starter/docs/governance/schema-change-review.md): review expectations and compatibility guidance for ontology changes.
-- [Release process](file:///Users/samiol/Desktop/Ontology/ontology-product-starter/docs/governance/release-process.md): release checklist, versioning rules, and note quality standards.
+- [Schema change review policy](docs/governance/schema-change-review.md): review expectations and compatibility guidance for ontology changes.
+- [Release process](docs/governance/release-process.md): release checklist, versioning rules, and note quality standards.
 
 ## Quick Start
 
 ### 1. Clone the repository
 
 ```bash
-git clone <your-fork-or-repo-url>
-cd ontology-product-starter
+git clone https://github.com/OsamaMoftah/Ontology-StarterKit.git
+cd Ontology-StarterKit
 ```
 
 ### 2. Create a local environment
@@ -74,7 +74,7 @@ python3 src/integrations/langchain/kg-rag/graph_rag.py --query "Who manages the 
 ## Repository Structure
 
 ```text
-ontology-product-starter/
+Ontology-StarterKit/
 ├── .github/workflows/            # CI workflows for tests and ontology validation
 ├── docs/
 │   ├── for-product-managers/     # ROI and architecture decision assets
@@ -100,4 +100,4 @@ Planned next additions include:
 
 ## License
 
-Released under the [MIT License](file:///Users/samiol/Desktop/Ontology/ontology-product-starter/LICENSE).
+Released under the [MIT License](LICENSE).
