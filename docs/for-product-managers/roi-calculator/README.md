@@ -4,8 +4,8 @@ This module helps product managers build a defensible business case for ontology
 
 ## What It Includes
 
-- [ROI template](file:///Users/samiol/Desktop/Ontology/ontology-product-starter/docs/for-product-managers/roi-calculator/roi-template.md): formulas for costs, savings, ROI, NPV, and payback period.
-- [Investment one-pager](file:///Users/samiol/Desktop/Ontology/ontology-product-starter/docs/for-product-managers/investment-one-pager.md): a concise executive summary template.
+- [ROI template](roi-template.md): formulas for costs, savings, ROI, NPV, and payback period.
+- [Investment one-pager](../investment-one-pager.md): a concise executive summary template.
 
 ## Recommended Workflow
 
