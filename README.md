@@ -71,6 +71,8 @@ pyshacl -s src/ontology/shapes.ttl -m -i rdfs -a -f human src/ontology/data.ttl
 python3 src/integrations/langchain/kg-rag/graph_rag.py --query "Who manages the team that works on the Alpha Project?"
 ```
 
+See the [documentation index](docs/README.md) for a full list of every doc in this repository, grouped by audience.
+
 ## Repository Structure
 
 ```text

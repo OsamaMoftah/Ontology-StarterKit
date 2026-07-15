@@ -25,6 +25,8 @@ Summarize the ontology, graph, and AI architecture in plain language.
 
 ## Financial Snapshot
 
+Pull these figures from your completed [ROI template](roi-calculator/roi-template.md) rather than estimating them fresh here.
+
 | Metric | Value |
 | :--- | :--- |
 | Upfront investment | |
