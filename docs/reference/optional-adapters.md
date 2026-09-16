@@ -23,8 +23,21 @@ language-tagged literals and scoped blank-node identity, repeats an import, and
 uses an explicit server transaction timeout. Run it with `just services-runtime`.
 The pinned Community image passes those parity and cancellation checks but does
 not expose the role-grant command needed to create a database-enforced reader.
-`just services-access-control` fails closed with that exact reason; run it
-against a licensed Enterprise service to close the read-denial gate.
+`just services-access-control` fails closed with that exact reason; the
+Enterprise profile below closes the read-denial gate locally.
+
+The repository includes a separate Enterprise profile for that gate. It accepts
+the local development license flag, binds Bolt to `127.0.0.1:7688`, and uses a
+separate volume so it cannot touch the Community data:
+
+```bash
+just enterprise-verify
+just enterprise-down
+```
+
+The command creates a reader account, proves the named read, proves a write is
+denied by Neo4j, and proves a server-side transaction timeout. Use a real
+license and rotated credentials before sharing the service.
 
 ## MCP
 
@@ -36,11 +49,19 @@ python -c 'from ontology_starterkit.mcp_server import serve; serve("examples")'
 ```
 
 It does not accept arbitrary SPARQL or write to a graph. Each query call bounds
-rows, response bytes, and the local worker deadline; timeout cancellation is a
-request boundary, not proof of server-side database cancellation. Add an
-authenticated host wrapper before exposing it outside a local development
-process. The server also passes its configured `examples` root into every tool,
-so a caller cannot ask the adapter to load an arbitrary pack path.
+rows, response bytes, and the local worker deadline. The query runs in a fresh
+spawned process, which is terminated and reaped at the deadline; the isolation
+benchmark checks that repeated timeouts leave no worker accumulation:
+
+```bash
+python scripts/benchmark_mcp_isolation.py --iterations 16
+```
+
+Real stdio protocol tests cover oversized results, timeouts, malformed
+arguments, unknown queries, and symlink escapes. Add an authenticated host
+wrapper before exposing it outside a local development process. The server
+also passes its configured `examples` root into every tool, so a caller cannot
+ask the adapter to load an arbitrary pack path.
 
 ## LinkML and extraction
 
@@ -55,9 +76,15 @@ print(build_linkml_schema("hello", {"Person": ["name"]}))
 ```
 
 The reviewed environment pins the full resolved core and optional dependency
-graphs in `requirements/core.lock` and `requirements/optional.lock`. They were
-compiled on macOS/Python 3.11; regenerate from the matching `.in` file for a
-different platform or interpreter before production use.
+graphs in `requirements/core.lock` and `requirements/optional.lock`. The
+universal locks `requirements/core.universal.lock` and
+`requirements/optional.universal.lock` carry platform and interpreter markers
+for supported Python 3.10–3.12 environments. Verify or regenerate them with:
+
+```bash
+python scripts/regenerate_locks.py
+python scripts/regenerate_locks.py --write
+```
 
 The full optional generator check is `python scripts/verify_linkml_generator.py`.
 It runs `gen-json-schema --top-class Person --closed` and verifies the checked-in
@@ -78,3 +105,11 @@ concurrently modifying the pack directory.
 `build_answer` checks citation membership and records supplied paths. Its
 `unverified` status means the text has not been checked for entailment or
 source support; a known entity ID alone cannot prove an answer.
+
+## Chowlk authoring
+
+The checked-in diagrams.net fixture and semantic contract are documented in
+[the Chowlk conversion guide](chowlk-conversion.md). Run the offline contract
+with `just chowlk`; use `just chowlk-live` when the hosted converter is
+available. Generated prefixes and ontology headers are reviewed separately from
+the canonical Turtle and SHACL models.

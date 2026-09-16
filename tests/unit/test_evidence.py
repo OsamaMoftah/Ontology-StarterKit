@@ -2,7 +2,7 @@ import json
 from pathlib import Path
 
 from rdflib import Graph, URIRef
-from ontology_starterkit.evidence import assess_answer, build_answer, build_verified_answer
+from ontology_starterkit.evidence import assess_answer, build_answer, build_verified_answer, verify_source_spans
 
 
 def test_build_answer_includes_only_declared_evidence_ids():
@@ -131,3 +131,18 @@ def test_reviewed_evidence_evaluation_fixture_covers_each_outcome():
     path = Path(__file__).resolve().parents[2] / "examples/consulting-evidence-room/expected/evidence-assessment.json"
     cases = json.loads(path.read_text(encoding="utf-8"))
     assert {item["outcome"] for item in cases} == {"supported", "unsupported", "conflicting", "stale", "insufficient-evidence"}
+
+
+def test_source_span_offsets_are_checked_against_the_source_document():
+    documents = {"packet-v2": "Asset A has a reviewed target hypothesis."}
+    assert verify_source_spans({"claim-1": "packet-v2@0:8"}, documents) == ("claim-1",)
+    assert verify_source_spans({"claim-1": "packet-v2@0:999"}, documents) == ()
+    graph = Graph()
+    triple = (URIRef("urn:claim"), URIRef("urn:supports"), URIRef("urn:evidence"))
+    graph.add(triple)
+    invalid = assess_answer(
+        "claim", ["claim-1"], {"claim-1"}, graph, {"claim-1": (triple,)}, "demo@1",
+        source_states={"claim-1": "supported"}, source_spans={"claim-1": "packet-v2@0:999"}, source_documents=documents,
+    )
+    assert invalid.status == "insufficient-evidence"
+    assert invalid.source_span_valid is False

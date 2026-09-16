@@ -1,4 +1,7 @@
 from pathlib import Path
+import multiprocessing
+import time
+import pytest
 
 from ontology_starterkit.evals import evaluate_query
 from ontology_starterkit.mcp_server import list_pack_tools, run_query_tool, validate_pack_tool
@@ -23,7 +26,10 @@ def test_mcp_adapter_exposes_declared_queries_only():
 def test_mcp_pure_tools_are_json_safe():
     path = ROOT / "examples/hello-ontology"
     assert validate_pack_tool(path)["conforms"] is True
-    assert run_query_tool(path, "manager")["rows"]
+    result = run_query_tool(path, "manager")
+    assert result["rows"]
+    assert result["limits"]["worker"] == "process"
+    assert not multiprocessing.active_children()
 
 
 def test_mcp_query_limits_and_arguments_are_enforced():
@@ -45,6 +51,23 @@ def test_mcp_tools_reject_pack_paths_outside_root(tmp_path):
     path = ROOT / "examples/hello-ontology"
     with pytest.raises(PackError, match="examples root"):
         validate_pack_tool(path, examples_root=tmp_path)
+
+
+def test_mcp_timeout_terminates_the_worker_process():
+    path = ROOT / "examples/hello-ontology"
+    started = time.monotonic()
+    with pytest.raises(PackError, match="deadline"):
+        run_query_tool(path, "manager", timeout_seconds=0.02, _worker_delay_seconds=0.25)
+    assert time.monotonic() - started < 1.5
+    assert not multiprocessing.active_children()
+
+
+def test_mcp_repeated_timeouts_do_not_accumulate_workers():
+    path = ROOT / "examples/hello-ontology"
+    for _ in range(8):
+        with pytest.raises(PackError, match="deadline"):
+            run_query_tool(path, "manager", timeout_seconds=0.01, _worker_delay_seconds=0.1)
+    assert not multiprocessing.active_children()
 
 
 def test_named_query_rejects_remote_service_operation():

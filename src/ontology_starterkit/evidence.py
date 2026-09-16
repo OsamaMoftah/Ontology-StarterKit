@@ -4,11 +4,13 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from collections.abc import Mapping, Sequence
+import re
 from typing import Any, cast
 from rdflib import Graph
 
 
 _SOURCE_STATES = {"supported", "unknown", "conflicting", "stale"}
+_SPAN_PATTERN = re.compile(r"^(?P<source>.+)@(?P<start>\d+):(?P<end>\d+)$")
 
 
 @dataclass(frozen=True)
@@ -27,6 +29,23 @@ class AnswerRecord:
     graph_path_valid: bool = False
     source_support: str = "unverified"
     answer_correctness: str = "unverified"
+    source_span_valid: bool = False
+
+
+def verify_source_spans(source_spans: Mapping[str, str], source_documents: Mapping[str, str]) -> tuple[str, ...]:
+    """Return assertion IDs whose ``source@start:end`` spans fit source text."""
+    verified: list[str] = []
+    for assertion_id, span in source_spans.items():
+        match = _SPAN_PATTERN.fullmatch(span)
+        if not match:
+            continue
+        source = match.group("source")
+        start = int(match.group("start"))
+        end = int(match.group("end"))
+        document = source_documents.get(source)
+        if document is not None and 0 <= start < end <= len(document):
+            verified.append(assertion_id)
+    return tuple(verified)
 
 
 def assess_answer(
@@ -40,6 +59,7 @@ def assess_answer(
     source_states: Mapping[str, str] | None = None,
     source_records: Mapping[str, str] | None = None,
     source_spans: Mapping[str, str] | None = None,
+    source_documents: Mapping[str, str] | None = None,
     answer_correct: bool | None = None,
 ) -> AnswerRecord:
     """Evaluate citation membership, graph paths, source review, and correctness separately.
@@ -102,6 +122,22 @@ def assess_answer(
         status = "supported"
     records = tuple((item, source_records[item]) for item in citations if source_records and item in source_records)
     spans = tuple((item, source_spans[item]) for item in citations if source_spans and item in source_spans)
+    span_verified = False
+    if source_spans is not None and source_documents is not None:
+        span_verified = set(citations).issubset(verify_source_spans(source_spans, source_documents))
+        if not span_verified:
+            return AnswerRecord(
+                answer="Insufficient evidence in this dataset.",
+                evidence_ids=(),
+                data_version=data_version,
+                status="insufficient-evidence",
+                limitations=("One or more source spans do not fit the supplied source documents.",),
+                assertion_ids=citations,
+                graph_path_valid=True,
+                source_support="unverified",
+                answer_correctness=correctness,
+                source_span_valid=False,
+            )
     limitations: tuple[str, ...] = ()
     if status != "supported":
         limitations = (f"Source review outcome: {', '.join(sorted(distinct_states))}.",)
@@ -118,6 +154,7 @@ def assess_answer(
         graph_path_valid=True,
         source_support=source_support,
         answer_correctness=correctness,
+        source_span_valid=span_verified,
     )
 
 

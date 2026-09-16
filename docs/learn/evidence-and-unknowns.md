@@ -11,6 +11,10 @@ For a reviewed evaluation set, `assess_answer` keeps citation membership, graph
 path validity, source review (`supported`, `unknown`, `conflicting`, or `stale`),
 and answer correctness as separate fields. See
 [`expected/evidence-assessment.json`](../../examples/consulting-evidence-room/expected/evidence-assessment.json).
+Offset spans use `source-id@start:end` and are checked against the supplied
+source document before a record can claim verified source support. External
+scientific and editorial review is tracked in
+[`domain-review-register.yaml`](../reviews/domain-review-register.yaml).
 
 ## Try, break, explain
 
