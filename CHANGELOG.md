@@ -12,6 +12,10 @@ For ontology updates, include a short impact statement in the release notes (for
 
 ## Unreleased
 
+Future changes go here.
+
+## 0.2.0 - 2026-09-16
+
 - Added an offline CLI for discovering packs, SHACL validation, named queries and fixture evaluations.
 - Added self-contained hello, business-project, life-science annotation and consulting evidence-room packs with invalid fixtures, evidence metadata and competency questions.
 - Added deterministic evidence, extraction-contract and reviewed alias helpers, plus an optional bounded MCP adapter.

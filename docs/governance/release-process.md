@@ -25,3 +25,18 @@ Each release should include:
 - Security and hardening updates
 - Workflow/CI changes
 - Ontology impact notes (if applicable)
+
+## Publishing a release
+
+After the checklist passes, update `CHANGELOG.md`, commit the release version,
+and create an annotated tag:
+
+```bash
+git tag -a v0.2.0 -m "Ontology StarterKit 0.2.0"
+git push origin main --follow-tags
+```
+
+The tag workflow rebuilds the package, uploads the source and wheel as an
+artifact, and creates a GitHub Release. It does not publish to PyPI; add a
+separately reviewed trusted-publishing job if a package registry becomes part
+of the project scope.
