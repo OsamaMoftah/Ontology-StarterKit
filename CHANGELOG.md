@@ -17,6 +17,7 @@ For ontology updates, include a short impact statement in the release notes (for
 - Expanded every domain pack to at least five named competency questions (seven for the consulting pack) with expected fixtures.
 - Hardened CLI failure codes, Unicode-safe alias resolution, evidence-path checks, unsafe SPARQL rejection, MCP path boundaries, and lossless RDF term seeding.
 - Added sourced ontology history, fictional business and life-science workshop stories, a deterministic Markdown link checker, and core-only optional-dependency skips.
+- Tightened public documentation wording around the ontology examples without changing their schema or data contracts.
 
 ## 0.2.0 - 2026-09-16
 
