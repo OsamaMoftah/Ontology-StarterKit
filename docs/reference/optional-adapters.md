@@ -29,7 +29,16 @@ host wrapper before exposing it outside a local development process.
 
 ## LinkML and extraction
 
-The `linkml` extra is reserved for schemas generated from a reviewed ontology.
+The `linkml` extra is available for teams that want to continue the generated
+schema in LinkML. `build_linkml_schema` creates a deterministic scaffolding
+file from a reviewed class-to-slot mapping; it does not invent cardinalities or
+semantic mappings.
+
+```python
+from ontology_starterkit.linkml import build_linkml_schema
+print(build_linkml_schema("hello", {"Person": ["name"]}))
+```
+
 `ontology_starterkit.extraction` provides a model-independent extraction
 contract and reviewed alias resolution; it intentionally does not call an LLM
 or merge ambiguous entities. A production extractor must retain source spans,

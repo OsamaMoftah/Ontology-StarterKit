@@ -1,5 +1,8 @@
 from pathlib import Path
 
+import pytest
+
+from ontology_starterkit.packs import PackError
 from ontology_starterkit.packs import load_pack
 from ontology_starterkit.validation import run_named_query, validate_pack
 
@@ -29,3 +32,8 @@ def test_hello_empty_graph_is_rejected_by_pack_target_check():
         assert "empty" in report.messages[0].lower()
     finally:
         empty.unlink()
+
+
+def test_named_query_rejects_untrusted_parameters():
+    with pytest.raises(PackError, match="parameters"):
+        run_named_query(PACK, "manager", parameters={"name": "Maya"})

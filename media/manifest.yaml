@@ -1,6 +1,12 @@
 version: 1
 license_policy: Original diagrams are MIT-compatible code-adjacent documentation; third-party sources retain their upstream terms.
 assets:
+  - id: ontology-lifecycle
+    source: media/README.md
+    output: media/exports/ontology-lifecycle.svg
+    alt: Five-step ontology delivery lifecycle from framing a decision through maintenance.
+    lesson: docs/learn/README.md
+    status: generated
   - id: diagram-source-index
     source: media/source/README.md
     output: media/source/README.md

@@ -39,3 +39,4 @@ Implementation-facing documentation lives alongside the code it documents:
 - [Life-sciences consulting path](consulting/README.md)
 - [Life-sciences consulting use-case catalogue](consulting/use-cases.md)
 - [Optional adapters](reference/optional-adapters.md)
+- [Media helpers and infographic](../media/README.md)
