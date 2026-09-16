@@ -20,6 +20,14 @@ def test_all_domain_packs_have_valid_and_invalid_fixtures():
             assert validate_pack(pack, data_path=path).conforms is False
 
 
+def test_domain_packs_have_a_real_competency_question_set():
+    packs = discover_packs(ROOT / "examples")
+    assert len(packs["hello-ontology"].manifest["queries"]) >= 5
+    assert len(packs["business-projects"].manifest["queries"]) >= 5
+    assert len(packs["life-science-annotations"].manifest["queries"]) >= 5
+    assert len(packs["consulting-evidence-room"].manifest["queries"]) >= 7
+
+
 @pytest.mark.parametrize("pack_id,query_id", [
     ("business-projects", "owner"),
     ("life-science-annotations", "evidence"),

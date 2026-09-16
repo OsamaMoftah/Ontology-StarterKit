@@ -1,3 +1,21 @@
 - id: unsupported
   question: Which claim lacks supporting evidence?
   query: queries/unsupported.rq
+- id: assets
+  question: Which assets are in scope?
+  query: queries/assets.rq
+- id: indications
+  question: Which indications are represented?
+  query: queries/indications.rq
+- id: supported
+  question: Which claims have supporting evidence?
+  query: queries/supported.rq
+- id: sourced
+  question: Which evidence records have a source?
+  query: queries/sourced.rq
+- id: claim-status
+  question: Which claims are supported or unsupported?
+  query: queries/claim-status.rq
+- id: evidence-room
+  question: Which claim paths reach a source?
+  query: queries/evidence-room.rq

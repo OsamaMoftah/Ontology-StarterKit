@@ -1,4 +1,4 @@
 flowchart LR
-  GeneProduct[Gene product] --> Annotation[Annotation]
-  Annotation --> BiologicalProcess[Biological process]
-  Annotation --> Evidence[Evidence record]
+  GeneProduct[Gene product] -->|annotated by| Annotation[Annotation]
+  Annotation -->|about process| BiologicalProcess[Biological process]
+  Annotation -->|supported by| Evidence[Evidence record]

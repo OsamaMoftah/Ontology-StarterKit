@@ -2,7 +2,8 @@ from pathlib import Path
 
 from ontology_starterkit.evals import evaluate_query
 from ontology_starterkit.mcp_server import list_pack_tools, run_query_tool, validate_pack_tool
-from ontology_starterkit.packs import load_pack
+from ontology_starterkit.packs import PackError, load_pack
+from ontology_starterkit.validation import validate_named_query
 
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -24,3 +25,15 @@ def test_mcp_pure_tools_are_json_safe():
     assert validate_pack_tool(path)["conforms"] is True
     assert run_query_tool(path, "manager")["rows"]
 
+
+def test_mcp_tools_reject_pack_paths_outside_root(tmp_path):
+    import pytest
+    path = ROOT / "examples/hello-ontology"
+    with pytest.raises(PackError, match="examples root"):
+        validate_pack_tool(path, examples_root=tmp_path)
+
+
+def test_named_query_rejects_remote_service_operation():
+    import pytest
+    with pytest.raises(PackError, match="local read"):
+        validate_named_query("SELECT * WHERE { SERVICE <https://remote.invalid> { ?s ?p ?o } }")

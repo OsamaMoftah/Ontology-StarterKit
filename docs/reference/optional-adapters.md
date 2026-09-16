@@ -12,8 +12,9 @@ accepts only read-only, bounded Cypher and the application still needs a
 least-privilege Neo4j user, network controls and production query monitoring.
 
 The pinned local service can be started and seeded with `just services-ready`
-and `just services-seed`. The seed helper writes generic RDF triples with
-idempotent `MERGE` operations, refuses non-local URIs, and never drops data.
+and `just services-seed`. The seed helper writes lossless `RDFTerm` nodes and
+`TRIPLE` relationships, preserving URI resources, blank nodes, and literal
+datatype/language metadata. It refuses non-local URIs and never drops data.
 
 ## MCP
 
@@ -25,7 +26,9 @@ python -c 'from ontology_starterkit.mcp_server import serve; serve("examples")'
 ```
 
 It does not accept arbitrary SPARQL or write to a graph. Add an authenticated
-host wrapper before exposing it outside a local development process.
+host wrapper before exposing it outside a local development process. The server
+also passes its configured `examples` root into every tool, so a caller cannot
+ask the adapter to load an arbitrary pack path.
 
 ## LinkML and extraction
 

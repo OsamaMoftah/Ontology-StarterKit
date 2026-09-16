@@ -1,0 +1,5 @@
+id: reuse-before-mint
+question: How do you avoid competing classes?
+audience: governance leads
+claim: Search, scope, map, and check license before minting a new term.
+output: media/exports/infographic-reuse-before-mint.svg

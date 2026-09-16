@@ -1,0 +1,5 @@
+id: term-migration
+question: What happens when a term is deprecated?
+audience: platform owners
+claim: Replacement mappings and retested queries make migrations safe.
+output: media/exports/infographic-term-migration.svg

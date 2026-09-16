@@ -31,3 +31,13 @@ def test_build_answer_rejects_unknown_citation():
         assert "evidence" in str(exc).lower()
     else:
         raise AssertionError("unknown evidence should be rejected")
+
+
+def test_build_answer_requires_supporting_assertion_paths_when_provided():
+    result = build_answer(
+        "Maya Chen", ["ex:Maya"], {"ex:Maya"}, "demo@1", evidence_paths={"ex:Maya": ("ex:Maya", "ex:name")}
+    )
+    assert result.status == "supported"
+    assert result.support_paths == (("ex:Maya", "ex:name"),)
+    abstained = build_answer("Maya Chen", ["ex:Maya"], {"ex:Maya"}, "demo@1", evidence_paths={})
+    assert abstained.status == "insufficient-evidence"

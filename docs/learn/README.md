@@ -10,5 +10,7 @@ The lessons use the bundled packs and do not require a graph database or an API 
 6. [Evidence and unknown answers](evidence-and-unknowns.md)
 7. [Life-science annotations](../../examples/life-science-annotations/README.md)
 8. [Consulting evidence rooms](../consulting/README.md)
+9. [Infographic lessons](infographics.md)
+10. [Workshop stories](../stories/README.md)
 
 Every lesson should end with a command, a deliberate failure, and an explanation of what the result does not prove.

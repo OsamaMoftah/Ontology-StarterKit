@@ -1,0 +1,2 @@
+PREFIX ex: <https://ontology-starterkit.dev/consulting/>
+SELECT ?claim ?source WHERE { ?claim ex:supportedBy ?evidence . ?evidence ex:fromSource ?source . }

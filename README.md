@@ -1,6 +1,6 @@
 # Ontology StarterKit
 
-![Ontology StarterKit model](media/exports/hello-model.svg)
+![Ontology workshop hero](media/source/illustrations/ontology-workshop-hero.png)
 
 [![Python](https://img.shields.io/badge/python-3.10%2B-blue)](pyproject.toml) [![License](https://img.shields.io/badge/license-MIT-green)](LICENSE) [![Offline packs](https://img.shields.io/badge/core-offline--first-purple)](docs/learn/README.md)
 
@@ -8,7 +8,7 @@
 
 Ontology StarterKit is an offline-first learning and implementation kit for teams that want to use ontologies, knowledge graphs, and evidence-backed AI products without requiring deep semantic-web expertise.
 
-Start with the [10-minute offline path](docs/learn/README.md), browse a [business ownership pack](examples/business-projects/README.md), a [life-science annotation pack](examples/life-science-annotations/README.md), or the [life-sciences consulting path](docs/consulting/README.md). Neo4j and LLM integrations are optional extensions.
+Start with the [10-minute offline path](docs/learn/README.md), browse the [visual gallery](media/gallery.md), run a [business ownership pack](examples/business-projects/README.md), a [life-science annotation pack](examples/life-science-annotations/README.md), or the [life-sciences consulting path](docs/consulting/README.md). Neo4j and LLM integrations are optional extensions.
 
 It is intentionally opinionated:
 
@@ -46,6 +46,8 @@ It is intentionally opinionated:
 - [History of ontology in business, life sciences and AI](docs/history/README.md)
 - [Consulting use cases](docs/consulting/README.md)
 - [Visual assets](assets/README.md)
+- [Infographic lessons](docs/learn/infographics.md)
+- [Fictional workshop stories](docs/stories/README.md)
 
 ## Quick Start
 
@@ -70,6 +72,9 @@ cp .env.example .env
 ```bash
 pytest
 ```
+
+The core test run skips GraphRAG-only modules when their optional dependencies
+are absent. To exercise that adapter too, install `pip install -e '.[dev,graphrag]'`.
 
 ### 4. Run ontology validation locally
 
@@ -120,16 +125,13 @@ Ontology-StarterKit/
 
 This repository is suitable as a public, documentation-first starter kit. It is not intended to represent a complete framework or enterprise platform. Every implemented example in the repository should be runnable, reviewed, and supported by accurate documentation.
 
-## Roadmap
+## Current boundary
 
-Planned next additions include:
-
-- Architecture and scalability patterns
-- More integration examples beyond LangChain
-- Case studies with measurable outcomes
-- Expanded governance templates
-- Ontology-guided extraction and identity-resolution lessons
-- Optional bounded MCP tools and LinkML authoring adapter
+The repository now ships deterministic teaching and consulting visuals, four
+multi-question packs, evidence-shaped answer helpers, and bounded optional
+adapters. Production deployments still need a service-specific security review,
+client-owned terminology licenses, domain reviewers, and live Neo4j/LLM
+acceptance tests.
 
 ## License
 

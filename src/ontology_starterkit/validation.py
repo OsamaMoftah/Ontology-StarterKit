@@ -5,11 +5,23 @@ from __future__ import annotations
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any, cast
+import re
 
 from pyshacl import validate
 from rdflib import Graph
 
 from .packs import Pack, PackError
+
+
+_UNSAFE_SPARQL = re.compile(r"(?<![A-Za-z0-9_?:])(?:SERVICE|LOAD|CLEAR|DROP|INSERT|DELETE|CREATE|COPY|MOVE|ADD)\b", re.IGNORECASE)
+
+
+def validate_named_query(query: str) -> None:
+    """Reject update and remote-service operations in a named read query."""
+    if _UNSAFE_SPARQL.search(query):
+        raise PackError("named queries may only contain one local read operation")
+    if not re.search(r"\b(?:SELECT|ASK|CONSTRUCT|DESCRIBE)\b", query, re.IGNORECASE):
+        raise PackError("named query must be a SPARQL read query")
 
 
 @dataclass(frozen=True)
@@ -52,6 +64,7 @@ def run_named_query(pack: Pack, query_id: str, *, data_path: str | None = None, 
         raise PackError("query parameters are not supported by this offline runner")
     data = load_graph(pack.resolve(data_path or pack.manifest.get("data", "data.ttl")))
     query = pack.resolve(str(queries[query_id])).read_text()
+    validate_named_query(query)
     rows: list[dict[str, str]] = []
     for result in data.query(query):
         row = cast(Any, result).asdict()

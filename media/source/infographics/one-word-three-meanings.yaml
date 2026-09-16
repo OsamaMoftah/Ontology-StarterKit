@@ -1,0 +1,5 @@
+id: one-word-three-meanings
+question: How do three teams make one definition safe to reuse?
+audience: product, data, and ontology teams
+claim: A scoped definition with exclusions and a version makes shared language testable.
+output: media/exports/infographic-one-word-three-meanings.svg

@@ -1,0 +1,5 @@
+id: vocabulary-ontology-graph
+question: What does an ontology add to a list of terms?
+audience: beginners
+claim: Definitions become operational when relations and governed instances are explicit.
+output: media/exports/infographic-vocabulary-ontology-graph.svg

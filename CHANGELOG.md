@@ -12,7 +12,11 @@ For ontology updates, include a short impact statement in the release notes (for
 
 ## Unreleased
 
-Future changes go here.
+- Added a visual system with eight accessible ontology explainers, three life-science consulting visuals, a gallery, editable source specs and two original editorial illustrations.
+- Rewrote Mermaid rendering to preserve dotted instance edges, branch topology, wrapped labels, and accessible title/description IDs; unsupported edges now fail loudly.
+- Expanded every domain pack to at least five named competency questions (seven for the consulting pack) with expected fixtures.
+- Hardened CLI failure codes, Unicode-safe alias resolution, evidence-path checks, unsafe SPARQL rejection, MCP path boundaries, and lossless RDF term seeding.
+- Added sourced ontology history, fictional business and life-science workshop stories, a deterministic Markdown link checker, and core-only optional-dependency skips.
 
 ## 0.2.0 - 2026-09-16
 

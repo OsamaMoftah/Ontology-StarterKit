@@ -2,10 +2,10 @@ name: Python checks
 
 on:
   pull_request:
-    paths: ['src/**', 'tests/**', 'examples/**', 'scripts/**', 'pyproject.toml', 'ruff.toml', 'mypy.ini', '.github/workflows/**']
+    paths: ['src/**', 'tests/**', 'examples/**', 'scripts/**', 'docs/**', 'media/**', 'README.md', 'pyproject.toml', 'ruff.toml', 'mypy.ini', '.github/workflows/**']
   push:
     branches: [main]
-    paths: ['src/**', 'tests/**', 'examples/**', 'scripts/**', 'pyproject.toml', 'ruff.toml', 'mypy.ini', '.github/workflows/**']
+    paths: ['src/**', 'tests/**', 'examples/**', 'scripts/**', 'docs/**', 'media/**', 'README.md', 'pyproject.toml', 'ruff.toml', 'mypy.ini', '.github/workflows/**']
 
 jobs:
   test:
@@ -32,6 +32,13 @@ jobs:
         run: |
           ontokit packs
           for pack in examples/*; do ontokit validate "$pack"; done
+      - name: Check documentation links
+        run: python scripts/check_links.py
+      - name: Check generated visuals
+        run: |
+          python scripts/render_diagrams.py
+          python scripts/render_infographics.py
+          git diff --exit-code -- media/exports
       - name: Run tests
         run: pytest -q --cov=src/ontology_starterkit --cov-report=term-missing --cov-fail-under=80
       - name: Audit optional integration dependencies

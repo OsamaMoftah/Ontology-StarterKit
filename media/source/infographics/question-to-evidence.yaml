@@ -1,0 +1,5 @@
+id: question-to-evidence
+question: Can a reader see why the answer is safe?
+audience: AI engineers and reviewers
+claim: A named query, assertion path, and data version turn an answer into a trace.
+output: media/exports/infographic-question-to-evidence.svg

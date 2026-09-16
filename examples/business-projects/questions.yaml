@@ -1,3 +1,15 @@
 - id: owner
   question: Who manages the team that owns Semantic API?
   query: queries/owner.rq
+- id: people
+  question: Which people manage teams?
+  query: queries/people.rq
+- id: teams
+  question: Which teams own services?
+  query: queries/teams.rq
+- id: services
+  question: Which services are in scope?
+  query: queries/services.rq
+- id: projects
+  question: Which projects are in scope?
+  query: queries/projects.rq

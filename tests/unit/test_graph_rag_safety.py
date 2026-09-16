@@ -4,6 +4,9 @@ import time
 
 import pytest
 
+for _dependency in ("dotenv", "langchain_core", "langchain_openai", "langchain_neo4j"):
+    pytest.importorskip(_dependency)
+
 
 MODULE_PATH = Path(__file__).resolve().parents[2] / "src/integrations/langchain/kg-rag/graph_rag.py"
 SPEC = importlib.util.spec_from_file_location("graph_rag_safety", MODULE_PATH)

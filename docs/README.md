@@ -33,6 +33,7 @@ Implementation-facing documentation lives alongside the code it documents:
 ## History and domain stories
 
 - [History index](history/README.md)
+- [Four-lane ontology timeline](history/timeline.md)
 - [Ontology in business](history/ontology-in-business.md)
 - [Ontology in life sciences](history/ontology-in-life-sciences.md)
 - [Ontology in AI](history/ontology-in-ai.md)
@@ -40,3 +41,5 @@ Implementation-facing documentation lives alongside the code it documents:
 - [Life-sciences consulting use-case catalogue](consulting/use-cases.md)
 - [Optional adapters](reference/optional-adapters.md)
 - [Media helpers and infographic](../media/README.md)
+- [Visual gallery](../media/gallery.md)
+- [Fictional workshop stories](stories/README.md)

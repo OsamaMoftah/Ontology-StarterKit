@@ -30,3 +30,33 @@ assets:
     alt: A gene product is connected through an annotation to a biological process and evidence record.
     lesson: docs/history/ontology-in-life-sciences.md
     status: generated
+  - id: infographic-suite
+    source: media/source/infographics/README.md
+    output: media/exports/infographic-*.svg
+    alt: Eleven accessible editorial explainers for ontology semantics, evidence, governance, life-science annotation, and consulting workflows.
+    lesson: docs/learn/infographics.md
+    status: generated
+  - id: consulting-visual-suite
+    source: media/source/infographics/consulting-value-chain.yaml
+    output: media/exports/consulting-*.svg
+    alt: Consulting value-chain, evidence-room, and pilot-scorecard visuals for life-science advisory teams.
+    lesson: docs/consulting/README.md
+    status: generated
+  - id: consulting-model
+    source: examples/consulting-evidence-room/model.mmd
+    output: media/exports/consulting-model.svg
+    alt: Asset claims connect to evidence, sources and indications in the consulting pack.
+    lesson: examples/consulting-evidence-room/README.md
+    status: generated
+  - id: ontology-workshop-hero
+    source: media/source/illustrations/README.md
+    output: media/source/illustrations/ontology-workshop-hero.png
+    alt: Life-science consultants and scientists connect evidence cards into a knowledge graph during a workshop.
+    lesson: README.md
+    status: generated-original
+  - id: evidence-reconciliation-studio
+    source: media/source/illustrations/README.md
+    output: media/source/illustrations/evidence-reconciliation-studio.png
+    alt: A consultant reconciles uncertain business records while an accepted evidence graph emerges.
+    lesson: media/gallery.md
+    status: generated-original

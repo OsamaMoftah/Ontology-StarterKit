@@ -1,5 +1,5 @@
 flowchart LR
-  Asset[Asset] --> Claim[Claim]
-  Claim --> Evidence[Evidence]
-  Evidence --> Source[Source]
-  Asset --> Indication[Indication]
+  Asset[Asset] -->|has claim| Claim[Claim]
+  Claim -->|supported by| Evidence[Evidence]
+  Evidence -->|from source| Source[Source]
+  Asset -->|for indication| Indication[Indication]

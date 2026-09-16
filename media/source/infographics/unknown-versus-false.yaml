@@ -1,0 +1,5 @@
+id: unknown-versus-false
+question: What is the difference between absent and false?
+audience: data practitioners
+claim: Missing information is unknown; an explicit negative assertion is a fact.
+output: media/exports/infographic-unknown-versus-false.svg

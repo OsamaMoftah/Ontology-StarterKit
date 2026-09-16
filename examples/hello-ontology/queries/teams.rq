@@ -1,0 +1,2 @@
+PREFIX ex: <https://ontology-starterkit.dev/hello/>
+SELECT ?team ?name WHERE { ?team a ex:Team ; ex:name ?name . }

@@ -1,0 +1,2 @@
+PREFIX ex: <https://ontology-starterkit.dev/life-science/>
+SELECT ?evidence ?reference WHERE { ?evidence a ex:EvidenceRecord ; ex:reference ?reference . }

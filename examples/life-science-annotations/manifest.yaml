@@ -7,8 +7,16 @@ data: data/valid.ttl
 questions: questions.yaml
 queries:
   evidence: queries/evidence.rq
+  products: queries/products.rq
+  processes: queries/processes.rq
+  annotations: queries/annotations.rq
+  references: queries/references.rq
 expected:
   evidence: expected/evidence.json
+  products: expected/products.json
+  processes: expected/processes.json
+  annotations: expected/annotations.json
+  references: expected/references.json
 invalid:
   - data/invalid/missing-reference.ttl
 sources: sources.yaml

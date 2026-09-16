@@ -7,8 +7,16 @@ data: data/valid.ttl
 questions: questions.yaml
 queries:
   owner: queries/owner.rq
+  people: queries/people.rq
+  teams: queries/teams.rq
+  services: queries/services.rq
+  projects: queries/projects.rq
 expected:
   owner: expected/owner.json
+  people: expected/people.json
+  teams: expected/teams.json
+  services: expected/services.json
+  projects: expected/projects.json
 invalid:
   - data/invalid/missing-owner.ttl
 sources: sources.yaml
