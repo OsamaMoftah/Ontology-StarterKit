@@ -1,0 +1,26 @@
+id: https://ontology-starterkit.dev/linkml/hello
+name: hello_linkml
+prefixes:
+  linkml: https://w3id.org/linkml/
+  local: https://ontology-starterkit.dev/linkml/hello/
+imports:
+  - linkml:types
+default_prefix: local
+classes:
+  Person:
+    slots:
+      - id
+      - status
+slots:
+  id:
+    identifier: true
+    required: true
+    range: string
+  status:
+    range: StatusEnum
+    required: true
+enums:
+  StatusEnum:
+    permissible_values:
+      active: {}
+      retired: {}

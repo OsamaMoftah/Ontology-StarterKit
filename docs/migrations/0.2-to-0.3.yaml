@@ -1,0 +1,9 @@
+old_version: "0.2.0"
+new_version: "0.3.0"
+compatible:
+  - manager
+  - owner
+breaking:
+  - evidence
+replacements:
+  "https://ontology-starterkit.dev/business/owns": "https://ontology-starterkit.dev/business/ownsAsset"

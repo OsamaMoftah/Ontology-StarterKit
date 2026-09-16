@@ -1,1 +1,5 @@
-[{"claim": "https://ontology-starterkit.dev/consulting/Claim2", "text": "Asset A has an unsupported commercial claim."}]
+[
+  {"claim": "https://ontology-starterkit.dev/consulting/Claim2", "text": "Asset A has an unsupported commercial claim."},
+  {"claim": "https://ontology-starterkit.dev/consulting/Claim3", "text": "Asset A's target is validated by every source."},
+  {"claim": "https://ontology-starterkit.dev/consulting/Claim4", "text": "Asset A has a current launch date."}
+]

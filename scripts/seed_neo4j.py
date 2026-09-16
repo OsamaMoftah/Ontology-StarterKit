@@ -37,6 +37,11 @@ def scoped_graph(graph: Graph, scope: str) -> Graph:
     return result
 
 
+def graph_delta(previous: Graph, current: Graph) -> tuple[set[tuple[object, object, object]], set[tuple[object, object, object]]]:
+    """Return triples to add and remove for a replace-style import."""
+    return set(current) - set(previous), set(previous) - set(current)
+
+
 def term_payload(term: object) -> dict[str, str]:
     """Preserve RDFLib term kinds and literal metadata in a node payload."""
     if isinstance(term, Literal):
@@ -71,8 +76,25 @@ def seed(pack_path: str | Path, *, uri: str | None = None, database: str = "neo4
     password = os.getenv("NEO4J_PASSWORD", "starterkit-local-only")
     driver = GraphDatabase.driver(uri, auth=(username, password), connection_timeout=5)
     count = 0
+    scope = pack.pack_id
     try:
         with driver.session(database=database) as session:
+            existing = {
+                (record["subject_key"], record["predicate"], record["object_key"])
+                for record in session.run(
+                    "MATCH (s:RDFTerm)-[r:TRIPLE {scope: $scope}]->(o:RDFTerm) RETURN s.key AS subject_key, r.predicate AS predicate, o.key AS object_key",
+                    scope=scope,
+                )
+            }
+            current = {
+                (term_payload(subject)["key"], str(predicate), term_payload(object_)["key"])
+                for subject, predicate, object_ in graph
+            }
+            for subject_key, predicate, object_key in existing - current:
+                session.run(
+                    "MATCH (s:RDFTerm {key: $subject_key})-[r:TRIPLE {scope: $scope, predicate: $predicate}]->(o:RDFTerm {key: $object_key}) DELETE r",
+                    subject_key=subject_key, predicate=predicate, object_key=object_key, scope=scope,
+                ).consume()
             for subject, predicate, object_ in graph:
                 subject_payload = term_payload(subject)
                 object_payload = term_payload(object_)
@@ -84,12 +106,12 @@ def seed(pack_path: str | Path, *, uri: str | None = None, database: str = "neo4
                     SET o.kind = $object_kind, o.iri = $object_iri,
                         o.value = $object_value, o.datatype = $object_datatype,
                         o.language = $object_language
-                    MERGE (s)-[:TRIPLE {predicate: $predicate}]->(o)
+                    MERGE (s)-[:TRIPLE {predicate: $predicate, scope: $scope}]->(o)
                     """,
                     subject_key=subject_payload["key"], subject_kind=subject_payload["kind"], subject_iri=subject_payload.get("iri"),
                     object_key=object_payload["key"], object_kind=object_payload["kind"], object_iri=object_payload.get("iri"),
                     object_value=object_payload.get("value"), object_datatype=object_payload.get("datatype"), object_language=object_payload.get("language"),
-                    predicate=str(predicate),
+                    predicate=str(predicate), scope=scope,
                 ).consume()
                 count += 1
     finally:

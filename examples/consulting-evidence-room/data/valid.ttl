@@ -1,7 +1,9 @@
 @prefix ex: <https://ontology-starterkit.dev/consulting/> .
 ex:AssetA a ex:Asset ; ex:name "Fictional Asset A" ; ex:forIndication ex:IndicationA .
 ex:IndicationA a ex:Indication ; ex:name "Fictional indication A" .
-ex:Source1 a ex:Source ; ex:name "Synthetic evidence packet 1" .
-ex:Evidence1 a ex:EvidenceRecord ; ex:fromSource ex:Source1 .
-ex:Claim1 a ex:Claim ; ex:about ex:AssetA ; ex:supportedBy ex:Evidence1 ; ex:text "Asset A has a reviewed target hypothesis." .
-ex:Claim2 a ex:Claim ; ex:about ex:AssetA ; ex:text "Asset A has an unsupported commercial claim." .
+ex:Source1 a ex:Source ; ex:name "Synthetic evidence packet 1" ; ex:sourceVersion "v1" ; ex:publishedOn "2026-08-01" ; ex:retrievedOn "2026-09-01" .
+ex:Evidence1 a ex:EvidenceRecord ; ex:fromSource ex:Source1 ; ex:sourceSpan "p. 2, target paragraph" .
+ex:Claim1 a ex:Claim ; ex:about ex:AssetA ; ex:supportedBy ex:Evidence1 ; ex:text "Asset A has a reviewed target hypothesis." ; ex:reviewState "supported" ; ex:reviewer "R. Singh" ; ex:reviewedOn "2026-09-03" .
+ex:Claim2 a ex:Claim ; ex:about ex:AssetA ; ex:text "Asset A has an unsupported commercial claim." ; ex:reviewState "unknown" ; ex:reviewer "R. Singh" ; ex:reviewedOn "2026-09-03" .
+ex:Claim3 a ex:Claim ; ex:about ex:AssetA ; ex:text "Asset A's target is validated by every source." ; ex:reviewState "conflicting" ; ex:reviewer "R. Singh" ; ex:reviewedOn "2026-09-03" .
+ex:Claim4 a ex:Claim ; ex:about ex:AssetA ; ex:text "Asset A has a current launch date." ; ex:reviewState "stale" ; ex:reviewer "R. Singh" ; ex:reviewedOn "2026-09-03" .

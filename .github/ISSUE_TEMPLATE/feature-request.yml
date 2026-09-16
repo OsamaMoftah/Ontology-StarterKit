@@ -1,0 +1,26 @@
+name: Feature request
+description: Propose a focused improvement with a user and acceptance test.
+title: "[feature] "
+labels: [enhancement]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem and user
+      description: Who needs this and what decision or workflow is blocked?
+    validations:
+      required: true
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: Acceptance evidence
+      description: What command, fixture, or visual inspection would prove it?
+    validations:
+      required: true
+  - type: textarea
+    id: boundaries
+    attributes:
+      label: Boundaries
+      description: What should this proposal explicitly not claim?
+    validations:
+      required: true

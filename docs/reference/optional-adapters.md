@@ -15,8 +15,14 @@ The pinned local service can be started and seeded with `just services-ready`
 and `just services-seed`. The seed helper writes `RDFTerm` nodes and
 `TRIPLE` relationships, preserving URI resources, blank nodes, and literal
 datatype/language metadata after RDFLib parsing. Blank nodes are canonicalized
-and scoped to the pack ID; changed graphs can leave old nodes behind. Live
-Neo4j parity is not yet verified. It refuses non-local URIs and never drops data.
+and scoped to the pack ID. `neo4j_queries.py` provides the normal parameterized
+query path with type, predicate, row, byte, and deadline checks; generated
+Cypher remains explicitly experimental. Live Neo4j parity and server-side
+cancellation are still externally blocked for the pinned Community image: its
+administration surface does not expose the role-grant command needed to create
+a database-enforced reader. `scripts/verify_neo4j_service.py` fails closed with
+that exact reason; run it against a licensed Enterprise service to close the
+gate.
 
 ## MCP
 
@@ -27,10 +33,12 @@ validation and manifest-declared named queries over stdio:
 python -c 'from ontology_starterkit.mcp_server import serve; serve("examples")'
 ```
 
-It does not accept arbitrary SPARQL or write to a graph. Add an authenticated
-host wrapper before exposing it outside a local development process. The server
-also passes its configured `examples` root into every tool, so a caller cannot
-ask the adapter to load an arbitrary pack path.
+It does not accept arbitrary SPARQL or write to a graph. Each query call bounds
+rows, response bytes, and the local worker deadline; timeout cancellation is a
+request boundary, not proof of server-side database cancellation. Add an
+authenticated host wrapper before exposing it outside a local development
+process. The server also passes its configured `examples` root into every tool,
+so a caller cannot ask the adapter to load an arbitrary pack path.
 
 ## LinkML and extraction
 
@@ -44,6 +52,11 @@ from ontology_starterkit.linkml import build_linkml_schema
 print(build_linkml_schema("hello", {"Person": ["name"]}))
 ```
 
+The reviewed environment pins the full resolved core and optional dependency
+graphs in `requirements/core.lock` and `requirements/optional.lock`. They were
+compiled on macOS/Python 3.11; regenerate from the matching `.in` file for a
+different platform or interpreter before production use.
+
 `ontology_starterkit.extraction` provides a model-independent extraction
 contract and reviewed alias resolution; it intentionally does not call an LLM
 or merge ambiguous entities. A production extractor must retain source spans,
@@ -51,8 +64,10 @@ confidence, model/version metadata and an abstention path.
 
 Only reviewed, locally owned packs should be served. Named queries must be local
 SELECT queries; SERVICE, FROM, updates, and other result types are rejected.
-Query execution currently has no CPU or wall-clock sandbox. Path checks are
-not a defense against someone concurrently modifying the pack directory.
+The local MCP worker is bounded by a deadline and disposed after each request;
+database adapters still need transaction-level timeouts and server-side
+cancellation evidence. Path checks are not a defense against someone
+concurrently modifying the pack directory.
 
 `build_answer` checks citation membership and records supplied paths. Its
 `unverified` status means the text has not been checked for entailment or

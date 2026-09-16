@@ -1,6 +1,9 @@
 import pytest
 
-from ontology_starterkit.extraction import extraction_contract, normalize_identifier, resolve_aliases, resolve_aliases_with_audit
+from ontology_starterkit.extraction import (
+    extract_candidates, extraction_contract, normalize_identifier, resolve_aliases, resolve_aliases_with_audit,
+    validate_candidates,
+)
 
 
 def test_normalize_identifier_is_stable():
@@ -35,3 +38,12 @@ def test_extraction_contract_requires_provenance_and_abstention():
     assert contract["terms"] == ("Claim", "Source")
     assert contract["require_source_span"] is True
     assert contract["abstain_on_ambiguity"] is True
+
+
+def test_constrained_extraction_preserves_exact_source_spans():
+    source = "Maya manages Aurora."
+    candidates = extract_candidates(source, {"Maya": "ex:Person", "Aurora": "ex:Team"}, source_id="note-1")
+    assert [(item.text, item.start, item.end) for item in candidates] == [("Maya", 0, 4), ("Aurora", 13, 19)]
+    assert validate_candidates(source, candidates, {"ex:Person", "ex:Team"}) == []
+    altered = candidates[0].__class__("Maya", 1, 5, "ex:Person", "note-1", "test", 1.0)
+    assert validate_candidates(source, [altered], {"ex:Person"})

@@ -25,6 +25,10 @@ Useful deliverables are an executive decision brief, claim-to-source register, s
 
 Read the [full use-case catalogue](use-cases.md) for entities, evidence gates and measures for each workstream.
 
+Copy the [engagement templates](templates/README.md) for the decision brief,
+source register, mapping log, evidence assessment, evaluation set, unresolved
+questions, and operating handoff.
+
 Use cases are proposed applications, not claims of adoption by McKinsey, PwC, Strategy&, or another firm. Public firm sources support the problem areas, not this repository's results. Keep patient data, client records and licensed terminology out of the public examples.
 
 ## Value measures

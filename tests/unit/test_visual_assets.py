@@ -18,4 +18,7 @@ def test_infographic_suite_is_accessible_and_complete():
 
 def test_consulting_visuals_have_distinct_deliverables():
     names = {path.name for path in (ROOT / "media/exports").glob("consulting-*.svg") if path.name != "consulting-model.svg"}
-    assert names == {"consulting-value-chain.svg", "consulting-evidence-room.svg", "consulting-pilot-scorecard.svg"}
+    assert names == {
+        "consulting-value-chain.svg", "consulting-evidence-room.svg", "consulting-pilot-scorecard.svg",
+        "consulting-claim-to-source.svg", "consulting-identity-crosswalk.svg", "consulting-quality-impact.svg",
+    }

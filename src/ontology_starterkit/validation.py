@@ -8,7 +8,8 @@ from typing import Any, cast
 from pyparsing import ParseResults
 
 from pyshacl import validate
-from rdflib import Graph
+from rdflib import Graph, RDF
+from rdflib.namespace import SH
 from rdflib.plugins.sparql.parser import parseQuery
 from rdflib.plugins.sparql.parserutils import CompValue
 
@@ -61,6 +62,16 @@ def validate_pack(pack: Pack, *, data_path: str | None = None) -> ValidationRepo
     if len(data) == 0:
         return ValidationReport(False, ("data graph is empty; target coverage cannot be established",))
     shapes = load_graph(pack.resolve(str(pack.manifest["shapes"])))
+    uncovered: list[str] = []
+    for shape in shapes.subjects(RDF.type, SH.NodeShape):
+        target_classes = list(shapes.objects(shape, SH.targetClass))
+        target_predicates = list(shapes.objects(shape, SH.targetSubjectsOf))
+        if target_classes and not any((None, RDF.type, target) in data for target in target_classes):
+            uncovered.append(f"{shape} targetClass has no matching data")
+        if target_predicates and not any((None, predicate, None) in data for predicate in target_predicates):
+            uncovered.append(f"{shape} targetSubjectsOf has no matching data")
+    if uncovered:
+        return ValidationReport(False, ("data graph has no instances for declared SHACL targets", *uncovered))
     conforms, report_graph, report_text = validate(data, shacl_graph=shapes)
     messages = tuple(str(report_text).splitlines())
     if not conforms and not messages:

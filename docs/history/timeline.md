@@ -15,3 +15,11 @@ across institutions.
 
 The dates are teaching anchors, not a complete intellectual history. See the
 [business history](ontology-in-business.md), [life-science history](ontology-in-life-sciences.md), and [AI history](ontology-in-ai.md) for source links.
+
+Source map for the timeline rows: [MeSH history](https://www.nlm.nih.gov/mesh/introduction.html), [Gruber 1993](https://tomgruber.org/writing/ontolingua-kaj-1993/), [Gene Ontology documentation](https://www.geneontology.org/docs/ontology-documentation/), [W3C RDF](https://www.w3.org/TR/rdf11-concepts/), [W3C OWL](https://www.w3.org/TR/owl2-overview/), [OBO Foundry](https://obofoundry.org/), [Schema.org launch](https://search.googleblog.com/2011/06/introducing-schemaorg-search-engines.html), [PROV-O](https://www.w3.org/TR/prov-o/), [PrimeKG](https://www.nature.com/articles/s41597-023-01960-3), and [Microsoft GraphRAG](https://www.microsoft.com/en-us/research/blog/graphrag-unlocking-llm-discovery-on-narrative-private-data/). Each link supports the named milestone or vocabulary; none is evidence that this repository or a consultancy achieved the cited result.
+
+![Sourced ontology history timeline](../../media/exports/ontology-history-timeline.svg)
+
+The editable source is `scripts/render_history_timeline.py`. The business,
+life-science, standards, and AI lanes are intentionally separate so a shared
+date does not imply that the projects had the same purpose or semantics.

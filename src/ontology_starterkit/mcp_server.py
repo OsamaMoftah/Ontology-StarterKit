@@ -7,6 +7,8 @@ SPARQL; queries must be declared in a pack manifest.
 
 from __future__ import annotations
 
+import json
+from concurrent.futures import ThreadPoolExecutor, TimeoutError as FutureTimeout
 from pathlib import Path
 from typing import Any
 
@@ -44,9 +46,47 @@ def validate_pack_tool(pack_path: str | Path, *, examples_root: str | Path | Non
     return {"pack": pack.pack_id, "conforms": report.conforms, "messages": list(report.messages)}
 
 
-def run_query_tool(pack_path: str | Path, query_id: str, *, examples_root: str | Path | None = None) -> dict[str, Any]:
+def _limit(value: int, *, name: str, maximum: int) -> int:
+    if isinstance(value, bool) or not isinstance(value, int) or not 1 <= value <= maximum:
+        raise PackError(f"{name} must be an integer between 1 and {maximum}")
+    return value
+
+
+def run_query_tool(
+    pack_path: str | Path,
+    query_id: str,
+    *,
+    examples_root: str | Path | None = None,
+    max_rows: int = 100,
+    max_bytes: int = 64_000,
+    timeout_seconds: float = 5.0,
+) -> dict[str, Any]:
+    """Run one declared query with bounded local execution and output.
+
+    The worker is disposable and cancelled on timeout. This bounds the MCP
+    request lifecycle; a database adapter must additionally use a database
+    transaction timeout and verify server-side cancellation.
+    """
     pack: Pack = load_pack(_bounded_pack_path(pack_path, examples_root))
-    return {"pack": pack.pack_id, "query": query_id, "rows": run_named_query(pack, query_id)}
+    max_rows = _limit(max_rows, name="max_rows", maximum=10_000)
+    max_bytes = _limit(max_bytes, name="max_bytes", maximum=10_000_000)
+    if isinstance(timeout_seconds, bool) or not isinstance(timeout_seconds, (int, float)) or not 0 < timeout_seconds <= 60:
+        raise PackError("timeout_seconds must be a number between 0 and 60")
+    executor = ThreadPoolExecutor(max_workers=1, thread_name_prefix="ontokit-mcp-query")
+    future = executor.submit(run_named_query, pack, query_id)
+    try:
+        rows = future.result(timeout=float(timeout_seconds))
+    except FutureTimeout as exc:
+        future.cancel()
+        raise PackError("named query exceeded its MCP deadline") from exc
+    finally:
+        executor.shutdown(wait=False, cancel_futures=True)
+    if len(rows) > max_rows:
+        raise PackError(f"named query returned more than {max_rows} rows")
+    encoded = json.dumps(rows, ensure_ascii=False, separators=(",", ":")).encode("utf-8")
+    if len(encoded) > max_bytes:
+        raise PackError(f"named query response exceeds {max_bytes} bytes")
+    return {"pack": pack.pack_id, "query": query_id, "rows": rows, "limits": {"max_rows": max_rows, "max_bytes": max_bytes}}
 
 
 def serve(examples_root: str | Path) -> None:
@@ -68,7 +108,20 @@ def serve(examples_root: str | Path) -> None:
         return validate_pack_tool(pack_path, examples_root=examples_root)
 
     @server.tool()
-    def query(pack_path: str, query_id: str) -> dict[str, Any]:
-        return run_query_tool(pack_path, query_id, examples_root=examples_root)
+    def query(
+        pack_path: str,
+        query_id: str,
+        max_rows: int = 100,
+        max_bytes: int = 64_000,
+        timeout_seconds: float = 5.0,
+    ) -> dict[str, Any]:
+        return run_query_tool(
+            pack_path,
+            query_id,
+            examples_root=examples_root,
+            max_rows=max_rows,
+            max_bytes=max_bytes,
+            timeout_seconds=timeout_seconds,
+        )
 
     server.run(transport="stdio")

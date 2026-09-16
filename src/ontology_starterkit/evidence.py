@@ -4,6 +4,8 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from collections.abc import Mapping, Sequence
+from typing import Any, cast
+from rdflib import Graph
 
 
 @dataclass(frozen=True)
@@ -16,6 +18,54 @@ class AnswerRecord:
     status: str
     limitations: tuple[str, ...] = ()
     support_paths: tuple[tuple[str, ...], ...] = ()
+    assertion_ids: tuple[str, ...] = ()
+    source_records: tuple[tuple[str, str], ...] = ()
+    source_spans: tuple[tuple[str, str], ...] = ()
+    graph_path_valid: bool = False
+    source_support: str = "unverified"
+    answer_correctness: str = "unverified"
+
+
+def verify_graph_paths(graph: Graph, paths: Mapping[str, Sequence[tuple[object, object, object]]]) -> tuple[str, ...]:
+    """Return citation IDs whose every asserted triple exists in ``graph``."""
+    verified: list[str] = []
+    for evidence_id, triples in paths.items():
+        graph_like = cast(Any, graph)
+        if triples and all(triple in graph_like for triple in triples):
+            verified.append(evidence_id)
+    return tuple(verified)
+
+
+def build_verified_answer(
+    answer: str,
+    evidence_ids: Sequence[str],
+    graph: Graph,
+    graph_paths: Mapping[str, Sequence[tuple[object, object, object]]],
+    data_version: str,
+    source_records: Mapping[str, str] | None = None,
+    source_spans: Mapping[str, str] | None = None,
+) -> AnswerRecord:
+    """Build a supported record only after graph-path verification."""
+    citations = tuple(dict.fromkeys(evidence_ids))
+    verified = set(verify_graph_paths(graph, graph_paths))
+    if not citations or not set(citations).issubset(verified):
+        missing = sorted(set(citations) - verified)
+        return AnswerRecord(
+            answer="Insufficient evidence in this dataset.",
+            evidence_ids=(),
+            data_version=data_version,
+            status="insufficient-evidence",
+            limitations=(f"Graph paths were not verified for: {', '.join(missing)}.",),
+            assertion_ids=citations,
+        )
+    records = tuple((item, source_records[item]) for item in citations if source_records and item in source_records)
+    spans = tuple((item, source_spans[item]) for item in citations if source_spans and item in source_spans)
+    return AnswerRecord(
+        answer=answer.strip(), evidence_ids=citations, data_version=data_version,
+        status="supported", support_paths=tuple(tuple(str(part) for triple in graph_paths[item] for part in triple) for item in citations),
+        assertion_ids=citations, source_records=records, source_spans=spans,
+        graph_path_valid=True, source_support="reviewed" if len(records) == len(citations) and len(spans) == len(citations) else "unverified",
+    )
 
 
 def build_answer(
@@ -24,6 +74,8 @@ def build_answer(
     allowed_evidence_ids: set[str],
     data_version: str,
     evidence_paths: Mapping[str, Sequence[str]] | None = None,
+    source_records: Mapping[str, str] | None = None,
+    source_spans: Mapping[str, str] | None = None,
 ) -> AnswerRecord:
     """Check citation membership, without claiming the answer is entailed.
 
@@ -56,6 +108,9 @@ def build_answer(
         paths = tuple(tuple(str(part) for part in evidence_paths[citation]) for citation in citations)
     else:
         paths = ()
+    records = tuple((item, source_records[item]) for item in citations if source_records and item in source_records)
+    spans = tuple((item, source_spans[item]) for item in citations if source_spans and item in source_spans)
     return AnswerRecord(answer=answer.strip(), evidence_ids=citations, data_version=data_version,
                         status="unverified", support_paths=paths,
-                        limitations=("Citation membership checked; answer entailment and source support are not verified.",))
+                        assertion_ids=citations, source_records=records, source_spans=spans,
+                        limitations=("Citation membership checked; graph-path validity, source support and answer correctness are not verified.",))

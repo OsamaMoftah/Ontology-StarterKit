@@ -26,6 +26,20 @@ def test_mcp_pure_tools_are_json_safe():
     assert run_query_tool(path, "manager")["rows"]
 
 
+def test_mcp_query_limits_and_arguments_are_enforced():
+    import pytest
+
+    path = ROOT / "examples/hello-ontology"
+    with pytest.raises(PackError, match="integer between"):
+        run_query_tool(path, "manager", max_rows=0)
+    with pytest.raises(PackError, match="exceeds 1 bytes"):
+        run_query_tool(path, "manager", max_bytes=1)
+    with pytest.raises(PackError, match="unknown named query"):
+        run_query_tool(path, "does-not-exist")
+    with pytest.raises(PackError, match="deadline"):
+        run_query_tool(path, "manager", timeout_seconds=0.000001)
+
+
 def test_mcp_tools_reject_pack_paths_outside_root(tmp_path):
     import pytest
     path = ROOT / "examples/hello-ontology"

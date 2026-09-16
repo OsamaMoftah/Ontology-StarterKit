@@ -5,58 +5,154 @@ assets:
     source: media/README.md
     output: media/exports/ontology-lifecycle.svg
     alt: Five-step ontology delivery lifecycle from framing a decision through maintenance.
+    caption: Five-step ontology delivery lifecycle.
     lesson: docs/learn/README.md
+    provenance: Original repository artwork and code.
+    review_status: inspected-with-resvg
     status: generated
   - id: diagram-source-index
     source: media/source/README.md
     output: media/source/README.md
     alt: Canonical diagram source and rendering instructions.
+    caption: Diagram source and rendering instructions.
+    lesson: media/source/README.md
+    provenance: Repository documentation.
+    review_status: reviewed
     status: source
   - id: hello-model
     source: examples/hello-ontology/model.mmd
     output: media/exports/hello-model.svg
     alt: Person Maya manages Team Aurora, which works on Alpha Project.
+    caption: Instance-level ownership and project path.
     lesson: docs/learn/classes-instances-relations.md
+    provenance: Original repository artwork and code.
+    review_status: inspected-with-resvg
     status: generated
   - id: business-model
     source: examples/business-projects/model.mmd
     output: media/exports/business-model.svg
     alt: A person manages a team that owns a service and works on a project.
+    caption: Business ownership model.
     lesson: docs/consulting/README.md
+    provenance: Original repository artwork and code.
+    review_status: inspected-with-resvg
     status: generated
   - id: life-science-model
     source: examples/life-science-annotations/model.mmd
     output: media/exports/life-science-model.svg
     alt: A gene product is connected through an annotation to a biological process and evidence record.
+    caption: Life-science annotation and evidence model.
     lesson: docs/history/ontology-in-life-sciences.md
+    provenance: Original repository artwork and code.
+    review_status: inspected-with-resvg
     status: generated
   - id: infographic-suite
     source: media/source/infographics/README.md
     output: media/exports/infographic-*.svg
     alt: Eight accessible editorial explainers for ontology semantics, evidence, governance, life-science annotation, and consulting workflows.
+    caption: Teaching infographic suite.
     lesson: docs/learn/infographics.md
+    provenance: Original repository artwork and code.
+    review_status: inspected-with-resvg
     status: generated
+  - id: mobile-infographic-suite
+    source: scripts/render_mobile_infographics.py
+    output: media/exports/mobile-*.svg
+    alt: Portrait teaching compositions designed for a 390 pixel viewport.
+    caption: Portrait teaching compositions designed for 390px.
+    lesson: docs/learn/infographics.md
+    provenance: Original repository artwork and code.
+    review_status: inspected-with-resvg
+    status: generated
+  - id: mobile-consulting-claim-to-source
+    source: scripts/render_mobile_infographics.py
+    output: media/exports/mobile-consulting-claim-to-source.svg
+    caption: Portrait evidence trace from claim to source span and decision.
+    alt: Mobile composition showing claim, source, span, path, and reviewer decision.
+    lesson: docs/learn/infographics.md
+    provenance: Original repository artwork and code.
+    review_status: inspected-with-resvg
+  - id: mobile-consulting-identity-crosswalk
+    source: scripts/render_mobile_infographics.py
+    output: media/exports/mobile-consulting-identity-crosswalk.svg
+    caption: Portrait identity review queue with unresolved collision.
+    alt: Mobile composition showing source IDs, review queue, canonical mapping, and unresolved collision.
+    lesson: examples/business-projects/README.md
+    provenance: Original repository artwork and code.
+    review_status: inspected-with-resvg
+  - id: mobile-consulting-quality-impact
+    source: scripts/render_mobile_infographics.py
+    output: media/exports/mobile-consulting-quality-impact.svg
+    caption: Portrait change-impact review path.
+    alt: Mobile composition showing a controlled change and its downstream review dependencies.
+    lesson: examples/quality-supply-impact/README.md
+    provenance: Original repository artwork and code.
+    review_status: inspected-with-resvg
   - id: consulting-visual-suite
     source: media/source/infographics/consulting-value-chain.yaml
     output: media/exports/consulting-*.svg
     alt: Consulting value-chain, evidence-room, and pilot-scorecard visuals for life-science advisory teams.
+    caption: Consulting value chain, evidence room, and pilot scorecard.
     lesson: docs/consulting/README.md
+    provenance: Original repository artwork and code.
+    review_status: inspected-with-resvg
     status: generated
+  - id: consulting-claim-to-source
+    source: media/source/infographics/consulting-claim-to-source.yaml
+    output: media/exports/consulting-claim-to-source.svg
+    caption: Claim, source record, exact span, graph path, and review decision.
+    alt: A five-stage evidence trace from a claim to a source and reviewed decision.
+    lesson: docs/learn/infographics.md
+    provenance: Original repository artwork and code.
+    review_status: inspected-with-resvg
+  - id: consulting-identity-crosswalk
+    source: media/source/infographics/consulting-identity-crosswalk.yaml
+    output: media/exports/consulting-identity-crosswalk.svg
+    caption: Approved identity mapping with a visible collision queue.
+    alt: Source records flow through a review queue to a canonical identity or unresolved state.
+    lesson: examples/business-projects/README.md
+    provenance: Original repository artwork and code.
+    review_status: inspected-with-resvg
+  - id: consulting-quality-impact
+    source: media/source/infographics/consulting-quality-impact.yaml
+    output: media/exports/consulting-quality-impact.svg
+    caption: Quality and supply dependencies from a controlled change.
+    alt: A controlled change fans out to product, supplier, process, site, material, and filing review.
+    lesson: examples/quality-supply-impact/README.md
+    provenance: Original repository artwork and code.
+    review_status: inspected-with-resvg
+  - id: ontology-history-timeline
+    source: scripts/render_history_timeline.py
+    output: media/exports/ontology-history-timeline.svg
+    caption: Four-lane sourced history of ontology across business, life science, standards, and AI.
+    alt: A four-lane timeline of sourced ontology milestones.
+    lesson: docs/history/timeline.md
+    provenance: Original repository artwork and cited public references.
+    review_status: inspected-with-resvg
   - id: consulting-model
     source: examples/consulting-evidence-room/model.mmd
     output: media/exports/consulting-model.svg
     alt: Asset claims connect to evidence, sources and indications in the consulting pack.
+    caption: Class-level consulting evidence-room model.
     lesson: examples/consulting-evidence-room/README.md
+    provenance: Original repository artwork and code.
+    review_status: inspected-with-resvg
     status: generated
   - id: ontology-workshop-hero
     source: media/source/illustrations/README.md
     output: media/source/illustrations/ontology-workshop-hero.png
     alt: Life-science consultants and scientists connect evidence cards into a knowledge graph during a workshop.
+    caption: Workshop illustration for evidence-centered ontology design.
     lesson: README.md
+    provenance: Original generated illustration.
+    review_status: reviewed
     status: generated-original
   - id: evidence-reconciliation-studio
     source: media/source/illustrations/README.md
     output: media/source/illustrations/evidence-reconciliation-studio.png
     alt: A consultant reconciles uncertain business records while an accepted evidence graph emerges.
+    caption: Identity and evidence reconciliation illustration.
     lesson: media/gallery.md
+    provenance: Original generated illustration.
+    review_status: reviewed
     status: generated-original

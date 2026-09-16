@@ -1,0 +1,6 @@
+PREFIX ex: <https://ontology-starterkit.dev/quality-supply/>
+SELECT DISTINCT ?product ?site ?supplier ?material ?process ?method ?filing WHERE {
+  ?review a ex:ImpactReview ; ex:affects ?product .
+  ?product ex:locatedAt ?site ; ex:uses ?material ; ex:usesProcess ?process ; ex:usesMethod ?method ; ex:hasFiling ?filing .
+  ?supplier ex:providedBy ?material .
+}

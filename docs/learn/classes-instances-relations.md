@@ -17,3 +17,7 @@ print(run_named_query(pack, "manager"))
 ```
 
 Expected result contains Maya Chen. Change the relation or remove it and observe that the query becomes empty; an empty answer is an unknown in this dataset, not proof that no manager exists.
+
+## Try, break, explain
+
+Run `python -m ontology_starterkit.cli query examples/hello-ontology manager` and inspect the `manager` binding. Break the relation by loading `data/invalid/bad-relation.ttl` through `run_named_query`; the result is empty or the fixture fails validation because the object is not a `Team`. The query tests a relationship between instances; it does not prove that the labels are unique in a source system.

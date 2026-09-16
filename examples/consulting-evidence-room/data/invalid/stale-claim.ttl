@@ -1,0 +1,4 @@
+@prefix ex: <https://ontology-starterkit.dev/consulting/> .
+ex:AssetA a ex:Asset ; ex:name "Fictional Asset A" ; ex:forIndication ex:IndicationA .
+ex:IndicationA a ex:Indication ; ex:name "Fictional indication A" .
+ex:ClaimStale a ex:Claim ; ex:about ex:AssetA ; ex:text "Claim with no dated review." ; ex:reviewState "stale" ; ex:reviewer "R. Singh" .

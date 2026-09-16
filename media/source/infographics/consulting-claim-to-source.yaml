@@ -1,0 +1,5 @@
+id: consulting-claim-to-source
+question: Can a reviewer follow one assertion back to the exact source span?
+audience: Life-science consulting and evidence-review teams
+claim: Missing source spans or graph paths keep a claim in the review queue.
+text_equivalent: docs/consulting/use-cases.md#2-asset-diligence

@@ -12,3 +12,7 @@ python -m ontology_starterkit.cli validate examples/hello-ontology
 ```
 
 The commands prove that a pack is discoverable and its declared paths exist. They do not prove the model fits a real organization.
+
+## Try, break, explain
+
+Run `python -m ontology_starterkit.cli packs` and then `python -m ontology_starterkit.cli validate examples/hello-ontology`; the second command prints a valid status. Deliberately run `python -m ontology_starterkit.cli validate examples/hello-ontology/data/invalid/missing-name.ttl`; it fails because the command expects a pack directory. To validate that fixture, call `validate_pack(load_pack(...), data_path=...)` from Python. A passing shape check still does not decide whether an ontology is the right product choice.

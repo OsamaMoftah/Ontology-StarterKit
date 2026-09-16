@@ -1,0 +1,8 @@
+-r core.in
+langchain-core>=1.1,<2
+langchain-openai>=1.4.1,<2
+langchain-neo4j>=0.8,<1
+neo4j>=6.2,<7
+python-dotenv>=1,<2
+mcp>=1,<2
+linkml-runtime>=1.8,<2

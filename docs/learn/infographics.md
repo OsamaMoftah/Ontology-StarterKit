@@ -28,3 +28,16 @@ The three consulting visuals add a value chain from strategy to market, a
 review room for supported/contested/unknown claims, and a pilot scorecard that
 shows hypothetical baseline and target values. These are teaching examples,
 not measured client results.
+
+Three additional consulting visuals make the review semantics concrete: [claim
+to source](../../media/exports/consulting-claim-to-source.svg) traces a source
+span and graph path; [identity crosswalk](../../media/exports/consulting-identity-crosswalk.svg)
+keeps collisions unresolved; [quality impact](../../media/exports/consulting-quality-impact.svg)
+separates suggested dependencies from an approved disposition. Each has a
+matching text exercise and editable YAML brief.
+
+Each lesson also has a dedicated portrait composition in `media/exports/mobile-*.svg`.
+The portrait files are designed for a 390px viewport and should be read with the
+text equivalent and the linked pack exercise. The YAML files under
+`media/source/infographics/` are editorial briefs; the Python renderers are the
+executable sources.

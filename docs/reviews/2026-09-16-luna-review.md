@@ -138,3 +138,38 @@ Do not move the published `v0.2.0` tag.
    quality/supply pack with domain review.
 5. Add locks, fresh-wheel acceptance, generated ontology reference, and the
    executable ROI scenarios. Keep new adapters demand-driven.
+
+## Implementation update from `70f1679`
+
+This table records the current branch evidence. “Partial” means the local
+contract is implemented but the original external or domain-review acceptance
+gate is still open.
+
+| ID | Status | Current evidence | Remaining gate |
+| --- | --- | --- | --- |
+| U01 | Partial | `src/ontology_starterkit/neo4j_queries.py` has allowlisted parameterized templates; generated Cypher remains opt-in in `graph_rag.py`. | Live Neo4j parity and database-enforced read-only account. |
+| U02 | Partial | `neo4j_runtime.py` and MCP calls enforce types, deadlines, row and byte limits; retries are bounded. | Server-side cancellation and worker accumulation benchmark on a supported Neo4j edition. |
+| U03 | Partial | `requirements/core.lock`, `requirements/optional.lock`, and `scripts/verify_wheel_install.py`; wheel query passed in a clean environment outside the checkout. | Full transitive, platform-specific lock regeneration. |
+| U04 | Implemented / verified | Manifest field, version, ID, question/query consistency checks and all five-pack validation pass. | Add schema-version policy when a second manifest format is introduced. |
+| U05 | Partial | Manager query, empty/unknown teaching cases, and identity review exercise are runnable. | Add a dedicated ambiguous manager fixture and reviewed expected answer. |
+| U06 | Implemented / verified | Target-coverage validation and negative fixtures for missing fields, stale, ambiguous, and conflicting records pass. | Expand migration-specific invalid graph assertions. |
+| U07 | Partial | Every beginner lesson now has a “Try, break, explain” section. | Re-run every prose command from a clean checkout on all supported Python versions. |
+| U08 | Partial | 14 dedicated portrait SVGs, six consulting compositions, editable briefs, and manifest entries are generated deterministically. | Pixel-level desktop/mobile inspection in a renderer with fonts available. |
+| U09 | Implemented / verified | `identity-reconciliation.yaml` and `reconcile_business_ids.py` preserve IDs, decisions, reviewer/date/version, idempotence, collisions, and rollback. | Domain-owner review of the synthetic policy. |
+| U10 | Partial | External GO/ECO/NCBITaxon identifier shapes, version/retrieval metadata, taxon/evidence/review queries, and negative fixtures pass. | Separate scientific review of term mappings and evidence-code use. |
+| U11 | Partial | Seed imports preserve literal datatype/language and now remove stale scoped relationships; Compose starts and health-checks. | Community image cannot grant a database reader role; Enterprise or equivalent access-control and live parity run remains blocked. |
+| U12 | Partial | Answer records now carry assertion IDs, graph paths, source records/spans, data versions, and separate support flags; unrelated paths abstain. | Source-document span verification and contradiction scoring over a reviewed evaluation set. |
+| U13 | Partial | Sourced four-lane history page and generated timeline SVG are present. | Individual historical citations should be reviewed by an external editor. |
+| U14 | Implemented / verified | `roi.py`, `calculate_roi.py`, scenario fixture, zero-rate/no-payback and duplicate-benefit checks pass. | Replace hypothetical inputs with owner-approved measures for any real business case. |
+| U15 | Implemented / verified | `docs/migrations/0.2-to-0.3.yaml` and `check_migration.py` demonstrate compatible/breaking paths and replacements; `v0.2.0` unchanged. | Add release-artifact comparison on the next tagged release. |
+| U16 | Partial | Issue form/config, citation/reporting guidance, and clean wheel check added. | Fresh template clone under a different repository name and hosted GitHub template settings. |
+| U17 | Partial | Just targets now match CI validation/visual tasks; Compose seed/verify/down documented. | Full optional lock and service acceptance on CI. |
+| U18 | Implemented / verified | Review queue, explicit approve/reject states, reversible/idempotent application, and collision fixtures pass. | Domain-specific adjudication policy remains project-owned. |
+| U19 | Partial | Generated references for all five canonical ontologies and Chowlk handoff guide are committed. | Execute a real Chowlk conversion and semantic diff review. |
+| U20 | Partial | LinkML identifiers, required slots, cardinalities, enums, and valid/invalid fixture are covered by runtime tests. | Install the full generator toolchain and compare generated schema behavior. |
+| U21 | Implemented / verified | Fixed-passage extraction returns exact spans and metadata; candidate RDF passes SHACL only as a reviewable diff. | Optional live-model runner and domain reviewer for extracted mappings. |
+| U22 | Partial | Real MCP stdio tests cover oversized responses, timeout boundary, malformed args, unknown query, and symlink escape. | Process-level isolation for expensive local queries and live database cancellation. |
+| U23 | Deferred | `docs/reference/adapter-decision.md` defines demand, owner, and shared-contract gates; no integration was added without a maintainer. | Named user demand and maintenance owner. |
+| U24 | Partial | All 12 engagement cards include sponsor, users, decision, sources, slice, deliverable, measures, review, and boundaries. | Split the combined YAML into the seven named operational templates and add client-ready sample records. |
+| U25 | Implemented / verified | Consulting pack now has supported/unknown/conflicting/stale states, review queue, source dates/versions/spans, negative fixtures, and reproducible decision packet. | Domain review of the synthetic evidence policy. |
+| U26 | Implemented / awaiting domain review | Quality/supply pack covers products, sites, suppliers, materials, processes, methods, filings, changes, dependencies, stale and ambiguous states, with reproducible expected impact queries. | Domain-expert benchmark review is not available in this checkout. |

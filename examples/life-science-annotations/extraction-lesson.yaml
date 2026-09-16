@@ -1,0 +1,5 @@
+source_id: passage-001
+text: "Synthetic protein A participates in Synthetic stress response."
+allowed_terms:
+  "Synthetic protein A": "GeneProduct"
+  "Synthetic stress response": "BiologicalProcess"

@@ -1,0 +1,5 @@
+id: consulting-quality-impact
+question: What must a quality owner review after one controlled change?
+audience: Quality, manufacturing, and supply consulting teams
+claim: A suggested dependency impact is separate from an approved disposition.
+text_equivalent: examples/quality-supply-impact/README.md

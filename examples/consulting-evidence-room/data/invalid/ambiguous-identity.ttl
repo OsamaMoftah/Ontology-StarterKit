@@ -1,0 +1,5 @@
+@prefix ex: <https://ontology-starterkit.dev/consulting/> .
+ex:AssetA a ex:Asset ; ex:name "Fictional asset" ; ex:forIndication ex:IndicationA .
+ex:AssetB a ex:Asset ; ex:name "Fictional asset" ; ex:forIndication ex:IndicationA .
+ex:IndicationA a ex:Indication ; ex:name "Fictional indication A" .
+ex:ClaimAmbiguous a ex:Claim ; ex:about ex:AssetA ; ex:text "Two source records share one label." ; ex:reviewState "unknown" ; ex:reviewer "R. Singh" ; ex:reviewedOn "2026-09-03" .

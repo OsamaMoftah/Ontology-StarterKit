@@ -1,4 +1,5 @@
-from ontology_starterkit.evidence import build_answer
+from rdflib import Graph, URIRef
+from ontology_starterkit.evidence import build_answer, build_verified_answer
 
 
 def test_build_answer_includes_only_declared_evidence_ids():
@@ -41,3 +42,16 @@ def test_build_answer_requires_supporting_assertion_paths_when_provided():
     assert result.support_paths == (("ex:Maya", "ex:name"),)
     abstained = build_answer("Maya Chen", ["ex:Maya"], {"ex:Maya"}, "demo@1", evidence_paths={})
     assert abstained.status == "insufficient-evidence"
+
+
+def test_verified_answer_requires_actual_graph_paths():
+    graph = Graph()
+    triple = (URIRef("urn:maya"), URIRef("urn:name"), URIRef("urn:maya-name"))
+    graph.add(triple)
+    result = build_verified_answer("Maya", ["claim-1"], graph, {"claim-1": (triple,)}, "demo@1", source_records={"claim-1": "crm-7"}, source_spans={"claim-1": "p1:4-8"})
+    assert result.status == "supported"
+    assert result.graph_path_valid is True
+    assert result.source_records == (("claim-1", "crm-7"),)
+    assert result.source_support == "reviewed"
+    missing = build_verified_answer("Maya", ["claim-1"], graph, {"claim-1": ()}, "demo@1")
+    assert missing.status == "insufficient-evidence"

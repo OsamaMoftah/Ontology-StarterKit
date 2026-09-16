@@ -1,5 +1,12 @@
 # Changelog
 
+## Unreleased — remaining upgrade implementation
+
+- Added bounded named Neo4j query templates, MCP output/deadline limits, real-protocol boundary tests, and replace-style seed deltas.
+- Added reviewable business identity reconciliation, evidence-path/source metadata, deterministic extraction with SHACL-gated diffs, executable ROI scenarios, migration checks, generated references, and a synthetic quality/supply impact pack.
+- Expanded life-science annotations with pinned identifier metadata, taxon/evidence/review states, and negative fixtures; expanded consulting evidence states and decision packets.
+- Added dedicated mobile visual exports, engagement cards, LinkML/adapter guidance, issue forms, lock files, and clean-install documentation.
+
 ## Unreleased — independent review corrections
 
 - Fix configured MCP paths, symlink escapes, local SPARQL policy, module CLI,

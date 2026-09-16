@@ -13,3 +13,10 @@ ex:fromSource a owl:ObjectProperty ; rdfs:domain ex:EvidenceRecord ; rdfs:range 
 ex:forIndication a owl:ObjectProperty ; rdfs:domain ex:Asset ; rdfs:range ex:Indication .
 ex:name a owl:DatatypeProperty ; rdfs:range rdfs:Literal .
 ex:text a owl:DatatypeProperty ; rdfs:range rdfs:Literal .
+ex:reviewState a owl:DatatypeProperty ; rdfs:range rdfs:Literal .
+ex:reviewer a owl:DatatypeProperty ; rdfs:range rdfs:Literal .
+ex:reviewedOn a owl:DatatypeProperty ; rdfs:range rdfs:Literal .
+ex:sourceVersion a owl:DatatypeProperty ; rdfs:range rdfs:Literal .
+ex:sourceSpan a owl:DatatypeProperty ; rdfs:range rdfs:Literal .
+ex:publishedOn a owl:DatatypeProperty ; rdfs:range rdfs:Literal .
+ex:retrievedOn a owl:DatatypeProperty ; rdfs:range rdfs:Literal .

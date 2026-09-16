@@ -1,0 +1,3 @@
+@prefix ex: <https://ontology-starterkit.dev/quality-supply/> .
+ex:Change1 a ex:Change ; ex:name "Incomplete change" ; ex:affects ex:ProductA .
+ex:ProductA a ex:Product ; ex:name "Synthetic Product A" .

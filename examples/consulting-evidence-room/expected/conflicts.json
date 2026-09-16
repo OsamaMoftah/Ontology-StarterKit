@@ -1,0 +1,4 @@
+[
+  {"claim": "https://ontology-starterkit.dev/consulting/Claim3", "text": "Asset A's target is validated by every source.", "reviewState": "conflicting"},
+  {"claim": "https://ontology-starterkit.dev/consulting/Claim4", "text": "Asset A has a current launch date.", "reviewState": "stale"}
+]

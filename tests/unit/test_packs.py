@@ -25,3 +25,49 @@ def test_load_pack_rejects_path_escape(tmp_path):
     (pack / "manifest.yaml").write_text("id: demo\nontology: ../outside.ttl\n")
     with pytest.raises(PackError, match="path"):
         load_pack(pack)
+
+
+def test_load_pack_requires_supported_version(tmp_path):
+    pack = tmp_path / "pack"
+    pack.mkdir()
+    (pack / "manifest.yaml").write_text(
+        "id: demo\nversion: 9.0.0\nontology: ontology.ttl\nshapes: shapes.ttl\ndata: data.ttl\n"
+        "questions: questions.yaml\nqueries: {one: queries/one.rq}\nexpected: {one: expected/one.json}\n"
+    )
+    for name in ("ontology.ttl", "shapes.ttl", "data.ttl", "questions.yaml"):
+        (pack / name).write_text("")
+    (pack / "queries").mkdir()
+    (pack / "expected").mkdir()
+    (pack / "queries/one.rq").write_text("SELECT * WHERE { ?s ?p ?o }")
+    (pack / "expected/one.json").write_text("[]")
+    with pytest.raises(PackError, match="version"):
+        load_pack(pack)
+
+
+def test_load_pack_rejects_query_without_expected_fixture(tmp_path):
+    pack = tmp_path / "pack"
+    pack.mkdir()
+    (pack / "manifest.yaml").write_text(
+        "id: demo\nversion: 0.2.0\nontology: ontology.ttl\nshapes: shapes.ttl\ndata: data.ttl\n"
+        "questions: questions.yaml\nqueries: {one: queries/one.rq}\nexpected: {}\n"
+    )
+    for name in ("ontology.ttl", "shapes.ttl", "data.ttl", "questions.yaml"):
+        (pack / name).write_text("")
+    (pack / "queries").mkdir()
+    (pack / "queries/one.rq").write_text("SELECT * WHERE { ?s ?p ?o }")
+    with pytest.raises(PackError, match="expected"):
+        load_pack(pack)
+
+
+def test_validate_pack_rejects_unrelated_graph(tmp_path):
+    from ontology_starterkit.validation import validate_pack
+
+    source = ROOT / "examples/hello-ontology"
+    pack = tmp_path / "hello"
+    import shutil
+    shutil.copytree(source, pack)
+    data = pack / "data/unrelated.ttl"
+    data.write_text("@prefix ex: <urn:other:> . ex:x ex:p ex:y .\n")
+    report = validate_pack(load_pack(pack), data_path="data/unrelated.ttl")
+    assert report.conforms is False
+    assert any("target" in message.lower() for message in report.messages)

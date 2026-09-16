@@ -1,0 +1,5 @@
+id: consulting-identity-crosswalk
+question: Which source records may share one canonical identity?
+audience: Master-data and data-governance teams
+claim: Exact aliases can be approved; collisions remain unresolved and reversible.
+text_equivalent: examples/business-projects/README.md#identity-review-exercise

@@ -13,3 +13,9 @@
 - id: references
   question: Which references support an annotation?
   query: queries/references.rq
+- id: species
+  question: Which taxon and evidence code qualify the annotation?
+  query: queries/species.rq
+- id: review-state
+  question: Which annotations have been reviewed versus held for review?
+  query: queries/review-state.rq

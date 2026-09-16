@@ -143,9 +143,32 @@ def scorecard() -> None:
     finish(p, "consulting-pilot-scorecard.svg")
 
 
+def claim_trace() -> None:
+    p = base("Claim to source", "consulting / evidence chain", "Can a reviewer follow one assertion back to the exact source span?", "A claim is publishable only when its source record, exact span, graph path, and review decision remain connected.")
+    stages = [(80, "Claim", "C-014\nasset target", CORAL), (360, "Source", "packet-v2", COBALT), (640, "Span", "p. 2, ¶3", LAVENDER), (920, "Graph path", "Asset → Claim\n→ Evidence", LIME), (1200, "Decision", "supported\nR. Singh", COBALT)]
+    for x, title, body, color in stages:
+        p.append(card(x, 360, 190, 180, title, body, color))
+    for x in (270, 550, 830, 1110):
+        p.append(f'<path d="M{x} 450 H{x + 72}" stroke="{CORAL}" stroke-width="6" marker-end="url(#arrow)"/>')
+    p += [card(250, 635, 900, 100, "Fail closed", "Missing span, path, or reviewer → keep the claim in the queue", CORAL), '<defs><marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="4" orient="auto"><path d="M0,0 L0,8 L8,4z" fill="#F27A5E"/></marker></defs>']
+    finish(p, "consulting-claim-to-source.svg")
+
+
+def identity_crosswalk() -> None:
+    p = base("Identity crosswalk", "consulting / reconciliation", "Which source records may share one canonical identity?", "Exact aliases can be approved; collisions and near matches stay visible in a review queue with reversible decisions.")
+    p += [card(80, 290, 320, 180, "CRM-001", "Aurora Team\nexact alias", CORAL), card(80, 520, 320, 180, "LEGACY-003", "Aurora\ncollision", CORAL), card(540, 400, 320, 180, "Review queue", "approve · reject\nambiguous", LAVENDER), card(1000, 290, 320, 180, "Canonical", "TeamAurora\nversion v1", LIME), card(1000, 520, 320, 180, "Unresolved", "no sameAs\nno merge", COBALT), '<path d="M400 380 C465 380 475 430 530 440" fill="none" stroke="#2C64F5" stroke-width="6" marker-end="url(#arrow)"/><path d="M400 610 C465 610 475 520 530 500" fill="none" stroke="#F27A5E" stroke-width="6" marker-end="url(#arrow)"/><path d="M870 440 C930 430 940 380 990 380" fill="none" stroke="#2C64F5" stroke-width="6" marker-end="url(#arrow)"/><path d="M870 500 C930 520 940 610 990 610" fill="none" stroke="#F27A5E" stroke-width="6" marker-end="url(#arrow)"/>', '<defs><marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="4" orient="auto"><path d="M0,0 L0,8 L8,4z" fill="#2C64F5"/></marker></defs>']
+    finish(p, "consulting-identity-crosswalk.svg")
+
+
+def quality_impact() -> None:
+    p = base("Change impact map", "consulting / quality + supply", "What must a quality owner review after one controlled change?", "A change control fans out through products, sites, suppliers, materials, processes, methods, and filings before a disposition is approved.")
+    p += [node(180, 450, "Change\ncontrol", CORAL, 82), node(500, 300, "Product", LIME, 68), node(500, 600, "Supplier", COBALT, 68), node(820, 300, "Process +\nmethod", LAVENDER, 74), node(820, 600, "Site +\nmaterial", LAVENDER, 74), node(1140, 450, "Filing\nreview", CORAL, 76), '<path d="M255 430 Q370 300 430 300" fill="none" stroke="#2C64F5" stroke-width="5" marker-end="url(#arrow)"/><path d="M255 470 Q370 600 430 600" fill="none" stroke="#2C64F5" stroke-width="5" marker-end="url(#arrow)"/><path d="M570 300 H745" stroke="#2C64F5" stroke-width="5" marker-end="url(#arrow)"/><path d="M570 600 H745" stroke="#2C64F5" stroke-width="5" marker-end="url(#arrow)"/><path d="M895 300 Q1020 300 1070 430" fill="none" stroke="#2C64F5" stroke-width="5" marker-end="url(#arrow)"/><path d="M895 600 Q1020 600 1070 470" fill="none" stroke="#2C64F5" stroke-width="5" marker-end="url(#arrow)"/>', card(315, 735, 770, 80, "Suggested impact ≠ approved disposition", "Review owner records evidence, decision, and effective date", CORAL), '<defs><marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="4" orient="auto"><path d="M0,0 L0,8 L8,4z" fill="#2C64F5"/></marker></defs>']
+    finish(p, "consulting-quality-impact.svg")
+
+
 def main() -> None:
     OUT.mkdir(parents=True, exist_ok=True)
-    for render in (one_word, graph_layers, owl_shacl, question_evidence, unknown_false, reuse, life_science, migration, consulting, evidence_room, scorecard):
+    for render in (one_word, graph_layers, owl_shacl, question_evidence, unknown_false, reuse, life_science, migration, consulting, evidence_room, scorecard, claim_trace, identity_crosswalk, quality_impact):
         render()
 
 
