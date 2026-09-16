@@ -1,4 +1,4 @@
-from scripts.check_prose import scan_text, scan_repo
+from scripts.check_prose import scan_text
 
 
 def test_scan_text_reports_high_signal_phrase():
@@ -6,5 +6,5 @@ def test_scan_text_reports_high_signal_phrase():
     assert findings[0].term == "practical"
 
 
-def test_current_public_docs_pass_the_prose_guard():
-    assert scan_repo(".") == []
+def test_clear_instruction_has_no_findings():
+    assert scan_text("README.md", "Run ontokit validate examples/hello-ontology.") == []

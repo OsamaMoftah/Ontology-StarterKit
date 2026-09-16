@@ -71,7 +71,8 @@ ROI(%) = (((V_total * T) - (C_upfront + (C_ongoing * T))) / (C_upfront + (C_ongo
 ### Payback period in months (from launch)
 
 ```text
-Payback = C_upfront / B_net
+Payback = C_upfront / B_net, when B_net > 0
+No payback under these assumptions when B_net <= 0
 ```
 
 Payback period is a single fixed value determined by `C_upfront` and `B_net` — it does not change with the horizon `T` you choose to report ROI over. Do not list a different payback figure per column in a summary table.
@@ -81,7 +82,8 @@ Payback period is a single fixed value determined by `C_upfront` and `B_net` —
 For a more finance-oriented model, discount post-launch monthly net benefits (`B_net`, treated as a flat monthly annuity) against `C_upfront` using your standard annual discount rate `r`, converted to a monthly rate `rm = (1 + r)^(1/12) - 1`:
 
 ```text
-NPV(T) = -C_upfront + B_net * (1 - (1 + rm)^-T) / rm
+NPV(T) = -C_upfront + B_net * (1 - (1 + rm)^-T) / rm, when rm != 0
+NPV(T) = -C_upfront + B_net * T, when rm = 0
 ```
 
 ## 5. Worked Example (Made-up Data)

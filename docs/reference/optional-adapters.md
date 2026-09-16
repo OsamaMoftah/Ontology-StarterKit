@@ -7,14 +7,16 @@ credentials.
 ## GraphRAG
 
 Install `pip install -e '.[graphrag]'` and follow the [KG-RAG guide](../../src/integrations/langchain/kg-rag/README.md).
-The example requires a Neo4j instance and an LLM key at runtime. Its validator
-accepts only read-only, bounded Cypher and the application still needs a
+The example requires a Neo4j instance and an LLM key at runtime. Its regex validator catches common unsafe patterns but does not prove a query
+is read-only or cheap. Treat this as an experimental example. It needs a
 least-privilege Neo4j user, network controls and production query monitoring.
 
 The pinned local service can be started and seeded with `just services-ready`
-and `just services-seed`. The seed helper writes lossless `RDFTerm` nodes and
+and `just services-seed`. The seed helper writes `RDFTerm` nodes and
 `TRIPLE` relationships, preserving URI resources, blank nodes, and literal
-datatype/language metadata. It refuses non-local URIs and never drops data.
+datatype/language metadata after RDFLib parsing. Blank nodes are canonicalized
+and scoped to the pack ID; changed graphs can leave old nodes behind. Live
+Neo4j parity is not yet verified. It refuses non-local URIs and never drops data.
 
 ## MCP
 
@@ -46,3 +48,12 @@ print(build_linkml_schema("hello", {"Person": ["name"]}))
 contract and reviewed alias resolution; it intentionally does not call an LLM
 or merge ambiguous entities. A production extractor must retain source spans,
 confidence, model/version metadata and an abstention path.
+
+Only reviewed, locally owned packs should be served. Named queries must be local
+SELECT queries; SERVICE, FROM, updates, and other result types are rejected.
+Query execution currently has no CPU or wall-clock sandbox. Path checks are
+not a defense against someone concurrently modifying the pack directory.
+
+`build_answer` checks citation membership and records supplied paths. Its
+`unverified` status means the text has not been checked for entailment or
+source support; a known entity ID alone cannot prove an answer.

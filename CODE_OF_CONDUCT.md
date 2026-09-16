@@ -2,12 +2,12 @@
 
 ## Our Commitment
 
-Be constructive. Assume good intent. Focus on the work.
+Contributors should be able to ask questions, disagree, and learn without harassment.
 
 ## Expected Behavior
 
 - Be respectful and constructive.
-- Assume good intent and give actionable feedback.
+- Explain unfamiliar terms to newcomers and give feedback they can act on.
 - Focus discussion on ideas, evidence, and implementation details.
 
 ## Unacceptable Behavior

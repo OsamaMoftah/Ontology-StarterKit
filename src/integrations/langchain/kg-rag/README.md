@@ -40,7 +40,7 @@ MAX_MATCH_CLAUSES=3
 ## Run
 
 ```bash
-python3 src/integrations/langchain/kg-rag/graph_rag.py --query "Who manages the team that works on the Alpha Project?"
+python3 src/integrations/langchain/kg-rag/graph_rag.py --allow-experimental-cypher --query "Who manages the team that works on the Alpha Project?"
 ```
 
 ## Security Notes
@@ -49,3 +49,11 @@ python3 src/integrations/langchain/kg-rag/graph_rag.py --query "Who manages the 
 - The example rejects procedures, writes, comments, unbounded paths, Cartesian patterns and other unsafe syntax before execution, but database permissions are still the primary safety control.
 - Query complexity and runtime controls are enforced through query-length, MATCH-count, timeout, and per-run call caps.
 - Never commit your `.env` file.
+
+## Review limits
+
+Generated Cypher remains experimental. Regex checks are not a security boundary;
+use a database account that cannot write. The current helper does not bound
+result bytes or prove server-side cancellation. A client timeout stops waiting,
+but a worker may continue. Do not expose this example to untrusted users.
+Use the offline `ontokit query` commands for the supported named-query path.

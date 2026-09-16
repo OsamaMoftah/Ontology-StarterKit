@@ -14,7 +14,7 @@
   question: Which evidence records have a source?
   query: queries/sourced.rq
 - id: claim-status
-  question: Which claims are supported or unsupported?
+  question: Which claims have an evidence link, and which have none?
   query: queries/claim-status.rq
 - id: evidence-room
   question: Which claim paths reach a source?

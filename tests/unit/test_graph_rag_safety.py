@@ -51,3 +51,15 @@ def test_llm_timeout_returns_without_waiting_for_worker():
     with pytest.raises(TimeoutError):
         module.invoke_llm_with_timeout(Slow(), "x", 0.01, module.RuntimeGuards(1, 1), "run")
     assert time.monotonic() - start < 0.1
+
+
+def test_generated_cypher_requires_explicit_experimental_opt_in(monkeypatch):
+    monkeypatch.setattr('sys.argv', ['graph_rag.py', '--query', 'Who owns Alpha?'])
+    with pytest.raises(SystemExit) as exc:
+        module.parse_args()
+    assert exc.value.code == 2
+
+
+def test_llm_transport_retries_are_disabled():
+    llm = module.build_llm('example-model', 'test-key', 2)
+    assert llm.max_retries == 0

@@ -33,7 +33,7 @@ assets:
   - id: infographic-suite
     source: media/source/infographics/README.md
     output: media/exports/infographic-*.svg
-    alt: Eleven accessible editorial explainers for ontology semantics, evidence, governance, life-science annotation, and consulting workflows.
+    alt: Eight accessible editorial explainers for ontology semantics, evidence, governance, life-science annotation, and consulting workflows.
     lesson: docs/learn/infographics.md
     status: generated
   - id: consulting-visual-suite

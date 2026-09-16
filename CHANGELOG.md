@@ -1,5 +1,16 @@
 # Changelog
 
+## Unreleased — independent review corrections
+
+- Fix configured MCP paths, symlink escapes, local SPARQL policy, module CLI,
+  duplicate-row evaluations, LinkML namespaces, and blank-node import identity.
+- Mark citation records unverified and require explicit experimental Cypher opt-in.
+- Correct ontology teaching diagrams, wrap SVG text, and make prose checks advisory.
+- Fix relationship queries and add protocol/regression coverage; update Actions
+  and optional integration dependencies.
+- Record original-plan gaps in the independent review; no new release tag.
+
+
 ## Versioning Policy
 
 Ontology StarterKit follows Semantic Versioning:

@@ -9,12 +9,14 @@ lesson for screen readers and readers working without images.
    into a reusable contract.
 2. **Glossary to graph.** A glossary names a concept. An ontology adds the
    relations. A knowledge graph binds those relations to governed instances.
-3. **OWL versus SHACL.** Semantics can derive a relationship. SHACL asks
+3. **OWL versus SHACL.** Manager is a subclass of Person: Maya being a Manager entails
+   Maya being a Person. SHACL separately asks
    whether the data has the fields required for publication.
 4. **Question to evidence.** A competency question becomes a named query,
    rows, assertion paths, and a versioned answer. Every step is inspectable.
-5. **Unknown versus false.** An absent owner is unknown. An explicit inactive
-   status is a negative fact. A safe assistant keeps those states separate.
+5. **Unknown versus false.** An absent active flag is unknown. An explicit boolean
+   `active false` records a value for that property. It does not make every
+   claim about the project false.
 6. **Reuse before mint.** Search existing terms, inspect scope and license,
    map differences, then create a new term only when reuse is unsafe.
 7. **Life-science evidence.** A gene-product annotation needs its evidence
@@ -24,4 +26,5 @@ lesson for screen readers and readers working without images.
 
 The three consulting visuals add a value chain from strategy to market, a
 review room for supported/contested/unknown claims, and a pilot scorecard that
-shows baseline, target, evidence coverage, and a boundary statement.
+shows hypothetical baseline and target values. These are teaching examples,
+not measured client results.

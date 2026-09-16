@@ -1,9 +1,8 @@
 """Find a small set of high-signal AI-writing patterns in public docs.
 
 This is a style guard, not a grammar checker. The default mode prints findings
-and exits successfully so contributors can review context. CI uses ``--strict``
-against the small set of landing and decision documents where these phrases
-hide marketing claims most often.
+and exits successfully so contributors can review context. CI is advisory;
+these words are signals to inspect a sentence, not forbidden vocabulary.
 """
 
 from __future__ import annotations
@@ -26,7 +25,6 @@ TARGETS = (
     Path("docs/for-startups/30-day-sprint.md"),
     Path("docs/governance/release-process.md"),
     Path("src/integrations/langchain/kg-rag/README.md"),
-    Path("src/integrations/langchain/kg-rag/graph_rag.py"),
 )
 
 PATTERNS = {
@@ -54,7 +52,18 @@ class Finding:
 
 def scan_text(path: str | Path, text: str) -> list[Finding]:
     findings: list[Finding] = []
+    fence = ""
     for line_number, line in enumerate(text.splitlines(), 1):
+        stripped = line.lstrip()
+        if stripped.startswith(("```", "~~~")):
+            marker = stripped[:3]
+            if not fence:
+                fence = marker
+            elif marker == fence:
+                fence = ""
+            continue
+        if fence:
+            continue
         for term, pattern in PATTERNS.items():
             if pattern.search(line):
                 findings.append(Finding(str(path), line_number, term, line.strip()))

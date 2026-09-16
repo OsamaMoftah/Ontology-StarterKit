@@ -18,10 +18,15 @@ Summarize the ontology, graph, and AI architecture in plain language.
 
 ## Expected Outcomes
 
-- LLM answers grounded in verified graph relationships, with less manual review.
-- A shared ontology across teams, so each feature does not need a new schema map.
-- Answers that trace to graph paths and source records.
-- Ontology changes checked by SHACL in CI, so schema drift is visible.
+Treat outcomes as hypotheses until the pilot measures them. Name the person
+who will collect each baseline and make the go/no-go decision.
+
+| Outcome | Baseline | Pilot target | Evidence / owner |
+| :--- | :--- | :--- | :--- |
+| Time to review an answer | | | Timed sample / |
+| Answers with a verified source path | | | Reviewed answer set / |
+| Mapping changes per new data source | | | Change log / |
+| Invalid records caught before publication | | | SHACL reports / |
 
 ## Financial Snapshot
 

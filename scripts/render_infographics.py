@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import html
+import textwrap
 from pathlib import Path
 
 
@@ -20,14 +21,22 @@ def text(x: float, y: float, value: str, *, size: int = 18, fill: str = INK, wei
 
 
 def card(x: float, y: float, w: float, h: float, title: str, body: str, accent: str = COBALT) -> str:
-    return f'<rect x="{x}" y="{y}" width="{w}" height="{h}" rx="24" fill="#FFFFFF" stroke="{accent}" stroke-width="3"/><rect x="{x}" y="{y}" width="10" height="{h}" rx="5" fill="{accent}"/>{text(x + 30, y + 44, title, size=22, weight=700)}{text(x + 30, y + 78, body, size=16, fill=MUTED)}'
+    title_lines = textwrap.wrap(title, max(12, int((w - 60) / 12)))
+    body_lines = [line for paragraph in body.split("\n") for line in (textwrap.wrap(paragraph, max(12, int((w - 60) / 8))) or [""])]
+    parts = [f'<rect x="{x}" y="{y}" width="{w}" height="{h}" rx="24" fill="#FFFFFF" stroke="{accent}" stroke-width="3"/><rect x="{x}" y="{y}" width="10" height="{h}" rx="5" fill="{accent}"/>']
+    for index, line in enumerate(title_lines):
+        parts.append(text(x + 30, y + 40 + index * 26, line, size=22, weight=700))
+    start = y + 44 + len(title_lines) * 26
+    for index, line in enumerate(body_lines):
+        parts.append(text(x + 30, start + index * 22, line, size=16, fill=MUTED))
+    return "".join(parts)
 
 
 def node(cx: float, cy: float, label: str, color: str, radius: float = 62) -> str:
     parts = [f'<circle cx="{cx}" cy="{cy}" r="{radius}" fill="{color}" stroke="{INK}" stroke-width="4"/>']
     lines = label.split("\n")
     for i, line in enumerate(lines):
-        parts.append(text(cx, cy + (i - (len(lines) - 1) / 2) * 22 + 7, line, size=18, weight=700, anchor="middle", fill=INK))
+        parts.append(text(cx, cy + (i - (len(lines) - 1) / 2) * 22 + 7, line, size=18, weight=700, anchor="middle", fill="#FFFFFF" if color == COBALT else INK))
     return "".join(parts)
 
 
@@ -59,14 +68,14 @@ def graph_layers() -> None:
 
 
 def owl_shacl() -> None:
-    p = base("Inference is not validation", "03 / semantics", "When should a graph infer, and when should it stop?", "OWL-style semantics can derive a Manager relationship; SHACL validation flags a missing name and blocks unsafe publication.")
-    p += [text(110, 285, "OWL / meaning", size=25, fill=COBALT, weight=800), text(790, 285, "SHACL / quality gate", size=25, fill=CORAL, weight=800), node(250, 440, "Person", LAVENDER), node(510, 440, "Manager", LIME), node(930, 410, "Person", LAVENDER), node(1190, 410, "name?", CORAL), '<path d="M315 440 H445" stroke="#2C64F5" stroke-width="6" marker-end="url(#arrow)"/><path d="M995 410 H1125" stroke="#F27A5E" stroke-width="6" marker-end="url(#arrow)"/>', text(380, 405, "subClassOf", size=16, fill=COBALT, weight=700, anchor="middle"), text(1060, 375, "minCount 1", size=16, fill=CORAL, weight=700, anchor="middle"), card(120, 610, 560, 110, "Derived", "A Person can be treated as a Manager", LIME), card(720, 610, 560, 110, "Rejected", "Missing name → fix before release", CORAL), '<defs><marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="4" orient="auto"><path d="M0,0 L0,8 L8,4z" fill="#2C64F5"/></marker></defs>']
+    p = base("Inference is not validation", "03 / semantics", "When should a graph infer, and when should it stop?", "A Manager is a Person. Given Maya is a Manager, RDFS/OWL semantics entail Maya is a Person. SHACL separately checks a required name.")
+    p += [text(110, 285, "OWL / meaning", size=25, fill=COBALT, weight=800), text(790, 285, "SHACL / quality gate", size=25, fill=CORAL, weight=800), node(250, 440, "Manager", LIME), node(510, 440, "Person", LAVENDER), node(930, 410, "Maya\nPerson", LAVENDER), node(1190, 410, "name?", CORAL), '<path d="M315 440 H445" stroke="#2C64F5" stroke-width="6" marker-end="url(#arrow)"/><path d="M995 410 H1125" stroke="#F27A5E" stroke-width="6" marker-end="url(#arrow)"/>', text(380, 405, "subClassOf", size=16, fill=COBALT, weight=700, anchor="middle"), text(1060, 375, "minCount 1", size=16, fill=CORAL, weight=700, anchor="middle"), card(120, 610, 560, 110, "Derived", "Maya is a Manager → Maya is a Person", LIME), card(720, 610, 560, 110, "Rejected", "Missing name → fix before release", CORAL), '<defs><marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="4" orient="auto"><path d="M0,0 L0,8 L8,4z" fill="#2C64F5"/></marker></defs>']
     finish(p, "infographic-owl-versus-shacl.svg")
 
 
 def question_evidence() -> None:
     p = base("A question becomes a trace", "04 / evidence", "Can a reader see why the answer is safe?", "A competency question moves through a named query, retrieved rows, assertion paths, and a versioned answer with explicit limitations.")
-    stages = [(90, "Question", "Who manages Alpha?", CORAL), (350, "Named query", "manager.rq", COBALT), (610, "Rows", "Maya Chen", LAVENDER), (870, "Path", "Maya → manages → Aurora", LIME), (1130, "Answer", "Supported", COBALT)]
+    stages = [(90, "Question", "Who manages Alpha?", CORAL), (350, "Named query", "manager.rq", COBALT), (610, "Rows", "Maya Chen", LAVENDER), (870, "Path", "Maya → manages → Aurora", LIME), (1130, "Answer", "Check support", COBALT)]
     for x, title, body, color in stages:
         p.append(card(x, 350, 220, 180, title, body, color))
     for x in (310, 570, 830, 1090):
@@ -76,8 +85,8 @@ def question_evidence() -> None:
 
 
 def unknown_false() -> None:
-    p = base("Unknown is a useful answer", "05 / open world", "What is the difference between absent and false?", "Under an open-world assumption, a missing triple is unknown; an explicit inactive assertion is a negative fact that can support a decision.")
-    p += [text(120, 300, "No triple", size=26, fill=COBALT, weight=800), text(820, 300, "Explicit triple", size=26, fill=CORAL, weight=800), card(90, 350, 560, 190, "ex:ProjectAlpha  ?  ex:owner", "No owner assertion was retrieved", COBALT), card(750, 350, 560, 190, "ex:ProjectAlpha  ex:status  inactive", "A source asserted the status", CORAL), node(365, 675, "UNKNOWN", LAVENDER, 92), node(1035, 675, "FALSE /\nINACTIVE", CORAL, 92), text(365, 805, "Ask for evidence", size=18, fill="#B9C4D7", weight=700, anchor="middle"), text(1035, 805, "Act with provenance", size=18, fill="#B9C4D7", weight=700, anchor="middle")]
+    p = base("Unknown is a useful answer", "05 / open world", "What is the difference between absent and false?", "Under an open-world assumption, a missing triple is unknown; an explicit boolean false states a value for a specific property, subject to source review.")
+    p += [text(120, 300, "No triple", size=26, fill=COBALT, weight=800), text(820, 300, "Explicit triple", size=26, fill=CORAL, weight=800), card(90, 350, 560, 190, "ex:ProjectAlpha  ex:active  ?", "No active value was retrieved", COBALT), card(750, 350, 560, 190, "ex:ProjectAlpha  ex:active  false", "An explicit boolean value for active", CORAL), node(365, 675, "UNKNOWN", LAVENDER, 92), node(1035, 675, "FALSE /\nACTIVE", CORAL, 92), text(365, 805, "Ask for evidence", size=18, fill="#B9C4D7", weight=700, anchor="middle"), text(1035, 805, "Act with provenance", size=18, fill="#B9C4D7", weight=700, anchor="middle")]
     finish(p, "infographic-unknown-versus-false.svg")
 
 
@@ -88,13 +97,20 @@ def reuse() -> None:
         p.append(node(x, y, label, color, 70))
     for x1, y1, x2, y2 in [(255, 420, 395, 320), (255, 460, 395, 560), (525, 300, 740, 300), (525, 580, 740, 580), (880, 300, 1090, 420), (880, 580, 1090, 460)]:
         p.append(f'<path d="M{x1} {y1} Q{(x1+x2)/2} {(y1+y2)/2-45} {x2} {y2}" fill="none" stroke="{COBALT}" stroke-width="5" marker-end="url(#arrow)"/>')
-    p += [text(700, 745, "If no safe match exists → mint with owner, version, and deprecation policy", size=18, fill="#B9C4D7", weight=700, anchor="middle"), '<defs><marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="4" orient="auto"><path d="M0,0 L0,8 L8,4z" fill="#2C64F5"/></marker></defs>']
+    p += [text(700, 680, "If no safe match exists → mint with owner, version, and deprecation policy", size=18, fill=INK, weight=700, anchor="middle"), '<defs><marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="4" orient="auto"><path d="M0,0 L0,8 L8,4z" fill="#2C64F5"/></marker></defs>']
     finish(p, "infographic-reuse-before-mint.svg")
 
 
 def life_science() -> None:
     p = base("An annotation needs a trail", "07 / life sciences", "Can another scientist reproduce the biological claim?", "A gene product annotation is useful only when the process, evidence code, reference, taxon, and review status travel with it.")
-    p += [node(170, 430, "Gene\nproduct", LAVENDER), node(470, 430, "Annotation", COBALT), node(770, 430, "GO process", LIME), node(1070, 430, "Evidence", CORAL), '<path d="M240 430 H400" stroke="#2C64F5" stroke-width="6" marker-end="url(#arrow)"/><path d="M540 430 H700" stroke="#2C64F5" stroke-width="6" marker-end="url(#arrow)"/><path d="M840 430 H1000" stroke="#2C64F5" stroke-width="6" marker-end="url(#arrow)"/>', card(170, 620, 900, 105, "Context travels with the edge", "ECO:0000314  ·  PMID:123456  ·  taxon:9606  ·  reviewed:2025-02", LIME), text(770, 365, "enables", size=16, fill=COBALT, weight=700, anchor="middle"), '<defs><marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="4" orient="auto"><path d="M0,0 L0,8 L8,4z" fill="#2C64F5"/></marker></defs>']
+    p += [node(230, 440, "Annotation", COBALT, 85),
+          node(710, 300, "Gene\nproduct", LAVENDER, 75),
+          node(1070, 440, "GO process", LIME, 75),
+          node(710, 600, "Evidence", CORAL, 75)]
+    for end_x, end_y, label, label_x, label_y in [(630, 300, "annotates", 465, 320), (990, 440, "about process", 665, 410), (630, 600, "supported by", 465, 600)]:
+        p.append(f'<path d="M315 440 Q460 {end_y} {end_x} {end_y}" fill="none" stroke="{COBALT}" stroke-width="5" marker-end="url(#arrow)"/>')
+        p.append(text(label_x, label_y, label, size=18, fill=INK, weight=700, anchor="middle"))
+    p += [text(80, 700, "SYNTHETIC EXAMPLE  /  evidence code + source span + taxon + review date", size=17, fill=INK), '<defs><marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="4" orient="auto"><path d="M0,0 L0,8 L8,4z" fill="#2C64F5"/></marker></defs>']
     finish(p, "infographic-life-science-evidence.svg")
 
 
@@ -117,13 +133,13 @@ def consulting() -> None:
 
 def evidence_room() -> None:
     p = base("The evidence room", "consulting / assurance", "How does a team separate supported, contested, and unknown?", "An evidence room gives consultants a review queue where each claim shows its sources, status, owner, and next action.")
-    p += [card(90, 300, 360, 250, "Supported", "Claim 014\n2 independent sources\nreviewed by: R. Singh", LIME), card(520, 300, 360, 250, "Contested", "Claim 022\nsource dates disagree\nopen reviewer task", CORAL), card(950, 300, 360, 250, "Unknown", "Claim 031\nno source span\nabstain from answer", LAVENDER), text(270, 635, "publish", size=19, fill="#B9C4D7", weight=800, anchor="middle"), text(700, 635, "investigate", size=19, fill="#B9C4D7", weight=800, anchor="middle"), text(1130, 635, "request evidence", size=19, fill="#B9C4D7", weight=800, anchor="middle")]
+    p += [card(90, 300, 360, 250, "Supported", "Claim 014\n2 independent sources\nreviewed by: R. Singh", LIME), card(520, 300, 360, 250, "Contested", "Claim 022\nsource dates disagree\nopen reviewer task", CORAL), card(950, 300, 360, 250, "Unknown", "Claim 031\nno source span\nabstain from answer", LAVENDER), text(270, 635, "publish", size=19, fill=MUTED, weight=800, anchor="middle"), text(700, 635, "investigate", size=19, fill=MUTED, weight=800, anchor="middle"), text(1130, 635, "request evidence", size=19, fill=MUTED, weight=800, anchor="middle")]
     finish(p, "consulting-evidence-room.svg")
 
 
 def scorecard() -> None:
-    p = base("Pilot scorecard", "consulting / value proof", "Can the pilot show value without hiding uncertainty?", "A credible pilot pairs baseline and target metrics with evidence coverage and a boundary statement that prevents overclaiming.")
-    p += [card(100, 300, 260, 210, "Cycle time", "baseline 14d\ntarget 8d", COBALT), card(410, 300, 260, 210, "Evidence", "coverage 62%\ntarget 90%", LIME), card(720, 300, 260, 210, "Rework", "baseline 18%\ntarget 10%", CORAL), card(1030, 300, 260, 210, "Adoption", "4 / 6 teams\ntarget 6 / 6", LAVENDER), card(250, 620, 900, 105, "Boundary", "Pilot evidence supports workflow improvement; it does not prove clinical efficacy.", CORAL)]
+    p = base("Pilot scorecard", "consulting / illustrative targets", "Can the pilot show value without hiding uncertainty?", "A credible pilot pairs baseline and target metrics with evidence coverage and a boundary statement that prevents overclaiming.")
+    p += [card(100, 300, 260, 210, "Cycle time", "baseline 14d\ntarget 8d", COBALT), card(410, 300, 260, 210, "Evidence", "coverage 62%\ntarget 90%", LIME), card(720, 300, 260, 210, "Rework", "baseline 18%\ntarget 10%", CORAL), card(1030, 300, 260, 210, "Adoption", "4 / 6 teams\ntarget 6 / 6", LAVENDER), card(250, 620, 900, 105, "Boundary", "Hypothetical figures for planning; replace them with measured pilot results.", CORAL)]
     finish(p, "consulting-pilot-scorecard.svg")
 
 

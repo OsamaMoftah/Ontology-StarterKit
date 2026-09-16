@@ -31,8 +31,8 @@ def _parse(source: str) -> tuple[list[Edge], dict[str, str]]:
         line = raw_line.strip()
         if not line or line.startswith("%%") or line.startswith("flowchart") or line.startswith("graph"):
             continue
-        dotted = DOTTED.search(line)
-        solid = SOLID.search(line)
+        dotted = DOTTED.fullmatch(line)
+        solid = SOLID.fullmatch(line)
         match = dotted or solid
         if match:
             kind = "dotted" if dotted else "solid"
@@ -43,8 +43,10 @@ def _parse(source: str) -> tuple[list[Edge], dict[str, str]]:
             continue
         if "-->" in line or ".->" in line or UNSUPPORTED.search(line):
             raise ValueError(f"unsupported Mermaid edge on line {line_number}: {line}")
-        for declaration in NODE.finditer(line):
-            labels.setdefault(declaration.group("id"), declaration.group("label") or declaration.group("id"))
+        declaration = NODE.fullmatch(line)
+        if declaration is None:
+            raise ValueError(f"unsupported Mermaid syntax on line {line_number}: {line}")
+        labels.setdefault(declaration.group("id"), declaration.group("label") or declaration.group("id"))
     if not edges:
         raise ValueError("no supported Mermaid relationships found")
     return edges, labels
@@ -69,7 +71,7 @@ def _layout(edges: list[Edge], nodes: list[str]) -> dict[str, tuple[int, int]]:
             if indegree[child] == 0:
                 queue.append(child)
     if len(visited) != len(nodes):
-        level = {node: 0 for node in nodes}
+        raise ValueError("cyclic models require a full Mermaid renderer")
     columns: dict[int, list[str]] = defaultdict(list)
     for node in nodes:
         columns[level[node]].append(node)

@@ -1,2 +1,2 @@
 PREFIX ex: <https://ontology-starterkit.dev/life-science/>
-SELECT ?product ?name WHERE { ?product a ex:GeneProduct ; ex:name ?name . }
+SELECT DISTINCT ?product ?name WHERE { ?annotation a ex:Annotation ; ex:annotates ?product . ?product a ex:GeneProduct ; ex:name ?name . }

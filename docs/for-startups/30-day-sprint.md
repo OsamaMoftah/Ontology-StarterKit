@@ -30,4 +30,4 @@ A 30-day plan for your first ontology-backed AI feature. Adjust the timing to yo
 - Set up the [schema-change review process](../governance/schema-change-review.md).
 - Add caching or cost controls where needed.
 - Document the MVP ontology and launch criteria.
-- After launch, track the ROI template's numbers: hallucination rate, rework hours, and query latency.
+- After launch, track answer errors, rework hours, and query latency separately. Convert measured time and cost savings into the ROI template’s value assumptions.

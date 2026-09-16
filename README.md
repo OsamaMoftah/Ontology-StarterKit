@@ -21,8 +21,8 @@ The repo is opinionated:
 
 ### For AI Engineers
 
-- [KG-RAG example](src/integrations/langchain/kg-rag/README.md): a LangChain + Neo4j example with read-only Cypher validation, query guardrails, and tests.
-- [Sample ontology assets](src/ontology/README.md): minimal SHACL shapes and RDF data so validation workflows are real.
+- [KG-RAG example](src/integrations/langchain/kg-rag/README.md): an experimental LangChain + Neo4j example. Regex checks are not a security boundary; use a database-enforced read-only account.
+- [Sample ontology assets](src/ontology/README.md): sample SHACL shapes and RDF data for validation exercises.
 - [Example packs](examples/hello-ontology/README.md): model, data, shapes, questions, expected outputs and evidence metadata.
 
 ### For Product Managers
@@ -97,7 +97,7 @@ PY
 ### 6. Run the optional KG-RAG example
 
 ```bash
-python3 src/integrations/langchain/kg-rag/graph_rag.py --query "Who manages the team that works on the Alpha Project?"
+python3 src/integrations/langchain/kg-rag/graph_rag.py --allow-experimental-cypher --query "Who manages the team that works on the Alpha Project?"
 ```
 
 For a local Neo4j only, opt in to the pinned Compose service with
@@ -125,10 +125,12 @@ Ontology-StarterKit/
 
 This is a starter kit, not a framework. The offline examples run in the test suite; the Neo4j and LLM examples need their services and credentials.
 
+Read the [independent review and remaining upgrade work](docs/reviews/2026-09-16-luna-review.md) for the delivery status against the original plan.
+
 ## Current boundary
 
 The repository now ships deterministic teaching and consulting visuals, four
-multi-question packs, evidence-shaped answer helpers, and bounded optional
+multi-question packs, evidence-shaped answer helpers, and experimental optional
 adapters. Production deployments still need a service-specific security review,
 client-owned terminology licenses, domain reviewers, and live Neo4j/LLM
 acceptance tests.

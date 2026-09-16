@@ -8,6 +8,9 @@
 
 **Tech Stack:** Python 3.11+, RDFLib, pySHACL, Typer, pytest, Ruff, mypy, dependency-free SVG, Markdown, Mermaid source, Docker Compose.
 
+> Status: this is the intended scope, not a completion report. See the
+> [independent review](../../reviews/2026-09-16-luna-review.md) for verified delivery and remaining gates.
+
 ## Global Constraints
 
 - Preserve the four existing example packs and their offline-first behavior.
