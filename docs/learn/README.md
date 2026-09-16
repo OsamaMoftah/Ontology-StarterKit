@@ -17,3 +17,5 @@ The lessons use the bundled packs and do not require a graph database or an API 
 Every lesson should end with a command, a deliberate failure, and an explanation of what the result does not prove.
 
 The per-lesson “Try, break, explain” sections are executable teaching contracts. They use synthetic packs, so an applied project must replace the source register, reviewer, and acceptance measure before using the pattern with client or scientific data.
+
+After installing the package, verify the positive commands from a clean checkout with `python scripts/verify_lesson_commands.py`. The verifier uses the active interpreter, writes generated outputs to a temporary directory, and leaves deliberate failure commands for the reader to run separately.

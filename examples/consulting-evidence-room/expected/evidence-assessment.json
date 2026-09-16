@@ -1,0 +1,42 @@
+[
+  {
+    "case": "supported",
+    "citationMembership": true,
+    "graphPathValid": true,
+    "sourceSupport": "reviewed",
+    "answerCorrectness": "correct",
+    "outcome": "supported"
+  },
+  {
+    "case": "unsupported",
+    "citationMembership": true,
+    "graphPathValid": true,
+    "sourceSupport": "unknown",
+    "answerCorrectness": "unverified",
+    "outcome": "unsupported"
+  },
+  {
+    "case": "conflicting",
+    "citationMembership": true,
+    "graphPathValid": true,
+    "sourceSupport": "conflicting",
+    "answerCorrectness": "unverified",
+    "outcome": "conflicting"
+  },
+  {
+    "case": "stale",
+    "citationMembership": true,
+    "graphPathValid": true,
+    "sourceSupport": "stale",
+    "answerCorrectness": "unverified",
+    "outcome": "stale"
+  },
+  {
+    "case": "unknown-answer",
+    "citationMembership": true,
+    "graphPathValid": false,
+    "sourceSupport": "unverified",
+    "answerCorrectness": "unverified",
+    "outcome": "insufficient-evidence"
+  }
+]

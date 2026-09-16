@@ -4,6 +4,7 @@ import pytest
 
 from ontology_starterkit.packs import PackError
 from ontology_starterkit.packs import load_pack
+from ontology_starterkit.evals import classify_single_answer
 from ontology_starterkit.validation import run_named_query, validate_pack
 
 
@@ -37,3 +38,13 @@ def test_hello_empty_graph_is_rejected_by_pack_target_check():
 def test_named_query_rejects_untrusted_parameters():
     with pytest.raises(PackError, match="parameters"):
         run_named_query(PACK, "manager", parameters={"name": "Maya"})
+
+
+def test_manager_lesson_abstains_on_unknown_and_ambiguous_cases():
+    unknown = run_named_query(PACK, "manager", data_path="data/cases/unknown-manager.ttl")
+    ambiguous = run_named_query(PACK, "manager", data_path="data/cases/ambiguous-manager.ttl")
+    assert classify_single_answer(unknown, "personName") == {"status": "unknown", "values": []}
+    assert classify_single_answer(ambiguous, "personName") == {
+        "status": "ambiguous",
+        "values": ["Maya Chen", "Omar Haddad"],
+    }

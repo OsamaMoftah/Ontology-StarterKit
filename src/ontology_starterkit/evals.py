@@ -10,6 +10,16 @@ from .packs import Pack, PackError
 from .validation import run_named_query
 
 
+def classify_single_answer(rows: list[dict[str, str]], field: str) -> dict[str, object]:
+    """Classify a single-answer lesson without turning absence into a negative claim."""
+    values = sorted({row[field] for row in rows if field in row})
+    if not values:
+        return {"status": "unknown", "values": []}
+    if len(values) > 1:
+        return {"status": "ambiguous", "values": values}
+    return {"status": "supported", "values": values}
+
+
 def load_expected(pack: Pack, query_id: str) -> list[dict[str, str]]:
     """Load expected rows declared by a pack, if present."""
     expected = pack.manifest.get("expected", {})

@@ -1,5 +1,8 @@
+import json
+from pathlib import Path
+
 from rdflib import Graph, URIRef
-from ontology_starterkit.evidence import build_answer, build_verified_answer
+from ontology_starterkit.evidence import assess_answer, build_answer, build_verified_answer
 
 
 def test_build_answer_includes_only_declared_evidence_ids():
@@ -55,3 +58,76 @@ def test_verified_answer_requires_actual_graph_paths():
     assert result.source_support == "reviewed"
     missing = build_verified_answer("Maya", ["claim-1"], graph, {"claim-1": ()}, "demo@1")
     assert missing.status == "insufficient-evidence"
+
+
+def test_assess_answer_separates_path_validity_from_source_support():
+    graph = Graph()
+    triple = (URIRef("urn:claim"), URIRef("urn:supports"), URIRef("urn:evidence"))
+    graph.add(triple)
+    result = assess_answer(
+        "the claim",
+        ["claim-1"],
+        {"claim-1"},
+        graph,
+        {"claim-1": (triple,)},
+        "demo@1",
+        source_states={"claim-1": "unknown"},
+    )
+    assert result.graph_path_valid is True
+    assert result.source_support == "unknown"
+    assert result.status == "unsupported"
+    assert result.answer_correctness == "unverified"
+
+
+def test_assess_answer_reports_conflicting_and_stale_evidence():
+    graph = Graph()
+    triple = (URIRef("urn:claim"), URIRef("urn:supports"), URIRef("urn:evidence"))
+    graph.add(triple)
+    paths = {"claim-1": (triple,)}
+    conflicting = assess_answer("claim", ["claim-1"], {"claim-1"}, graph, paths, "demo@1", source_states={"claim-1": "conflicting"})
+    stale = assess_answer("claim", ["claim-1"], {"claim-1"}, graph, paths, "demo@1", source_states={"claim-1": "stale"})
+    assert conflicting.status == "conflicting"
+    assert conflicting.source_support == "conflicting"
+    assert stale.status == "stale"
+    assert stale.source_support == "stale"
+
+
+def test_assess_answer_rejects_valid_citation_with_invalid_graph_path():
+    graph = Graph()
+    result = assess_answer(
+        "claim",
+        ["claim-1"],
+        {"claim-1"},
+        graph,
+        {"claim-1": ((URIRef("urn:missing"), URIRef("urn:p"), URIRef("urn:o")),)},
+        "demo@1",
+        source_states={"claim-1": "supported"},
+    )
+    assert result.status == "insufficient-evidence"
+    assert result.graph_path_valid is False
+    assert result.source_support == "unverified"
+
+
+def test_assess_answer_can_record_answer_correctness_separately():
+    graph = Graph()
+    triple = (URIRef("urn:claim"), URIRef("urn:supports"), URIRef("urn:evidence"))
+    graph.add(triple)
+    result = assess_answer(
+        "wrong answer",
+        ["claim-1"],
+        {"claim-1"},
+        graph,
+        {"claim-1": (triple,)},
+        "demo@1",
+        source_states={"claim-1": "supported"},
+        answer_correct=False,
+    )
+    assert result.status == "unsupported"
+    assert result.source_support == "reviewed"
+    assert result.answer_correctness == "incorrect"
+
+
+def test_reviewed_evidence_evaluation_fixture_covers_each_outcome():
+    path = Path(__file__).resolve().parents[2] / "examples/consulting-evidence-room/expected/evidence-assessment.json"
+    cases = json.loads(path.read_text(encoding="utf-8"))
+    assert {item["outcome"] for item in cases} == {"supported", "unsupported", "conflicting", "stale", "insufficient-evidence"}

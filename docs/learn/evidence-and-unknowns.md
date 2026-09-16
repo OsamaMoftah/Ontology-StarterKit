@@ -7,6 +7,10 @@ Use `ontology_starterkit.evidence.build_answer` for this contract. It rejects ev
 The helper returns `unverified` for cited text: ID membership and supplied paths
 do not establish that the text follows from the graph or its source records.
 It returns `insufficient-evidence` when citations or requested paths are missing.
+For a reviewed evaluation set, `assess_answer` keeps citation membership, graph
+path validity, source review (`supported`, `unknown`, `conflicting`, or `stale`),
+and answer correctness as separate fields. See
+[`expected/evidence-assessment.json`](../../examples/consulting-evidence-room/expected/evidence-assessment.json).
 
 ## Try, break, explain
 

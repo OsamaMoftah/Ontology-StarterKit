@@ -17,12 +17,14 @@ and `just services-seed`. The seed helper writes `RDFTerm` nodes and
 datatype/language metadata after RDFLib parsing. Blank nodes are canonicalized
 and scoped to the pack ID. `neo4j_queries.py` provides the normal parameterized
 query path with type, predicate, row, byte, and deadline checks; generated
-Cypher remains explicitly experimental. Live Neo4j parity and server-side
-cancellation are still externally blocked for the pinned Community image: its
-administration surface does not expose the role-grant command needed to create
-a database-enforced reader. `scripts/verify_neo4j_service.py` fails closed with
-that exact reason; run it against a licensed Enterprise service to close the
-gate.
+Cypher remains explicitly experimental. The runtime verifier seeds the business
+and hello packs, compares the named Neo4j result with RDFLib, checks
+language-tagged literals and scoped blank-node identity, repeats an import, and
+uses an explicit server transaction timeout. Run it with `just services-runtime`.
+The pinned Community image passes those parity and cancellation checks but does
+not expose the role-grant command needed to create a database-enforced reader.
+`just services-access-control` fails closed with that exact reason; run it
+against a licensed Enterprise service to close the read-denial gate.
 
 ## MCP
 
@@ -56,6 +58,10 @@ The reviewed environment pins the full resolved core and optional dependency
 graphs in `requirements/core.lock` and `requirements/optional.lock`. They were
 compiled on macOS/Python 3.11; regenerate from the matching `.in` file for a
 different platform or interpreter before production use.
+
+The full optional generator check is `python scripts/verify_linkml_generator.py`.
+It runs `gen-json-schema --top-class Person --closed` and verifies the checked-in
+valid and invalid fixtures.
 
 `ontology_starterkit.extraction` provides a model-independent extraction
 contract and reviewed alias resolution; it intentionally does not call an LLM

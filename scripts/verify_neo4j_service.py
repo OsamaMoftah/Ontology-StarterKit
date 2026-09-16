@@ -53,10 +53,17 @@ def verify(uri: str, admin_user: str, admin_password: str, *, database: str = "n
                     read_denied = True
                 else:
                     raise RuntimeError("reader account was able to write")
+                transaction = session.begin_transaction(timeout=0.001, metadata={"starterkit_probe": "server-cancel"})
                 try:
-                    session.run("UNWIND range(1, 10000000) AS n RETURN count(n)", timeout=0.001).consume()
+                    transaction.run("UNWIND range(1, 1000000000) AS n RETURN count(n)", {}).consume()
                 except Neo4jError:
                     cancelled = True
+                    try:
+                        transaction.rollback()
+                    except Neo4jError:
+                        pass
+                finally:
+                    transaction.close()
         finally:
             reader_driver.close()
     finally:

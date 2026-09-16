@@ -14,6 +14,9 @@ validate:
     python -m ontology_starterkit.cli packs
     for pack in examples/*; do python -m ontology_starterkit.cli validate "$pack"; done
 
+lessons:
+    python scripts/verify_lesson_commands.py
+
 diagrams:
     python scripts/render_diagrams.py
 
@@ -30,7 +33,10 @@ services-ready: services-up
 services-seed: services-up
     python scripts/seed_neo4j.py examples/hello-ontology
 
-services-verify: services-seed
+services-runtime: services-seed
+    python scripts/verify_neo4j_runtime.py
+
+services-access-control: services-seed
     ONTOLOGY_RUN_NEO4J=1 python scripts/verify_neo4j_service.py
 
 services-down:
