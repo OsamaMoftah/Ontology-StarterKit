@@ -1,0 +1,5 @@
+PREFIX ex: <https://ontology-starterkit.dev/hello/>
+SELECT ?person ?personName WHERE {
+  ?person a ex:Person ; ex:name ?personName ; ex:manages ?team .
+  ?team ex:worksOn ex:Alpha .
+}

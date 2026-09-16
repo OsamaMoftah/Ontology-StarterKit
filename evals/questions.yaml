@@ -1,0 +1,15 @@
+version: 1
+policy:
+  exact_bindings: true
+  abstain_without_evidence: true
+  no_claim_of_production_accuracy: true
+cases:
+  - pack: hello-ontology
+    query: manager
+  - pack: business-projects
+    query: owner
+  - pack: life-science-annotations
+    query: evidence
+  - pack: consulting-evidence-room
+    query: unsupported
+

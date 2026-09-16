@@ -1,0 +1,3 @@
+- id: unsupported
+  question: Which claim lacks supporting evidence?
+  query: queries/unsupported.rq

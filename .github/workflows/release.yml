@@ -1,0 +1,19 @@
+name: Release verification
+
+on:
+  push:
+    tags: ['v*.*.*']
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: pip install -e '.[dev]' build
+      - run: ruff check .
+      - run: mypy src/ontology_starterkit
+      - run: pytest -q --cov=src/ontology_starterkit --cov-fail-under=80
+      - run: python -m build

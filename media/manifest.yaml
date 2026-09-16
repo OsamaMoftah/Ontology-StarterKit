@@ -1,0 +1,26 @@
+version: 1
+license_policy: Original diagrams are MIT-compatible code-adjacent documentation; third-party sources retain their upstream terms.
+assets:
+  - id: diagram-source-index
+    source: media/source/README.md
+    output: media/source/README.md
+    alt: Canonical diagram source and rendering instructions.
+    status: source
+  - id: hello-model
+    source: examples/hello-ontology/model.mmd
+    output: media/exports/hello-model.svg
+    alt: Person Maya manages Team Aurora, which works on Alpha Project.
+    lesson: docs/learn/classes-instances-relations.md
+    status: generated
+  - id: business-model
+    source: examples/business-projects/model.mmd
+    output: media/exports/business-model.svg
+    alt: A person manages a team that owns a service and works on a project.
+    lesson: docs/consulting/README.md
+    status: generated
+  - id: life-science-model
+    source: examples/life-science-annotations/model.mmd
+    output: media/exports/life-science-model.svg
+    alt: A gene product is connected through an annotation to a biological process and evidence record.
+    lesson: docs/history/ontology-in-life-sciences.md
+    status: generated

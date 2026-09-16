@@ -1,0 +1,2 @@
+PREFIX ex: <https://ontology-starterkit.dev/consulting/>
+SELECT ?claim ?text WHERE { ?claim a ex:Claim ; ex:text ?text . FILTER NOT EXISTS { ?claim ex:supportedBy ?evidence . } }

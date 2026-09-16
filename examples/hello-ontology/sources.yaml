@@ -1,0 +1,6 @@
+- id: synthetic-directory
+  title: Synthetic team directory snapshot
+  version: 2026-09-01
+  kind: fictional-teaching-data
+  license: CC0-1.0
+  note: All entities and assertions in this pack are fictional.

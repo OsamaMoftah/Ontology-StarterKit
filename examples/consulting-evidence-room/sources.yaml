@@ -1,0 +1,6 @@
+- id: synthetic-evidence
+  title: Fictional evidence packet
+  version: 0.2.0
+  license: CC0-1.0
+  kind: fictional-teaching-data
+  note: This pack does not represent a real asset, company, clinical result or consulting engagement.

@@ -1,0 +1,13 @@
+@prefix ex: <https://ontology-starterkit.dev/life-science/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+ex: a owl:Ontology ; rdfs:label "Annotation evidence teaching model"@en .
+ex:GeneProduct a owl:Class ; rdfs:label "Gene product"@en .
+ex:BiologicalProcess a owl:Class ; rdfs:label "Biological process"@en .
+ex:Annotation a owl:Class ; rdfs:label "Annotation"@en .
+ex:EvidenceRecord a owl:Class ; rdfs:label "Evidence record"@en .
+ex:annotates a owl:ObjectProperty ; rdfs:domain ex:Annotation ; rdfs:range ex:GeneProduct .
+ex:aboutProcess a owl:ObjectProperty ; rdfs:domain ex:Annotation ; rdfs:range ex:BiologicalProcess .
+ex:supportedBy a owl:ObjectProperty ; rdfs:domain ex:Annotation ; rdfs:range ex:EvidenceRecord .
+ex:name a owl:DatatypeProperty ; rdfs:range rdfs:Literal .
+ex:reference a owl:DatatypeProperty ; rdfs:range rdfs:Literal .

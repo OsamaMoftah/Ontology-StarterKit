@@ -12,6 +12,13 @@ For ontology updates, include a short impact statement in the release notes (for
 
 ## Unreleased
 
+- Added an offline CLI for discovering packs, SHACL validation, named queries and fixture evaluations.
+- Added self-contained hello, business-project, life-science annotation and consulting evidence-room packs with invalid fixtures, evidence metadata and competency questions.
+- Added deterministic evidence, extraction-contract and reviewed alias helpers, plus an optional bounded MCP adapter.
+- Added accessible SVG diagram generation, learning lessons, ontology history, glossary and a 12-case life-sciences consulting catalogue.
+- Added packaging, Ruff, mypy, Just, citation, issue-template and ownership metadata for maintainers.
+- Hardened the optional LangChain/Neo4j example against procedure calls, unbounded paths, Cartesian patterns, ambient settings and timeout leaks.
+
 - Fixed broken `file://` links in `docs/for-startups/30-day-sprint.md` and `docs/for-product-managers/roi-calculator/README.md` that pointed to a contributor's local filesystem path.
 - Corrected the ROI template's cost model: `C_upfront` is now explicitly derived from build-phase costs, the worked example's Executive Summary Table now reconciles arithmetically with the stated formulas, and payback period is no longer shown as horizon-dependent.
 - Added sourced links and an explicit "opinionated default, not a benchmark" framing to the decision framework, and reconciled its OWL-reasoning claims with the fact this repo's shipped ontology example is SHACL-only.

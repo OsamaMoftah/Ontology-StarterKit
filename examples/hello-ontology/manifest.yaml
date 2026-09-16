@@ -1,0 +1,17 @@
+id: hello-ontology
+title: "Hello Ontology: people, teams, and projects"
+version: 0.2.0
+ontology: ontology.ttl
+shapes: shapes.ttl
+data: data/valid.ttl
+questions: questions.yaml
+queries:
+  manager: queries/manager.rq
+expected:
+  manager: expected/manager.json
+invalid:
+  - data/invalid/missing-name.ttl
+  - data/invalid/bad-relation.ttl
+sources: sources.yaml
+diagram: model.mmd
+license: CC0-1.0 synthetic teaching data

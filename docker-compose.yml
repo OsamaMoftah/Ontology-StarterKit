@@ -1,0 +1,23 @@
+name: ontology-starterkit
+
+services:
+  neo4j:
+    image: neo4j:5.26.5-community
+    profiles: [services]
+    environment:
+      NEO4J_AUTH: ${NEO4J_AUTH:-neo4j/starterkit-local-only}
+      NEO4J_PLUGINS: '["apoc"]'
+    ports:
+      - "127.0.0.1:7474:7474"
+      - "127.0.0.1:7687:7687"
+    volumes:
+      - neo4j-data:/data
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://localhost:7474 >/dev/null || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+
+volumes:
+  neo4j-data:
+

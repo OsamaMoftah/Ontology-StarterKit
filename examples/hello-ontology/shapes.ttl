@@ -1,0 +1,14 @@
+@prefix ex: <https://ontology-starterkit.dev/hello/> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+ex:PersonShape a sh:NodeShape ; sh:targetClass ex:Person ;
+  sh:property [ sh:path ex:name ; sh:datatype xsd:string ; sh:minCount 1 ; sh:maxCount 1 ] .
+ex:TeamShape a sh:NodeShape ; sh:targetClass ex:Team ;
+  sh:property [ sh:path ex:name ; sh:datatype xsd:string ; sh:minCount 1 ; sh:maxCount 1 ] .
+ex:ProjectShape a sh:NodeShape ; sh:targetClass ex:Project ;
+  sh:property [ sh:path ex:name ; sh:datatype xsd:string ; sh:minCount 1 ; sh:maxCount 1 ] .
+ex:ManagesShape a sh:NodeShape ; sh:targetSubjectsOf ex:manages ;
+  sh:property [ sh:path ex:manages ; sh:class ex:Team ; sh:minCount 1 ] .
+ex:WorksOnShape a sh:NodeShape ; sh:targetSubjectsOf ex:worksOn ;
+  sh:property [ sh:path ex:worksOn ; sh:class ex:Project ; sh:minCount 1 ] .

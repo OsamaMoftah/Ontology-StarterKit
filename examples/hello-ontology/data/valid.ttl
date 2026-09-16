@@ -1,0 +1,7 @@
+@prefix ex: <https://ontology-starterkit.dev/hello/> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+ex:Maya a ex:Person ; ex:name "Maya Chen"^^xsd:string ; ex:manages ex:Aurora .
+ex:Aurora a ex:Team ; ex:name "Team Aurora"^^xsd:string ; ex:worksOn ex:Alpha .
+ex:Alpha a ex:Project ; ex:name "Alpha Project"^^xsd:string .
+ex:ManagerSource a ex:EvidenceRecord ; ex:name "Team directory snapshot 2026-09-01"^^xsd:string .

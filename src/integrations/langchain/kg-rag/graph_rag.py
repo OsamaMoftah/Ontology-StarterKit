@@ -17,7 +17,10 @@ from typing import Any
 from uuid import uuid4
 
 from dotenv import load_dotenv
-from langchain_community.graphs import Neo4jGraph
+try:
+    from langchain_neo4j import Neo4jGraph
+except ImportError:  # pragma: no cover - compatibility for the old tutorial environment
+    from langchain_community.graphs import Neo4jGraph
 from langchain_openai import ChatOpenAI
 from langchain_core.prompts import PromptTemplate
 
@@ -46,7 +49,7 @@ UNSAFE_CYPHER_PATTERNS = (
     r"\bDBMS\.",
 )
 
-READ_ONLY_START_PATTERN = re.compile(r"^(MATCH|OPTIONAL MATCH|WITH|RETURN|UNWIND|CALL)\b", re.IGNORECASE)
+READ_ONLY_START_PATTERN = re.compile(r"^(MATCH|OPTIONAL MATCH|WITH|RETURN|UNWIND)\b", re.IGNORECASE)
 
 CYPHER_GENERATION_PROMPT = PromptTemplate(
     input_variables=["schema", "question"],
@@ -157,14 +160,14 @@ def load_settings(env: dict[str, str] | None = None) -> Settings:
         ValueError: If one or more required environment variables are missing.
     """
 
-    values = env or os.environ
+    values = os.environ if env is None else env
     required = ["OPENAI_API_KEY", "NEO4J_PASSWORD"]
     missing = [name for name in required if not values.get(name)]
     if missing:
         missing_names = ", ".join(sorted(missing))
         raise ValueError(f"Missing required environment variables: {missing_names}")
 
-    return Settings(
+    settings = Settings(
         openai_api_key=values["OPENAI_API_KEY"],
         neo4j_uri=values.get("NEO4J_URI", "bolt://localhost:7687"),
         neo4j_username=values.get("NEO4J_USERNAME", "neo4j"),
@@ -178,6 +181,20 @@ def load_settings(env: dict[str, str] | None = None) -> Settings:
         max_query_length=int(values.get("MAX_QUERY_LENGTH", "700")),
         max_match_clauses=int(values.get("MAX_MATCH_CLAUSES", "3")),
     )
+    if any(value.strip().lower() in {"replace-me", "changeme", "your-key-here"} for value in (settings.openai_api_key, settings.neo4j_password)):
+        raise ValueError("placeholder credentials must be replaced before running")
+    positive = {
+        "LLM_TIMEOUT_SECONDS": settings.llm_timeout_seconds,
+        "GRAPH_TIMEOUT_SECONDS": settings.graph_timeout_seconds,
+        "MAX_LLM_CALLS": settings.max_llm_calls,
+        "MAX_GRAPH_QUERIES": settings.max_graph_queries,
+        "MAX_QUERY_LENGTH": settings.max_query_length,
+        "MAX_MATCH_CLAUSES": settings.max_match_clauses,
+    }
+    invalid = [name for name, value in positive.items() if value <= 0]
+    if invalid:
+        raise ValueError(f"configuration values must be positive: {', '.join(invalid)}")
+    return settings
 
 
 def configure_logging() -> None:
@@ -206,6 +223,8 @@ def setup_graph(settings: Settings) -> Neo4jGraph:
         username=settings.neo4j_username,
         password=settings.neo4j_password,
         enhanced_schema=True,
+        timeout=settings.graph_timeout_seconds,
+        sanitize=True,
     )
 
 
@@ -281,12 +300,25 @@ def validate_read_only_cypher_with_limits(query: str, max_query_length: int, max
     if len(stripped) > max_query_length:
         raise ValueError(f"Rejected Cypher query because it exceeds {max_query_length} characters")
 
-    upper_query = stripped.upper()
+    # Remove quoted literals before inspecting Cypher syntax. This prevents
+    # legitimate identifiers such as `createdAt`, or URLs in string values,
+    # from being mistaken for keywords or comments.
+    syntax_query = re.sub(r"'(?:\\.|[^'])*'|\"(?:\\.|[^\"])*\"", "''", stripped)
+    upper_query = syntax_query.upper()
     for keyword in DANGEROUS_CYPHER_KEYWORDS:
-        if keyword in upper_query:
+        if re.search(rf"\b{re.escape(keyword)}\b", upper_query):
             raise ValueError(f"Rejected potentially dangerous Cypher keyword: {keyword}")
 
+    if re.search(r"\bCALL\b", upper_query):
+        raise ValueError("Rejected procedure calls; use a named read query")
+    if re.search(r"\[\s*\*", syntax_query):
+        raise ValueError("Rejected unbounded variable-length path")
+    if re.search(r"\bMATCH\s*\([^)]*\)\s*,\s*\(", syntax_query, re.IGNORECASE):
+        raise ValueError("Rejected Cartesian product pattern")
+
     for pattern in UNSAFE_CYPHER_PATTERNS:
+        if pattern == r"//":
+            pattern = r"(?<!:)//"
         if re.search(pattern, upper_query, re.IGNORECASE):
             raise ValueError(f"Rejected potentially unsafe Cypher pattern: {pattern}")
 
@@ -334,15 +366,17 @@ def invoke_llm_with_timeout(llm: ChatOpenAI, prompt: str, timeout_seconds: int, 
         Exception: Propagates model invocation errors.
     """
     guards.consume_llm_call()
-    with concurrent.futures.ThreadPoolExecutor(max_workers=1) as executor:
-        future = executor.submit(llm.invoke, prompt)
-        try:
-            response = future.result(timeout=timeout_seconds)
-            LOGGER.info("llm_call_ok run_id=%s prompt_len=%s", run_id, len(prompt))
-            return response
-        except concurrent.futures.TimeoutError as exc:
-            LOGGER.error("llm_call_timeout run_id=%s timeout_seconds=%s", run_id, timeout_seconds)
-            raise TimeoutError(f"LLM call exceeded timeout of {timeout_seconds} seconds") from exc
+    executor = concurrent.futures.ThreadPoolExecutor(max_workers=1)
+    future = executor.submit(llm.invoke, prompt)
+    try:
+        response = future.result(timeout=timeout_seconds)
+        executor.shutdown(wait=True)
+        LOGGER.info("llm_call_ok run_id=%s prompt_len=%s", run_id, len(prompt))
+        return response
+    except concurrent.futures.TimeoutError as exc:
+        executor.shutdown(wait=False, cancel_futures=True)
+        LOGGER.error("llm_call_timeout run_id=%s timeout_seconds=%s", run_id, timeout_seconds)
+        raise TimeoutError(f"LLM call exceeded timeout of {timeout_seconds} seconds") from exc
 
 
 def generate_cypher(
@@ -412,13 +446,15 @@ def run_graph_query(
 
     guards.consume_graph_query()
     LOGGER.info("graph_query_start run_id=%s query_len=%s", run_id, len(query))
-    with concurrent.futures.ThreadPoolExecutor(max_workers=1) as executor:
-        future = executor.submit(graph.query, query)
-        try:
-            result = future.result(timeout=timeout_seconds)
-        except concurrent.futures.TimeoutError as exc:
-            LOGGER.error("graph_query_timeout run_id=%s timeout_seconds=%s", run_id, timeout_seconds)
-            raise TimeoutError(f"Graph query exceeded timeout of {timeout_seconds} seconds") from exc
+    executor = concurrent.futures.ThreadPoolExecutor(max_workers=1)
+    future = executor.submit(graph.query, query)
+    try:
+        result = future.result(timeout=timeout_seconds)
+        executor.shutdown(wait=True)
+    except concurrent.futures.TimeoutError as exc:
+        executor.shutdown(wait=False, cancel_futures=True)
+        LOGGER.error("graph_query_timeout run_id=%s timeout_seconds=%s", run_id, timeout_seconds)
+        raise TimeoutError(f"Graph query exceeded timeout of {timeout_seconds} seconds") from exc
     if not isinstance(result, list):
         raise TypeError("Expected graph query result to be a list of rows")
     LOGGER.info("graph_query_ok run_id=%s rows=%s", run_id, len(result))

@@ -1,0 +1,3 @@
+@prefix ex: <https://ontology-starterkit.dev/business/> .
+ex:Aurora a ex:Team ; ex:name "Team Aurora" ; ex:owns ex:MissingService .
+ex:MissingService a ex:Service .

@@ -1,6 +1,6 @@
 # KG-RAG Example
 
-This example shows a more controlled way to combine LangChain, OpenAI, and Neo4j for graph-based retrieval-augmented generation.
+This example shows a more controlled, optional way to combine LangChain, OpenAI, and Neo4j for graph-based retrieval-augmented generation. The offline RDF/SHACL packs run without these services; use them first.
 
 This module currently targets the LangChain 1.x package family.
 
@@ -16,7 +16,7 @@ This module currently targets the LangChain 1.x package family.
 ```bash
 python3 -m venv .venv
 source .venv/bin/activate
-pip install -r src/integrations/langchain/kg-rag/requirements.txt
+pip install -e '.[graphrag]'
 cp .env.example .env
 ```
 
@@ -46,6 +46,6 @@ python3 src/integrations/langchain/kg-rag/graph_rag.py --query "Who manages the 
 ## Security Notes
 
 - Use a Neo4j account with read-only permissions for model-generated queries.
-- The example rejects write-capable or administrative Cypher keywords before execution, but database permissions are still the primary safety control.
+- The example rejects procedures, writes, comments, unbounded paths, Cartesian patterns and other unsafe syntax before execution, but database permissions are still the primary safety control.
 - Query complexity and runtime controls are enforced through query-length, MATCH-count, timeout, and per-run call caps.
 - Never commit your `.env` file.

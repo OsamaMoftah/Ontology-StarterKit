@@ -1,0 +1,7 @@
+@prefix ex: <https://ontology-starterkit.dev/business/> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+ex:PersonShape a sh:NodeShape ; sh:targetClass ex:Person ; sh:property [ sh:path ex:name ; sh:datatype xsd:string ; sh:minCount 1 ] .
+ex:TeamShape a sh:NodeShape ; sh:targetClass ex:Team ; sh:property [ sh:path ex:name ; sh:datatype xsd:string ; sh:minCount 1 ] .
+ex:ServiceShape a sh:NodeShape ; sh:targetClass ex:Service ; sh:property [ sh:path ex:name ; sh:datatype xsd:string ; sh:minCount 1 ] .
+ex:OwnerShape a sh:NodeShape ; sh:targetSubjectsOf ex:owns ; sh:property [ sh:path ex:owns ; sh:class ex:Service ; sh:minCount 1 ] .

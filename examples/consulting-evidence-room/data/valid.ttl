@@ -1,0 +1,7 @@
+@prefix ex: <https://ontology-starterkit.dev/consulting/> .
+ex:AssetA a ex:Asset ; ex:name "Fictional Asset A" ; ex:forIndication ex:IndicationA .
+ex:IndicationA a ex:Indication ; ex:name "Fictional indication A" .
+ex:Source1 a ex:Source ; ex:name "Synthetic evidence packet 1" .
+ex:Evidence1 a ex:EvidenceRecord ; ex:fromSource ex:Source1 .
+ex:Claim1 a ex:Claim ; ex:about ex:AssetA ; ex:supportedBy ex:Evidence1 ; ex:text "Asset A has a reviewed target hypothesis." .
+ex:Claim2 a ex:Claim ; ex:about ex:AssetA ; ex:text "Asset A has an unsupported commercial claim." .

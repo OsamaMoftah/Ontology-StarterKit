@@ -1,0 +1,16 @@
+@prefix ex: <https://ontology-starterkit.dev/hello/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+
+ex: a owl:Ontology ;
+  rdfs:label "Hello Ontology"@en ;
+  rdfs:comment "A deliberately small model for learning shared meaning and evidence."@en .
+
+ex:Person a owl:Class ; rdfs:label "Person"@en ; rdfs:comment "A human individual."@en .
+ex:Team a owl:Class ; rdfs:label "Team"@en ; rdfs:comment "A group with shared work."@en .
+ex:Project a owl:Class ; rdfs:label "Project"@en ; rdfs:comment "A bounded work effort."@en .
+ex:name a owl:DatatypeProperty ; rdfs:label "name"@en ; rdfs:range rdfs:Literal .
+ex:manages a owl:ObjectProperty ; rdfs:label "manages"@en ; rdfs:domain ex:Person ; rdfs:range ex:Team .
+ex:worksOn a owl:ObjectProperty ; rdfs:label "works on"@en ; rdfs:domain ex:Team ; rdfs:range ex:Project .
+ex:supportedBy a owl:ObjectProperty ; rdfs:label "supported by"@en ; rdfs:range ex:EvidenceRecord .
+ex:EvidenceRecord a owl:Class ; rdfs:label "Evidence record"@en .

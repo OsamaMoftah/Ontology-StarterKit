@@ -1,0 +1,2 @@
+PREFIX ex: <https://ontology-starterkit.dev/business/>
+SELECT ?ownerName ?serviceName WHERE { ?team ex:owns ?service . ?team ex:name ?teamName . ?owner ex:manages ?team ; ex:name ?ownerName . ?service ex:name ?serviceName . }

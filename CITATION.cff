@@ -1,0 +1,12 @@
+cff-version: 1.2.0
+title: "Ontology StarterKit"
+message: "If this starter kit helps your work, please cite it."
+type: software
+authors:
+  - family-names: Moftah
+    given-names: Osama
+repository-code: "https://github.com/OsamaMoftah/Ontology-StarterKit"
+license: MIT
+version: 0.2.0
+date-released: 2026-09-16
+

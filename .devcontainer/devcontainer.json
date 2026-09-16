@@ -1,0 +1,11 @@
+{
+  "name": "Ontology StarterKit",
+  "image": "mcr.microsoft.com/devcontainers/python:1-3.11-bookworm",
+  "postCreateCommand": "python -m pip install -e '.[dev]'",
+  "customizations": {
+    "vscode": {
+      "extensions": ["charliermarsh.ruff", "ms-python.python"]
+    }
+  }
+}
+

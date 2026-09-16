@@ -1,0 +1,19 @@
+name: Bug report
+description: Report a reproducible problem in an example, pack or helper
+title: "bug: "
+labels: [bug]
+body:
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Reproduction
+      description: Include the command, Python version and smallest fixture that fails.
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected and actual behavior
+    validations:
+      required: true
+

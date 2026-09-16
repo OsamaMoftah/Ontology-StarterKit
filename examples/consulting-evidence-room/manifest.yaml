@@ -1,0 +1,16 @@
+id: consulting-evidence-room
+title: Therapeutic-area evidence room (fictional)
+version: 0.2.0
+ontology: ontology.ttl
+shapes: shapes.ttl
+data: data/valid.ttl
+questions: questions.yaml
+queries:
+  unsupported: queries/unsupported.rq
+expected:
+  unsupported: expected/unsupported.json
+invalid:
+  - data/invalid/missing-source.ttl
+sources: sources.yaml
+diagram: model.mmd
+license: CC0-1.0 synthetic teaching data

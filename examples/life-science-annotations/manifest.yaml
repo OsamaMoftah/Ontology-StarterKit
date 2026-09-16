@@ -1,0 +1,16 @@
+id: life-science-annotations
+title: Life-science annotation evidence
+version: 0.2.0
+ontology: ontology.ttl
+shapes: shapes.ttl
+data: data/valid.ttl
+questions: questions.yaml
+queries:
+  evidence: queries/evidence.rq
+expected:
+  evidence: expected/evidence.json
+invalid:
+  - data/invalid/missing-reference.ttl
+sources: sources.yaml
+diagram: model.mmd
+license: CC0-1.0 synthetic teaching data

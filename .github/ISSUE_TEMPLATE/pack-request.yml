@@ -1,0 +1,20 @@
+name: Example pack proposal
+description: Propose a new domain pack with a decision and competency questions
+title: "pack: "
+labels: [enhancement]
+body:
+  - type: input
+    id: domain
+    attributes:
+      label: Domain and decision
+      placeholder: "Clinical operations — which sites match protocol requirements?"
+    validations:
+      required: true
+  - type: textarea
+    id: questions
+    attributes:
+      label: Competency questions and permitted sources
+      description: Explain the questions, synthetic fixture plan and license.
+    validations:
+      required: true
+

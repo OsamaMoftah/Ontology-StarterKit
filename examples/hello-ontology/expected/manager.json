@@ -1,0 +1,5 @@
+{
+  "status": "supported",
+  "bindings": [{"person": "https://ontology-starterkit.dev/hello/Maya", "personName": "Maya Chen"}],
+  "evidence_ids": ["https://ontology-starterkit.dev/hello/Maya", "https://ontology-starterkit.dev/hello/Aurora", "https://ontology-starterkit.dev/hello/Alpha"]
+}

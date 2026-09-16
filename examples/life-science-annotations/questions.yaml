@@ -1,0 +1,3 @@
+- id: evidence
+  question: Which synthetic annotation has a supporting reference?
+  query: queries/evidence.rq

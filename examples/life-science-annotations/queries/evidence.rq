@@ -1,0 +1,2 @@
+PREFIX ex: <https://ontology-starterkit.dev/life-science/>
+SELECT ?productName ?processName ?reference WHERE { ?annotation a ex:Annotation ; ex:annotates ?product ; ex:aboutProcess ?process ; ex:supportedBy ?evidence . ?product ex:name ?productName . ?process ex:name ?processName . ?evidence ex:reference ?reference . }

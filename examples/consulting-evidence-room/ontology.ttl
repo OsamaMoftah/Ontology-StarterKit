@@ -1,0 +1,15 @@
+@prefix ex: <https://ontology-starterkit.dev/consulting/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+ex: a owl:Ontology ; rdfs:label "Consulting evidence-room model"@en .
+ex:Asset a owl:Class ; rdfs:label "Asset"@en .
+ex:Claim a owl:Class ; rdfs:label "Claim"@en .
+ex:EvidenceRecord a owl:Class ; rdfs:label "Evidence record"@en .
+ex:Source a owl:Class ; rdfs:label "Source"@en .
+ex:Indication a owl:Class ; rdfs:label "Indication"@en .
+ex:about a owl:ObjectProperty ; rdfs:domain ex:Claim ; rdfs:range ex:Asset .
+ex:supportedBy a owl:ObjectProperty ; rdfs:domain ex:Claim ; rdfs:range ex:EvidenceRecord .
+ex:fromSource a owl:ObjectProperty ; rdfs:domain ex:EvidenceRecord ; rdfs:range ex:Source .
+ex:forIndication a owl:ObjectProperty ; rdfs:domain ex:Asset ; rdfs:range ex:Indication .
+ex:name a owl:DatatypeProperty ; rdfs:range rdfs:Literal .
+ex:text a owl:DatatypeProperty ; rdfs:range rdfs:Literal .

@@ -1,0 +1,5 @@
+@prefix ex: <https://ontology-starterkit.dev/life-science/> .
+ex:ProteinA a ex:GeneProduct ; ex:name "Synthetic protein A" .
+ex:ProcessA a ex:BiologicalProcess ; ex:name "Synthetic stress response" .
+ex:Evidence1 a ex:EvidenceRecord .
+ex:Annotation1 a ex:Annotation ; ex:annotates ex:ProteinA ; ex:aboutProcess ex:ProcessA ; ex:supportedBy ex:Evidence1 .

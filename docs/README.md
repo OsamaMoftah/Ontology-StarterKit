@@ -24,3 +24,18 @@ Implementation-facing documentation lives alongside the code it documents:
 
 - [KG-RAG example](../src/integrations/langchain/kg-rag/README.md)
 - [Sample ontology assets](../src/ontology/README.md)
+
+## Learn
+
+- [Learning path](learn/README.md) — ontology concepts, evidence, competency questions and SHACL.
+- [Glossary](glossary.md)
+
+## History and domain stories
+
+- [History index](history/README.md)
+- [Ontology in business](history/ontology-in-business.md)
+- [Ontology in life sciences](history/ontology-in-life-sciences.md)
+- [Ontology in AI](history/ontology-in-ai.md)
+- [Life-sciences consulting path](consulting/README.md)
+- [Life-sciences consulting use-case catalogue](consulting/use-cases.md)
+- [Optional adapters](reference/optional-adapters.md)

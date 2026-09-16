@@ -15,6 +15,8 @@ Thanks for your interest in improving Ontology StarterKit.
 - Do not commit secrets, `.env` files, or proprietary datasets.
 - Keep examples safe by default and prefer read-only graph access patterns.
 - Preserve the repository's product-first tone: practical, honest, and reproducible.
+- Run `ruff check .`, `mypy src/ontology_starterkit`, and `pytest -q --cov=src/ontology_starterkit --cov-fail-under=80` before opening a PR.
+- Keep Neo4j and MCP work opt-in; the offline pack tests must pass without service credentials.
 
 ## Pull Request Checklist
 

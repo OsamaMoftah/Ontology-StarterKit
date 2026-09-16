@@ -1,0 +1,3 @@
+- id: owner
+  question: Who manages the team that owns Semantic API?
+  query: queries/owner.rq

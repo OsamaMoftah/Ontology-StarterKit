@@ -1,0 +1,12 @@
+@prefix ex: <https://ontology-starterkit.dev/business/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+ex: a owl:Ontology ; rdfs:label "Business ownership model"@en .
+ex:Person a owl:Class ; rdfs:label "Person"@en .
+ex:Team a owl:Class ; rdfs:label "Team"@en .
+ex:Service a owl:Class ; rdfs:label "Service"@en .
+ex:Project a owl:Class ; rdfs:label "Project"@en .
+ex:manages a owl:ObjectProperty ; rdfs:domain ex:Person ; rdfs:range ex:Team .
+ex:owns a owl:ObjectProperty ; rdfs:domain ex:Team ; rdfs:range ex:Service .
+ex:worksOn a owl:ObjectProperty ; rdfs:domain ex:Team ; rdfs:range ex:Project .
+ex:name a owl:DatatypeProperty ; rdfs:range rdfs:Literal .

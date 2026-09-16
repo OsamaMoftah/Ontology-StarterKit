@@ -1,0 +1,5 @@
+- id: manager
+  question: Who manages the team working on Alpha?
+  query: queries/manager.rq
+  expected: expected/manager.json
+  answer_template: "{personName}"

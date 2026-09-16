@@ -1,0 +1,7 @@
+@prefix ex: <https://ontology-starterkit.dev/life-science/> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+ex:ProductShape a sh:NodeShape ; sh:targetClass ex:GeneProduct ; sh:property [ sh:path ex:name ; sh:datatype xsd:string ; sh:minCount 1 ] .
+ex:ProcessShape a sh:NodeShape ; sh:targetClass ex:BiologicalProcess ; sh:property [ sh:path ex:name ; sh:datatype xsd:string ; sh:minCount 1 ] .
+ex:EvidenceShape a sh:NodeShape ; sh:targetClass ex:EvidenceRecord ; sh:property [ sh:path ex:reference ; sh:datatype xsd:string ; sh:minCount 1 ] .
+ex:AnnotationShape a sh:NodeShape ; sh:targetClass ex:Annotation ; sh:property [ sh:path ex:annotates ; sh:class ex:GeneProduct ; sh:minCount 1 ] ; sh:property [ sh:path ex:aboutProcess ; sh:class ex:BiologicalProcess ; sh:minCount 1 ] ; sh:property [ sh:path ex:supportedBy ; sh:class ex:EvidenceRecord ; sh:minCount 1 ] .

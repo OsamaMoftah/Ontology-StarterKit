@@ -1,0 +1,4 @@
+@prefix ex: <https://ontology-starterkit.dev/hello/> .
+
+ex:Maya a ex:Person ; ex:name "Maya Chen" ; ex:manages ex:Alpha .
+ex:Alpha a ex:Project ; ex:name "Alpha Project" .

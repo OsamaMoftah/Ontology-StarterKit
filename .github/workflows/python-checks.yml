@@ -1,43 +1,41 @@
-name: Python Checks
+name: Python checks
 
 on:
   pull_request:
-    paths:
-      - 'src/integrations/langchain/kg-rag/**'
-      - 'tests/**'
+    paths: ['src/**', 'tests/**', 'examples/**', 'scripts/**', 'pyproject.toml', 'ruff.toml', 'mypy.ini', '.github/workflows/**']
   push:
-    branches:
-      - main
-    paths:
-      - 'src/integrations/langchain/kg-rag/**'
-      - 'tests/**'
+    branches: [main]
+    paths: ['src/**', 'tests/**', 'examples/**', 'scripts/**', 'pyproject.toml', 'ruff.toml', 'mypy.ini', '.github/workflows/**']
 
 jobs:
   test:
     runs-on: ubuntu-latest
-
+    strategy:
+      matrix:
+        python-version: ['3.10', '3.11', '3.12']
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: '3.10'
-
-      - name: Install dependencies
+          python-version: ${{ matrix.python-version }}
+      - name: Install package and development tools
         run: |
           python -m pip install --upgrade pip
-          pip install -r src/integrations/langchain/kg-rag/requirements.txt pytest pytest-cov pip-audit
-
-      - name: Audit dependencies
+          pip install -e '.[dev]'
+      - name: Lint
+        run: ruff check .
+      - name: Type check
+        run: mypy src/ontology_starterkit
+      - name: Validate packs
         run: |
-          pip-audit -r src/integrations/langchain/kg-rag/requirements.txt
-
-      - name: Compile Python example
-        run: |
-          python -m py_compile src/integrations/langchain/kg-rag/graph_rag.py
-
+          ontokit packs
+          for pack in examples/*; do ontokit validate "$pack"; done
       - name: Run tests
+        run: pytest -q --cov=src/ontology_starterkit --cov-report=term-missing --cov-fail-under=80
+      - name: Audit optional integration dependencies
+        if: matrix.python-version == '3.11'
         run: |
-          pytest -q --cov=src/integrations/langchain/kg-rag --cov-report=term-missing --cov-fail-under=80
+          pip install -e '.[graphrag]' pip-audit
+          pip-audit -r src/integrations/langchain/kg-rag/requirements.txt
