@@ -11,6 +11,10 @@ The example requires a Neo4j instance and an LLM key at runtime. Its validator
 accepts only read-only, bounded Cypher and the application still needs a
 least-privilege Neo4j user, network controls and production query monitoring.
 
+The pinned local service can be started and seeded with `just services-ready`
+and `just services-seed`. The seed helper writes generic RDF triples with
+idempotent `MERGE` operations, refuses non-local URIs, and never drops data.
+
 ## MCP
 
 Install `pip install -e '.[mcp]'`. The adapter exposes pack listing, SHACL
@@ -30,4 +34,3 @@ The `linkml` extra is reserved for schemas generated from a reviewed ontology.
 contract and reviewed alias resolution; it intentionally does not call an LLM
 or merge ambiguous entities. A production extractor must retain source spans,
 confidence, model/version metadata and an abstention path.
-

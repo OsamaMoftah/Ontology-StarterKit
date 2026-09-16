@@ -15,6 +15,7 @@ For ontology updates, include a short impact statement in the release notes (for
 - Added an offline CLI for discovering packs, SHACL validation, named queries and fixture evaluations.
 - Added self-contained hello, business-project, life-science annotation and consulting evidence-room packs with invalid fixtures, evidence metadata and competency questions.
 - Added deterministic evidence, extraction-contract and reviewed alias helpers, plus an optional bounded MCP adapter.
+- Added opt-in local Neo4j Compose readiness and idempotent, local-only RDF seed commands.
 - Added accessible SVG diagram generation, learning lessons, ontology history, glossary and a 12-case life-sciences consulting catalogue.
 - Added packaging, Ruff, mypy, Just, citation, issue-template and ownership metadata for maintainers.
 - Hardened the optional LangChain/Neo4j example against procedure calls, unbounded paths, Cartesian patterns, ambient settings and timeout leaks.

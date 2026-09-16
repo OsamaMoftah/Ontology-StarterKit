@@ -20,3 +20,11 @@ validate:
 diagrams:
     python scripts/render_diagrams.py
 
+services-up:
+    docker compose --profile services up -d --wait
+
+services-ready: services-up
+    docker compose --profile services ps
+
+services-seed: services-up
+    python scripts/seed_neo4j.py examples/hello-ontology
