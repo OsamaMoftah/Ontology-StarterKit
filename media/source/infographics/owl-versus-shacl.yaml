@@ -1,0 +1,5 @@
+id: owl-versus-shacl
+question: When should a graph infer, and when should it stop?
+audience: ontology engineers
+claim: Semantics derive meaning; SHACL gates data quality.
+output: media/exports/infographic-owl-versus-shacl.svg

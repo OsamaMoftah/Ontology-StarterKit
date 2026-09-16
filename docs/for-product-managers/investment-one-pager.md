@@ -1,6 +1,6 @@
 # Investment One-Pager
 
-Use this template to summarize the case for investing in an ontology-backed semantic layer.
+Fill this out to pitch an ontology or knowledge-graph investment. Keep it to one page.
 
 ## Problem
 
@@ -18,10 +18,15 @@ Summarize the ontology, graph, and AI architecture in plain language.
 
 ## Expected Outcomes
 
-- Lower rates of hallucination and rework
-- Faster feature delivery
-- Better interoperability across datasets and systems
-- Improved traceability and governance
+Treat outcomes as hypotheses until the pilot measures them. Name the person
+who will collect each baseline and make the go/no-go decision.
+
+| Outcome | Baseline | Pilot target | Evidence / owner |
+| :--- | :--- | :--- | :--- |
+| Time to review an answer | | | Timed sample / |
+| Answers with a verified source path | | | Reviewed answer set / |
+| Mapping changes per new data source | | | Change log / |
+| Invalid records caught before publication | | | SHACL reports / |
 
 ## Financial Snapshot
 

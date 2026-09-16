@@ -1,0 +1,2 @@
+PREFIX ex: <https://ontology-starterkit.dev/consulting/>
+SELECT ?evidence ?source WHERE { ?evidence a ex:EvidenceRecord ; ex:fromSource ?source . }

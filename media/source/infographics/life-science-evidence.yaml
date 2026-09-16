@@ -1,0 +1,5 @@
+id: life-science-evidence
+question: Can another scientist reproduce the biological claim?
+audience: life-science teams
+claim: Annotation context includes evidence code, reference, taxon, and review status.
+output: media/exports/infographic-life-science-evidence.svg

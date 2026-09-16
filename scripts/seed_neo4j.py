@@ -8,8 +8,12 @@ from __future__ import annotations
 
 import argparse
 import os
+from hashlib import sha256
 from pathlib import Path
 from urllib.parse import urlparse
+
+from rdflib import BNode, Graph, Literal, URIRef
+from rdflib.compare import to_canonical_graph
 
 from ontology_starterkit.packs import load_pack
 from ontology_starterkit.validation import load_graph
@@ -20,8 +24,38 @@ def _local_uri(uri: str) -> bool:
     return host in {"localhost", "127.0.0.1", "::1"}
 
 
+def scoped_graph(graph: Graph, scope: str) -> Graph:
+    """Canonicalize blank nodes for repeat imports, with a pack-specific scope."""
+    result = Graph()
+    prefix = sha256(scope.encode()).hexdigest()
+    for subject, predicate, object_ in to_canonical_graph(graph):
+        if isinstance(subject, BNode):
+            subject = BNode(f"{prefix}-{subject}")
+        if isinstance(object_, BNode):
+            object_ = BNode(f"{prefix}-{object_}")
+        result.add((subject, predicate, object_))
+    return result
+
+
+def term_payload(term: object) -> dict[str, str]:
+    """Preserve RDFLib term kinds and literal metadata in a node payload."""
+    if isinstance(term, Literal):
+        return {
+            "kind": "literal",
+            "key": f"literal:{term.n3()}",
+            "value": str(term),
+            "datatype": str(term.datatype or ""),
+            "language": str(term.language or ""),
+        }
+    if isinstance(term, BNode):
+        return {"kind": "blank-node", "key": f"bnode:{term}"}
+    if isinstance(term, URIRef):
+        return {"kind": "resource", "key": str(term), "iri": str(term)}
+    return {"kind": "resource", "key": str(term), "iri": str(term)}
+
+
 def seed(pack_path: str | Path, *, uri: str | None = None, database: str = "neo4j") -> int:
-    """Insert RDF triples as generic Resource/Triple nodes and return a count."""
+    """Insert RDF triples while preserving resource, blank-node and literal terms."""
     uri = uri or os.getenv("NEO4J_URI", "bolt://127.0.0.1:7687")
     if not _local_uri(uri):
         raise ValueError("seed helper only permits a local Neo4j URI")
@@ -32,6 +66,7 @@ def seed(pack_path: str | Path, *, uri: str | None = None, database: str = "neo4
 
     pack = load_pack(pack_path)
     graph = load_graph(pack.resolve(str(pack.manifest.get("data", "data.ttl"))))
+    graph = scoped_graph(graph, pack.pack_id)
     username = os.getenv("NEO4J_USERNAME", "neo4j")
     password = os.getenv("NEO4J_PASSWORD", "starterkit-local-only")
     driver = GraphDatabase.driver(uri, auth=(username, password), connection_timeout=5)
@@ -39,13 +74,22 @@ def seed(pack_path: str | Path, *, uri: str | None = None, database: str = "neo4
     try:
         with driver.session(database=database) as session:
             for subject, predicate, object_ in graph:
+                subject_payload = term_payload(subject)
+                object_payload = term_payload(object_)
                 session.run(
                     """
-                    MERGE (s:Resource {iri: $subject})
-                    MERGE (o:Resource {iri: $object})
+                    MERGE (s:RDFTerm {key: $subject_key})
+                    SET s.kind = $subject_kind, s.iri = $subject_iri
+                    MERGE (o:RDFTerm {key: $object_key})
+                    SET o.kind = $object_kind, o.iri = $object_iri,
+                        o.value = $object_value, o.datatype = $object_datatype,
+                        o.language = $object_language
                     MERGE (s)-[:TRIPLE {predicate: $predicate}]->(o)
                     """,
-                    subject=str(subject), predicate=str(predicate), object=str(object_),
+                    subject_key=subject_payload["key"], subject_kind=subject_payload["kind"], subject_iri=subject_payload.get("iri"),
+                    object_key=object_payload["key"], object_kind=object_payload["kind"], object_iri=object_payload.get("iri"),
+                    object_value=object_payload.get("value"), object_datatype=object_payload.get("datatype"), object_language=object_payload.get("language"),
+                    predicate=str(predicate),
                 ).consume()
                 count += 1
     finally:
@@ -64,4 +108,3 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
-

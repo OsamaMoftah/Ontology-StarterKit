@@ -1,75 +1,54 @@
-# Ontology StarterKit Upgrade Implementation Plan
+# Ontology Starter Kit Upgrade Implementation Plan
 
-> **For agentic workers:** Implement task-by-task with test-first verification and keep each slice reviewable.
+> **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:executing-plans to implement this plan task-by-task.
 
-**Goal:** Turn Ontology StarterKit into a reproducible, offline-first ontology learning and implementation kit with safe optional GraphRAG, business/life-science consulting packs, visual helpers, and maintainable public-project workflows.
+**Goal:** Turn the repository from a single tutorial into a visually strong, testable ontology starter kit for AI engineers, ontology practitioners, and life-science consultancies.
 
-**Architecture:** A small Python package owns pack discovery, RDF/SHACL validation, named competency queries, evidence-shaped answers, deterministic diagrams, and optional integrations. Domain packs are self-contained and manifest-driven. Service-dependent Neo4j/LLM/MCP features remain explicit extras and never define the offline first-run path.
+**Architecture:** Keep the offline RDF/SHACL/SPARQL core dependency-light; make Mermaid rendering and infographic generation deterministic and inspectable; add consulting stories and source-backed learning content around the same pack contracts. Optional GraphRAG and Neo4j adapters remain isolated and fail closed.
 
-**Tech Stack:** Python 3.10+, RDFLib, pySHACL, SPARQL, Typer, Pydantic, pytest, Ruff, mypy; optional Neo4j/LangChain, LinkML, MCP and Docker extras.
+**Tech Stack:** Python 3.11+, RDFLib, pySHACL, Typer, pytest, Ruff, mypy, dependency-free SVG, Markdown, Mermaid source, Docker Compose.
+
+> Status: this is the intended scope, not a completion report. See the
+> [independent review](../../reviews/2026-09-16-luna-review.md) for verified delivery and remaining gates.
 
 ## Global Constraints
 
-- No committed credentials, proprietary data, or unlicensed ontology extracts.
-- Offline core must run without Neo4j, an LLM, or network access.
-- Generated answers must expose supporting evidence IDs or abstain.
-- Domain packs must carry sources, versions, licenses, invalid fixtures and competency questions.
-- Do not claim clinical, legal, regulatory, security, or financial outcomes without evidence and qualified review.
-- Maintain existing MIT code license; license original media separately where appropriate.
+- Preserve the four existing example packs and their offline-first behavior.
+- Every visual must have an editable source, accessible SVG metadata, accurate labels, and a text equivalent.
+- Named queries are allowlisted and unsafe SPARQL operations are rejected.
+- Core-only installation must collect and run tests without optional GraphRAG dependencies.
+- Claims in history and consulting material must be sourced or explicitly marked fictional.
 
----
+### Task 1: Correct the Mermaid renderer
 
-### Task 1: Package and offline CLI foundation
+Files: `scripts/render_diagrams.py`, `tests/unit/test_render_diagrams.py`.
 
-**Files:** create `pyproject.toml`, `src/ontology_starterkit/__init__.py`, `src/ontology_starterkit/cli.py`, `src/ontology_starterkit/packs.py`, `tests/unit/test_packs.py`; modify `.gitignore` if needed.
+Write failing tests for dotted edges, branch-safe layered layout, wrapped labels, resolved title/description IDs, and unsupported edge diagnostics. Rewrite the parser to retain display labels and edge kinds, lay out a DAG by levels, render solid and dotted paths with accessible metadata, and fail visibly on unsupported edge syntax. Run the focused tests, then regenerate the pack SVGs.
 
-Implement a Typer CLI with `ontokit packs`, `ontokit validate <pack>`, and `ontokit query <pack> <query_id>`. Keep pack loading deterministic and path-safe. Tests must cover discovery, missing manifest errors, valid/invalid validation, named-query parameter rejection and JSON output.
+### Task 2: Harden core contracts
 
-### Task 2: Complete the Hello Ontology pack
+Files: `src/ontology_starterkit/cli.py`, `src/ontology_starterkit/extraction.py`, `src/ontology_starterkit/validation.py`, `src/ontology_starterkit/evidence.py`, `src/ontology_starterkit/mcp_server.py`, `scripts/seed_neo4j.py` plus focused unit tests.
 
-**Files:** create `examples/hello-ontology/manifest.yaml`, `ontology.ttl`, `shapes.ttl`, `data/valid.ttl`, `data/invalid/missing-name.ttl`, `data/invalid/bad-relation.ttl`, `queries/manager.rq`, `questions.yaml`, `expected/manager.json`, `sources.yaml`, `model.mmd`, `README.md`; create `tests/semantic/test_hello_pack.py`.
+Add nonzero CLI exits for invalid validation and failed evaluations; preserve Unicode identifiers and reject alias collisions; constrain alias application to requested fields and expose audit changes; reject unsafe SPARQL operations; constrain MCP pack paths to an examples root; require evidence paths for cited claims; represent RDF literals separately in Neo4j seed output. Test each behavior before implementation and run the full unit suite.
 
-Model Person, Team, Project, `manages`, `worksOn`, names and provenance. Add tests for both invalid fixtures, empty-target protection, named query result and unknown-answer behavior.
+### Task 3: Build the visual system
 
-### Task 3: Consulting and life-science packs
+Files: `scripts/render_infographics.py`, `media/source/infographics/*.yaml`, `media/exports/infographic-*.svg`, `media/gallery.md`, `media/manifest.yaml`, `docs/learn/infographics.md`.
 
-**Files:** create `examples/business-projects/*`, `examples/life-science-annotations/*`, `examples/consulting-evidence-room/*`; create `tests/semantic/test_domain_packs.py`; modify `docs/README.md`.
+Create eight editorial infographics covering definitions, graph layers, OWL versus SHACL, question-to-evidence, unknown versus false, reuse, life-science annotation, and term migration. Add three consulting visuals for a value chain, evidence room, and pilot scorecard. Use a shared palette and typography, curved relationship paths, comparison compositions, accurate text, accessible metadata, and source specs. Add the gallery and text equivalents.
 
-Use synthetic business/consulting data and a small explicitly attributed GO-inspired teaching dataset without redistributing restricted content. Each pack must use the same manifest contract and include evidence, source versions, competency questions, negative fixtures and diagrams.
+### Task 4: Add authored illustrations and stories
 
-### Task 4: Harden optional GraphRAG integration
+Files: `media/source/illustrations/*`, `docs/history/timeline.md`, `docs/stories/*.md`, `docs/learn/README.md`, `README.md`.
 
-**Files:** create `tests/unit/test_graph_rag_safety.py`; modify `src/integrations/langchain/kg-rag/graph_rag.py`, README, requirements and `.env.example`.
+Add a coherent generated hero and supporting illustration assets with provenance metadata. Expand ontology history into a sourced multi-lane timeline and add fictional but realistic business, consulting, and life-science stories with runnable links to packs and explicit evidence limits.
 
-Replace substring-only acceptance with a conservative read-only policy: reject procedures and unrestricted patterns by default, require a single statement and a bounded projection/limit. Validate positive identifiers/literals. Configure explicit graph transaction timeout and finite retries; distinguish `None` from an empty env mapping and reject invalid/placeholder settings.
+### Task 5: Expand packs and developer experience
 
-### Task 5: Packaging, lint, typing and service development
+Files under `examples/*`, `.github/workflows/python-checks.yml`, `scripts/check_links.py`, `tests/unit/test_check_links.py`, `README.md`.
 
-**Files:** create `ruff.toml`, `mypy.ini`, `justfile`, `.devcontainer/devcontainer.json`, `docker-compose.yml`; modify workflows and CONTRIBUTING.
+Give each pack at least five meaningful competency questions (seven for consulting), expected fixtures, and invalid fixtures. Add a deterministic Markdown link checker to CI, document optional dependency skips, and add reproducible local commands for rendering, validation, queries, and evaluation.
 
-Core installation must not install optional service dependencies. Add CI for tests, Ruff, mypy, pack validation and link checks. Compose is opt-in, local-only and version-pinned; provide readiness and seed commands.
+### Task 6: Verify and deliver
 
-### Task 6: Visual helpers and documentation
-
-**Files:** create `media/manifest.yaml`, `media/source/hello-model.mmd`, `media/source/README.md`, `scripts/render_diagrams.py`, `docs/learn/*`, `docs/history/*`, `docs/consulting/*`, `assets/README.md`; modify root README and docs index.
-
-Generate deterministic SVG from reviewed Mermaid/source fixtures where tooling is available; always include text equivalents and alt text. Add sourced history, consulting path, glossary and runnable lesson sequence.
-
-### Task 7: Evidence answers and evaluation
-
-**Files:** create `src/ontology_starterkit/evidence.py`, `src/ontology_starterkit/evals.py`, `evals/questions.yaml`, `evals/README.md`, `tests/unit/test_evidence.py`.
-
-Return structured answer records with `answer`, `evidence_ids`, `data_version`, `status` and `limitations`. Add offline evaluation for exact bindings, abstention and citation membership.
-
-### Task 8: Optional extraction, LinkML and MCP adapters
-
-**Files:** create `src/ontology_starterkit/extraction.py`, `src/ontology_starterkit/mcp_server.py`, `docs/reference/optional-adapters.md`, tests for deterministic candidate extraction and bounded named tools; add optional dependency groups.
-
-Start with local deterministic interfaces. No arbitrary remote query, file access, network import or unrestricted writes. Mark these features experimental until tests and documentation are complete.
-
-### Task 9: Public release and maintenance
-
-**Files:** create issue forms, CODEOWNERS, CITATION.cff, release workflow/docs, media attribution and source manifests; update CHANGELOG and README.
-
-Run all checks from a clean checkout, publish a tagged release, and report local/CI/service boundaries separately.
-
+Run focused tests after each task, then `ruff check`, `mypy`, core-only pytest, optional GraphRAG pytest, pack validation/evaluation, link checks, SVG/XML checks, and build/audit commands. Inspect representative visuals at desktop and mobile widths. Commit the branch, push it, and open a reviewable PR with an evidence matrix and explicit remaining gates.

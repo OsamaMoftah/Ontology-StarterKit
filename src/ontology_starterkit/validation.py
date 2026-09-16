@@ -5,11 +5,36 @@ from __future__ import annotations
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any, cast
+from pyparsing import ParseResults
 
 from pyshacl import validate
 from rdflib import Graph
+from rdflib.plugins.sparql.parser import parseQuery
+from rdflib.plugins.sparql.parserutils import CompValue
 
 from .packs import Pack, PackError
+
+
+def validate_named_query(query: str) -> None:
+    """Accept one local SELECT; reject dataset loading and federated queries."""
+    try:
+        parsed = parseQuery(query)
+    except Exception as exc:
+        raise PackError("named query must be one valid local read SELECT operation") from exc
+    if parsed[1].name != "SelectQuery":
+        raise PackError("named query must be a local read SELECT operation")
+
+    def inspect(value: Any) -> None:
+        if isinstance(value, CompValue):
+            if value.name in {"ServiceGraphPattern", "DatasetClause"}:
+                raise PackError("named queries may only contain one local read operation; SERVICE and FROM are forbidden")
+            for item in value.values():
+                inspect(item)
+        elif isinstance(value, (list, tuple, ParseResults)):
+            for item in value:
+                inspect(item)
+
+    inspect(parsed)
 
 
 @dataclass(frozen=True)
@@ -24,7 +49,7 @@ def load_graph(path: str | Path) -> Graph:
     """Parse a Turtle/RDF file into an RDFLib graph."""
     graph = Graph()
     try:
-        graph.parse(path)
+        graph.parse(path, format="turtle")
     except Exception as exc:  # rdflib exposes parser-specific exception types
         raise PackError(f"could not parse RDF data: {path}") from exc
     return graph
@@ -52,6 +77,7 @@ def run_named_query(pack: Pack, query_id: str, *, data_path: str | None = None, 
         raise PackError("query parameters are not supported by this offline runner")
     data = load_graph(pack.resolve(data_path or pack.manifest.get("data", "data.ttl")))
     query = pack.resolve(str(queries[query_id])).read_text()
+    validate_named_query(query)
     rows: list[dict[str, str]] = []
     for result in data.query(query):
         row = cast(Any, result).asdict()

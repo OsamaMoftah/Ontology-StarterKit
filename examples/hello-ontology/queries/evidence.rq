@@ -1,0 +1,2 @@
+PREFIX ex: <https://ontology-starterkit.dev/hello/>
+SELECT ?record ?name WHERE { ?record a ex:EvidenceRecord ; ex:name ?name . }

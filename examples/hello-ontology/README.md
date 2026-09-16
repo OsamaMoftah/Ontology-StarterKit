@@ -13,4 +13,4 @@ Validate with pySHACL:
 pyshacl -s examples/hello-ontology/shapes.ttl examples/hello-ontology/data/valid.ttl
 ```
 
-The `bad-relation.ttl` and `missing-name.ttl` files are deliberately invalid. Removing a manager assertion creates an **unknown** answer; it does not prove that no manager exists. All data is fictional and CC0-1.0.
+The `bad-relation.ttl` and `missing-name.ttl` files are invalid fixtures. Removing a manager assertion creates an **unknown** answer; it does not prove that no manager exists. All data is fictional and CC0-1.0.

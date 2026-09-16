@@ -7,8 +7,16 @@ data: data/valid.ttl
 questions: questions.yaml
 queries:
   manager: queries/manager.rq
+  people: queries/people.rq
+  teams: queries/teams.rq
+  projects: queries/projects.rq
+  evidence: queries/evidence.rq
 expected:
   manager: expected/manager.json
+  people: expected/people.json
+  teams: expected/teams.json
+  projects: expected/projects.json
+  evidence: expected/evidence.json
 invalid:
   - data/invalid/missing-name.ttl
   - data/invalid/bad-relation.ttl

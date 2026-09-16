@@ -4,6 +4,9 @@ import time
 
 import pytest
 
+for _dependency in ("dotenv", "langchain_core", "langchain_openai", "langchain_neo4j"):
+    pytest.importorskip(_dependency)
+
 MODULE_PATH = Path(__file__).resolve().parents[1] / "src" / "integrations" / "langchain" / "kg-rag" / "graph_rag.py"
 SPEC = spec_from_file_location("graph_rag_module", MODULE_PATH)
 graph_rag = module_from_spec(SPEC)
@@ -214,7 +217,7 @@ def test_run_graph_query_requires_list():
 
 
 def test_parse_args_with_cli(monkeypatch):
-    monkeypatch.setattr("sys.argv", ["graph_rag.py", "--query", "Who works on Alpha?"])
+    monkeypatch.setattr("sys.argv", ["graph_rag.py", "--allow-experimental-cypher", "--query", "Who works on Alpha?"])
     args = graph_rag.parse_args()
     assert args.query == "Who works on Alpha?"
 

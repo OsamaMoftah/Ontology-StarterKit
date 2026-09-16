@@ -3,3 +3,15 @@
   query: queries/manager.rq
   expected: expected/manager.json
   answer_template: "{personName}"
+- id: people
+  question: Which people are in the graph?
+  query: queries/people.rq
+- id: teams
+  question: Which teams are represented?
+  query: queries/teams.rq
+- id: projects
+  question: Which projects are represented?
+  query: queries/projects.rq
+- id: evidence
+  question: Which evidence records are available?
+  query: queries/evidence.rq

@@ -1,0 +1,2 @@
+PREFIX ex: <https://ontology-starterkit.dev/life-science/>
+SELECT DISTINCT ?evidence ?reference WHERE { ?annotation a ex:Annotation ; ex:supportedBy ?evidence . ?evidence a ex:EvidenceRecord ; ex:reference ?reference . }

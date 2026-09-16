@@ -1,0 +1,2 @@
+PREFIX ex: <https://ontology-starterkit.dev/business/>
+SELECT DISTINCT ?person ?name WHERE { ?person a ex:Person ; ex:name ?name ; ex:manages ?team . ?team a ex:Team . }

@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import json
+from collections import Counter
 from typing import Any
 
 from .packs import Pack, PackError
@@ -30,10 +31,10 @@ def evaluate_query(pack: Pack, query_id: str) -> dict[str, object]:
     """Compare a named query with its fixture and return a JSON-safe report."""
     actual = run_named_query(pack, query_id)
     expected = load_expected(pack, query_id)
-    actual_set = {tuple(sorted(row.items())) for row in actual}
-    expected_set = {tuple(sorted(row.items())) for row in expected}
-    missing = [dict(row) for row in sorted(expected_set - actual_set)]
-    unexpected = [dict(row) for row in sorted(actual_set - expected_set)]
+    actual_set = Counter(tuple(sorted(row.items())) for row in actual)
+    expected_set = Counter(tuple(sorted(row.items())) for row in expected)
+    missing = [dict(row) for row in sorted((expected_set - actual_set).elements())]
+    unexpected = [dict(row) for row in sorted((actual_set - expected_set).elements())]
     return {
         "pack": pack.pack_id,
         "query": query_id,

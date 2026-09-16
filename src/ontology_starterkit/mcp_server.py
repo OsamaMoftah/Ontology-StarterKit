@@ -10,7 +10,7 @@ from __future__ import annotations
 from pathlib import Path
 from typing import Any
 
-from .packs import Pack, discover_packs, load_pack
+from .packs import Pack, PackError, discover_packs, load_pack
 from .validation import run_named_query, validate_pack
 
 
@@ -23,14 +23,29 @@ def list_pack_tools(examples_root: str | Path) -> list[dict[str, str]]:
     ]
 
 
-def validate_pack_tool(pack_path: str | Path) -> dict[str, object]:
-    pack = load_pack(pack_path)
+def _bounded_pack_path(pack_path: str | Path, examples_root: str | Path | None) -> Path:
+    candidate = Path(pack_path).resolve()
+    if examples_root is not None:
+        root = Path(examples_root).resolve()
+        if not Path(pack_path).is_absolute():
+            candidate = (root / pack_path).resolve()
+        try:
+            relative = candidate.relative_to(root)
+        except ValueError as exc:
+            raise PackError("pack path is outside the configured examples root") from exc
+        if len(relative.parts) != 1:
+            raise PackError("pack path must be an immediate child of the configured examples root")
+    return candidate
+
+
+def validate_pack_tool(pack_path: str | Path, *, examples_root: str | Path | None = None) -> dict[str, object]:
+    pack = load_pack(_bounded_pack_path(pack_path, examples_root))
     report = validate_pack(pack)
     return {"pack": pack.pack_id, "conforms": report.conforms, "messages": list(report.messages)}
 
 
-def run_query_tool(pack_path: str | Path, query_id: str) -> dict[str, Any]:
-    pack: Pack = load_pack(pack_path)
+def run_query_tool(pack_path: str | Path, query_id: str, *, examples_root: str | Path | None = None) -> dict[str, Any]:
+    pack: Pack = load_pack(_bounded_pack_path(pack_path, examples_root))
     return {"pack": pack.pack_id, "query": query_id, "rows": run_named_query(pack, query_id)}
 
 
@@ -42,6 +57,7 @@ def serve(examples_root: str | Path) -> None:
         raise RuntimeError("install ontology-starterkit[mcp] to run the MCP adapter") from exc
 
     server = FastMCP("ontology-starterkit")
+    examples_root = Path(examples_root).resolve()
 
     @server.tool()
     def list_packs() -> list[dict[str, str]]:
@@ -49,11 +65,10 @@ def serve(examples_root: str | Path) -> None:
 
     @server.tool()
     def validate(pack_path: str) -> dict[str, object]:
-        return validate_pack_tool(pack_path)
+        return validate_pack_tool(pack_path, examples_root=examples_root)
 
     @server.tool()
     def query(pack_path: str, query_id: str) -> dict[str, Any]:
-        return run_query_tool(pack_path, query_id)
+        return run_query_tool(pack_path, query_id, examples_root=examples_root)
 
     server.run(transport="stdio")
-

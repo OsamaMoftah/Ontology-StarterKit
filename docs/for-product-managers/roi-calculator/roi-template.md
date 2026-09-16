@@ -1,8 +1,6 @@
 # Ontology StarterKit ROI Template
 
-This template provides a quantitative framework for estimating the return on investing in an ontology or knowledge graph for an AI product.
-
-> **This is a fillable framework.** Every number in this document (Sections 1-2) and in the Worked Example (Section 5) is a hypothetical placeholder used to demonstrate the formulas. Replace all values with your own team's estimates before using this to make or support a real decision — see the [ROI calculator README](README.md) for the recommended workflow.
+Every number below is a placeholder that shows how the formulas work. Replace it with your own data before using this template.
 
 ## 1. Cost Variables
 
@@ -36,7 +34,7 @@ Value is realized only after launch — it does not offset build-phase cost.
 | Hallucination reduction | `V_hall` | Avoided support, review, and rework cost from wrong model outputs | $8,000 |
 | Data wrangling savings | `V_data` | Engineering hours saved through better interoperability | $10,000 |
 | Compute optimization | `V_comp` | Lower token or retrieval cost through more precise GraphRAG | $3,000 |
-| Feature velocity | `V_feat` | Revenue or opportunity gained from faster delivery | $15,000 |
+| Feature velocity | `V_feat` | Value created when faster delivery lets the team ship earlier | $15,000 |
 
 **Total monthly value (post-launch):**
 
@@ -73,7 +71,8 @@ ROI(%) = (((V_total * T) - (C_upfront + (C_ongoing * T))) / (C_upfront + (C_ongo
 ### Payback period in months (from launch)
 
 ```text
-Payback = C_upfront / B_net
+Payback = C_upfront / B_net, when B_net > 0
+No payback under these assumptions when B_net <= 0
 ```
 
 Payback period is a single fixed value determined by `C_upfront` and `B_net` — it does not change with the horizon `T` you choose to report ROI over. Do not list a different payback figure per column in a summary table.
@@ -83,10 +82,11 @@ Payback period is a single fixed value determined by `C_upfront` and `B_net` —
 For a more finance-oriented model, discount post-launch monthly net benefits (`B_net`, treated as a flat monthly annuity) against `C_upfront` using your standard annual discount rate `r`, converted to a monthly rate `rm = (1 + r)^(1/12) - 1`:
 
 ```text
-NPV(T) = -C_upfront + B_net * (1 - (1 + rm)^-T) / rm
+NPV(T) = -C_upfront + B_net * (1 - (1 + rm)^-T) / rm, when rm != 0
+NPV(T) = -C_upfront + B_net * T, when rm = 0
 ```
 
-## 5. Worked Example (Illustrative — Not Real Data)
+## 5. Worked Example (Made-up Data)
 
 Using the example values from Sections 1-2 with a 3-month build phase (`B = 3`):
 

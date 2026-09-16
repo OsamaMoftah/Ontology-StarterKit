@@ -1,3 +1,15 @@
 - id: evidence
   question: Which synthetic annotation has a supporting reference?
   query: queries/evidence.rq
+- id: products
+  question: Which gene products are annotated?
+  query: queries/products.rq
+- id: processes
+  question: Which biological processes are represented?
+  query: queries/processes.rq
+- id: annotations
+  question: Which annotation links a product to a process?
+  query: queries/annotations.rq
+- id: references
+  question: Which references support an annotation?
+  query: queries/references.rq

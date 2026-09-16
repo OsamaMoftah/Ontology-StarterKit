@@ -34,6 +34,8 @@ def validate_pack(pack_path: Path) -> None:
         raise typer.BadParameter(str(exc)) from exc
     report = validate_pack_data(pack)
     typer.echo(json.dumps({"id": pack.pack_id, "status": "valid" if report.conforms else "invalid", "messages": list(report.messages)}))
+    if not report.conforms:
+        raise typer.Exit(code=1)
 
 
 @app.command("query")
@@ -55,7 +57,13 @@ def eval_pack(pack_path: Path, query_id: str) -> None:
     except PackError as exc:
         raise typer.BadParameter(str(exc)) from exc
     typer.echo(json.dumps(result, indent=2))
+    if not bool(result["passed"]):
+        raise typer.Exit(code=1)
 
 
 def main() -> None:
     app()
+
+
+if __name__ == "__main__":
+    main()

@@ -7,8 +7,20 @@ data: data/valid.ttl
 questions: questions.yaml
 queries:
   unsupported: queries/unsupported.rq
+  assets: queries/assets.rq
+  indications: queries/indications.rq
+  supported: queries/supported.rq
+  sourced: queries/sourced.rq
+  claim-status: queries/claim-status.rq
+  evidence-room: queries/evidence-room.rq
 expected:
   unsupported: expected/unsupported.json
+  assets: expected/assets.json
+  indications: expected/indications.json
+  supported: expected/supported.json
+  sourced: expected/sourced.json
+  claim-status: expected/claim-status.json
+  evidence-room: expected/evidence-room.json
 invalid:
   - data/invalid/missing-source.ttl
 sources: sources.yaml
