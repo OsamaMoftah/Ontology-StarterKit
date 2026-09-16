@@ -20,8 +20,8 @@ from rdflib import Graph, URIRef
 
 
 ROOT = Path(__file__).resolve().parents[1]
-FIXTURE = ROOT / "examples/chowlk/claim-evidence.drawio"
-EXPECTED = ROOT / "examples/chowlk/expected.ttl"
+FIXTURE = ROOT / "docs/reference/chowlk-fixtures/claim-evidence.drawio"
+EXPECTED = ROOT / "docs/reference/chowlk-fixtures/expected.ttl"
 API_URL = "https://chowlk.linkeddata.es/api"
 RDF_TYPE = URIRef("http://www.w3.org/1999/02/22-rdf-syntax-ns#type")
 OWL_CLASS = URIRef("http://www.w3.org/2002/07/owl#Class")

@@ -1,6 +1,6 @@
 # Chowlk authoring and semantic review
 
-The small [`claim-evidence.drawio`](../../examples/chowlk/claim-evidence.drawio) fixture shows two class boxes and a subclass relation.  Chowlk converts that diagrams.net source into OWL/Turtle; the checked-in [`expected.ttl`](../../examples/chowlk/expected.ttl) records the semantic contract that matters to this starter kit:
+The small [`claim-evidence.drawio`](chowlk-fixtures/claim-evidence.drawio) fixture shows two class boxes and a subclass relation.  Chowlk converts that diagrams.net source into OWL/Turtle; the checked-in [`expected.ttl`](chowlk-fixtures/expected.ttl) records the semantic contract that matters to this starter kit:
 
 - `ex:Claim` and `ex:Evidence` remain OWL classes;
 - `ex:Claim rdfs:subClassOf ex:Evidence` is preserved;
