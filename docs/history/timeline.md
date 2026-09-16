@@ -1,4 +1,4 @@
-# Ontology history: four lanes, one practical lesson
+# Ontology history: four lanes, one lesson
 
 Ontology is older than software. The useful thread for a modern team is how
 people moved from naming things, to classifying them, to connecting evidence

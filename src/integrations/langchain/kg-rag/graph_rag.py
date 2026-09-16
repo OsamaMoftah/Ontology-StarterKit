@@ -1,11 +1,4 @@
-"""Run a guarded KG-RAG example with LangChain and Neo4j.
-
-This module demonstrates a controlled GraphRAG flow for ontology-backed AI
-applications. It loads configuration from environment variables, extracts a
-graph schema, asks an LLM to generate a read-only Cypher query, validates the
-query before execution, runs the query against Neo4j, and then asks an LLM to
-produce a concise natural-language answer from the returned rows.
-"""
+"""GraphRAG example: generate, validate, and run a read-only Cypher query."""
 
 import argparse
 import concurrent.futures

@@ -1,6 +1,6 @@
 # ROI Calculator
 
-This module helps product managers build a defensible business case for ontology-backed AI features.
+Build a business case for investing in an ontology or knowledge graph. This folder has formulas, a worked example, and a template.
 
 ## What It Includes
 
@@ -16,4 +16,4 @@ This module helps product managers build a defensible business case for ontology
 
 ## Important Caveat
 
-The sample figures in this folder are illustrative. Replace them with values from your own product, team costs, and risk profile before sharing externally.
+The numbers in this folder are examples. Replace them with your own product, team, and risk data before sharing them.

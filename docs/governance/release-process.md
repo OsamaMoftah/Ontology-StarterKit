@@ -1,6 +1,6 @@
 # Release Process
 
-This release process keeps Ontology StarterKit reproducible and transparent.
+How to cut a release.
 
 ## Pre-release Checklist
 

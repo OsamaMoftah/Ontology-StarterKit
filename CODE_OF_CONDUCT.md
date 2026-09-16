@@ -2,14 +2,13 @@
 
 ## Our Commitment
 
-We want Ontology StarterKit to be a welcoming, respectful project for engineers, product managers, founders, and researchers.
+Be constructive. Assume good intent. Focus on the work.
 
 ## Expected Behavior
 
 - Be respectful and constructive.
 - Assume good intent and give actionable feedback.
 - Focus discussion on ideas, evidence, and implementation details.
-- Help keep the project accessible to newcomers.
 
 ## Unacceptable Behavior
 

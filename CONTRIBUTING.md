@@ -1,11 +1,9 @@
 # Contributing
 
-Thanks for your interest in improving Ontology StarterKit.
-
 ## Before You Open a PR
 
 - Open an issue for substantial changes so contributors can agree on scope first.
-- Keep changes focused and easy to review.
+- One concern per PR. Split large changes into reviewable pieces.
 - Update documentation when behavior, setup, or repo structure changes.
 - Add or update tests when you change executable code.
 
@@ -14,7 +12,7 @@ Thanks for your interest in improving Ontology StarterKit.
 - Use Python 3.10+ for the current examples.
 - Do not commit secrets, `.env` files, or proprietary datasets.
 - Keep examples safe by default and prefer read-only graph access patterns.
-- Preserve the repository's product-first tone: practical, honest, and reproducible.
+- Match the existing tone. Say what works, say what does not, and skip the marketing.
 - Run `ruff check .`, `mypy src/ontology_starterkit`, and `pytest -q --cov=src/ontology_starterkit --cov-fail-under=80` before opening a PR.
 - Keep Neo4j and MCP work opt-in; the offline pack tests must pass without service credentials.
 

@@ -1,7 +1,7 @@
 # Infographic lessons
 
 Use the gallery as a visual index, then run the matching pack command. The
-diagrams are deliberately concise; the text equivalents below carry the exact
+diagrams are concise; the text equivalents below carry the exact
 lesson for screen readers and readers working without images.
 
 1. **One word, three meanings.** Sales, support, and finance can each mean a

@@ -1,8 +1,6 @@
 # Ontology StarterKit ROI Template
 
-This template provides a quantitative framework for estimating the return on investing in an ontology or knowledge graph for an AI product.
-
-> **This is a fillable framework.** Every number in this document (Sections 1-2) and in the Worked Example (Section 5) is a hypothetical placeholder used to demonstrate the formulas. Replace all values with your own team's estimates before using this to make or support a real decision — see the [ROI calculator README](README.md) for the recommended workflow.
+Every number below is a placeholder that shows how the formulas work. Replace it with your own data before using this template.
 
 ## 1. Cost Variables
 
@@ -36,7 +34,7 @@ Value is realized only after launch — it does not offset build-phase cost.
 | Hallucination reduction | `V_hall` | Avoided support, review, and rework cost from wrong model outputs | $8,000 |
 | Data wrangling savings | `V_data` | Engineering hours saved through better interoperability | $10,000 |
 | Compute optimization | `V_comp` | Lower token or retrieval cost through more precise GraphRAG | $3,000 |
-| Feature velocity | `V_feat` | Revenue or opportunity gained from faster delivery | $15,000 |
+| Feature velocity | `V_feat` | Value created when faster delivery lets the team ship earlier | $15,000 |
 
 **Total monthly value (post-launch):**
 
@@ -86,7 +84,7 @@ For a more finance-oriented model, discount post-launch monthly net benefits (`B
 NPV(T) = -C_upfront + B_net * (1 - (1 + rm)^-T) / rm
 ```
 
-## 5. Worked Example (Illustrative — Not Real Data)
+## 5. Worked Example (Made-up Data)
 
 Using the example values from Sections 1-2 with a 3-month build phase (`B = 3`):
 

@@ -1,6 +1,6 @@
 # KG-RAG Example
 
-This example shows a more controlled, optional way to combine LangChain, OpenAI, and Neo4j for graph-based retrieval-augmented generation. The offline RDF/SHACL packs run without these services; use them first.
+A LangChain + OpenAI + Neo4j GraphRAG example with read-only query validation, budget caps, and structured logging. The offline RDF/SHACL packs run without these services; use them first.
 
 This module currently targets the LangChain 1.x package family.
 

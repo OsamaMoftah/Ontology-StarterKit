@@ -1,6 +1,6 @@
 # Investment One-Pager
 
-Use this template to summarize the case for investing in an ontology-backed semantic layer.
+Fill this out to pitch an ontology or knowledge-graph investment. Keep it to one page.
 
 ## Problem
 
@@ -18,10 +18,10 @@ Summarize the ontology, graph, and AI architecture in plain language.
 
 ## Expected Outcomes
 
-- Lower rates of hallucination and rework
-- Faster feature delivery
-- Better interoperability across datasets and systems
-- Improved traceability and governance
+- LLM answers grounded in verified graph relationships, with less manual review.
+- A shared ontology across teams, so each feature does not need a new schema map.
+- Answers that trace to graph paths and source records.
+- Ontology changes checked by SHACL in CI, so schema drift is visible.
 
 ## Financial Snapshot
 

@@ -1,7 +1,7 @@
 # Ontology Starter Kit visual gallery
 
 The visual layer is a set of explainers, not a wall of decorative boxes. Each
-asset answers one practical question and links back to an editable source.
+asset answers one question and links back to an editable source.
 
 ![Ontology workshop hero](source/illustrations/ontology-workshop-hero.png)
 
