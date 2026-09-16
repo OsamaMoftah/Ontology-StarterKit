@@ -37,10 +37,10 @@ def build_linkml_schema(
     payload = {
         "id": schema_id,
         "name": name,
-        "prefixes": {"linkml": "https://w3id.org/linkml/"},
-        "default_prefix": "linkml",
+        "prefixes": {"linkml": "https://w3id.org/linkml/", "local": schema_id.rstrip("/#") + "/"},
+        "imports": ["linkml:types"],
+        "default_prefix": "local",
         "classes": rendered_classes,
         "slots": {slot: {"range": "string"} for slot in sorted(slots)},
     }
     return yaml.safe_dump(payload, sort_keys=False)
-

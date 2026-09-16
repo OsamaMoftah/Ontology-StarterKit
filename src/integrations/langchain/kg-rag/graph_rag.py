@@ -1,11 +1,4 @@
-"""Run a guarded KG-RAG example with LangChain and Neo4j.
-
-This module demonstrates a controlled GraphRAG flow for ontology-backed AI
-applications. It loads configuration from environment variables, extracts a
-graph schema, asks an LLM to generate a read-only Cypher query, validates the
-query before execution, runs the query against Neo4j, and then asks an LLM to
-produce a concise natural-language answer from the returned rows.
-"""
+"""GraphRAG example: generate, validate, and run a read-only Cypher query."""
 
 import argparse
 import concurrent.futures
@@ -344,7 +337,7 @@ def build_llm(model: str, api_key: str, timeout_seconds: int) -> ChatOpenAI:
         A configured `ChatOpenAI` client with deterministic sampling.
     """
 
-    return ChatOpenAI(model=model, temperature=0, api_key=api_key, timeout=timeout_seconds)
+    return ChatOpenAI(model=model, temperature=0, api_key=api_key, timeout=timeout_seconds, max_retries=0)
 
 
 def invoke_llm_with_timeout(llm: ChatOpenAI, prompt: str, timeout_seconds: int, guards: RuntimeGuards, run_id: str) -> Any:
@@ -506,7 +499,12 @@ def parse_args() -> argparse.Namespace:
 
     parser = argparse.ArgumentParser(description="Run the Ontology StarterKit KG-RAG example.")
     parser.add_argument("--query", required=True, help="Natural language question to answer using the graph")
-    return parser.parse_args()
+    parser.add_argument("--allow-experimental-cypher", action="store_true",
+                        help="opt in to generated Cypher; requires a database-enforced read-only account")
+    args = parser.parse_args()
+    if not args.allow_experimental_cypher:
+        parser.error("generated Cypher is experimental; use ontokit query for named queries, or explicitly pass --allow-experimental-cypher with a read-only database account")
+    return args
 
 
 def main() -> int:

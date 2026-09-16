@@ -8,10 +8,12 @@ from __future__ import annotations
 
 import argparse
 import os
+from hashlib import sha256
 from pathlib import Path
 from urllib.parse import urlparse
 
-from rdflib import BNode, Literal, URIRef
+from rdflib import BNode, Graph, Literal, URIRef
+from rdflib.compare import to_canonical_graph
 
 from ontology_starterkit.packs import load_pack
 from ontology_starterkit.validation import load_graph
@@ -22,8 +24,21 @@ def _local_uri(uri: str) -> bool:
     return host in {"localhost", "127.0.0.1", "::1"}
 
 
+def scoped_graph(graph: Graph, scope: str) -> Graph:
+    """Canonicalize blank nodes for repeat imports, with a pack-specific scope."""
+    result = Graph()
+    prefix = sha256(scope.encode()).hexdigest()
+    for subject, predicate, object_ in to_canonical_graph(graph):
+        if isinstance(subject, BNode):
+            subject = BNode(f"{prefix}-{subject}")
+        if isinstance(object_, BNode):
+            object_ = BNode(f"{prefix}-{object_}")
+        result.add((subject, predicate, object_))
+    return result
+
+
 def term_payload(term: object) -> dict[str, str]:
-    """Convert an RDFLib term to a lossless Neo4j node payload."""
+    """Preserve RDFLib term kinds and literal metadata in a node payload."""
     if isinstance(term, Literal):
         return {
             "kind": "literal",
@@ -51,6 +66,7 @@ def seed(pack_path: str | Path, *, uri: str | None = None, database: str = "neo4
 
     pack = load_pack(pack_path)
     graph = load_graph(pack.resolve(str(pack.manifest.get("data", "data.ttl"))))
+    graph = scoped_graph(graph, pack.pack_id)
     username = os.getenv("NEO4J_USERNAME", "neo4j")
     password = os.getenv("NEO4J_PASSWORD", "starterkit-local-only")
     driver = GraphDatabase.driver(uri, auth=(username, password), connection_timeout=5)

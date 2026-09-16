@@ -5,23 +5,36 @@ from __future__ import annotations
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any, cast
-import re
+from pyparsing import ParseResults
 
 from pyshacl import validate
 from rdflib import Graph
+from rdflib.plugins.sparql.parser import parseQuery
+from rdflib.plugins.sparql.parserutils import CompValue
 
 from .packs import Pack, PackError
 
 
-_UNSAFE_SPARQL = re.compile(r"(?<![A-Za-z0-9_?:])(?:SERVICE|LOAD|CLEAR|DROP|INSERT|DELETE|CREATE|COPY|MOVE|ADD)\b", re.IGNORECASE)
-
-
 def validate_named_query(query: str) -> None:
-    """Reject update and remote-service operations in a named read query."""
-    if _UNSAFE_SPARQL.search(query):
-        raise PackError("named queries may only contain one local read operation")
-    if not re.search(r"\b(?:SELECT|ASK|CONSTRUCT|DESCRIBE)\b", query, re.IGNORECASE):
-        raise PackError("named query must be a SPARQL read query")
+    """Accept one local SELECT; reject dataset loading and federated queries."""
+    try:
+        parsed = parseQuery(query)
+    except Exception as exc:
+        raise PackError("named query must be one valid local read SELECT operation") from exc
+    if parsed[1].name != "SelectQuery":
+        raise PackError("named query must be a local read SELECT operation")
+
+    def inspect(value: Any) -> None:
+        if isinstance(value, CompValue):
+            if value.name in {"ServiceGraphPattern", "DatasetClause"}:
+                raise PackError("named queries may only contain one local read operation; SERVICE and FROM are forbidden")
+            for item in value.values():
+                inspect(item)
+        elif isinstance(value, (list, tuple, ParseResults)):
+            for item in value:
+                inspect(item)
+
+    inspect(parsed)
 
 
 @dataclass(frozen=True)
@@ -36,7 +49,7 @@ def load_graph(path: str | Path) -> Graph:
     """Parse a Turtle/RDF file into an RDFLib graph."""
     graph = Graph()
     try:
-        graph.parse(path)
+        graph.parse(path, format="turtle")
     except Exception as exc:  # rdflib exposes parser-specific exception types
         raise PackError(f"could not parse RDF data: {path}") from exc
     return graph

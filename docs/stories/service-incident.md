@@ -13,7 +13,9 @@ action and owner.
 
 Run the [consulting evidence-room pack](../../examples/consulting-evidence-room/README.md)
 and inspect the [evidence-room visual](../../media/exports/consulting-evidence-room.svg).
-The records are invented and deliberately small. They show a workflow contract,
+The current pack demonstrates sourced and unsourced paths. The contested-source
+and reviewer-queue steps in this story are proposed extensions, not implemented
+pack behavior. The records are invented and small. They show a workflow contract,
 not clinical, regulatory, or investment advice.
 
 The client still needed a medical and regulatory review. The ontology made that

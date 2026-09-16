@@ -14,7 +14,8 @@ mapping decision.
 
 Try the same shape in the [business pack](../../examples/business-projects/README.md)
 and the [one-word visual](../../media/exports/infographic-one-word-three-meanings.svg).
-The pack is synthetic, so a passing query demonstrates repeatability, not a
+The pack models service ownership; customer identity reconciliation and its
+review queue remain workshop exercises. The pack is synthetic, so a passing query demonstrates repeatability, not a
 real account decision.
 
 The first pilot measured false merges and review time, not revenue. When two

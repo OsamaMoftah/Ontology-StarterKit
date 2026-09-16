@@ -27,11 +27,13 @@ def _bounded_pack_path(pack_path: str | Path, examples_root: str | Path | None) 
     candidate = Path(pack_path).resolve()
     if examples_root is not None:
         root = Path(examples_root).resolve()
+        if not Path(pack_path).is_absolute():
+            candidate = (root / pack_path).resolve()
         try:
             relative = candidate.relative_to(root)
         except ValueError as exc:
             raise PackError("pack path is outside the configured examples root") from exc
-        if len(relative.parts) != 2:
+        if len(relative.parts) != 1:
             raise PackError("pack path must be an immediate child of the configured examples root")
     return candidate
 
@@ -55,6 +57,7 @@ def serve(examples_root: str | Path) -> None:
         raise RuntimeError("install ontology-starterkit[mcp] to run the MCP adapter") from exc
 
     server = FastMCP("ontology-starterkit")
+    examples_root = Path(examples_root).resolve()
 
     @server.tool()
     def list_packs() -> list[dict[str, str]]:

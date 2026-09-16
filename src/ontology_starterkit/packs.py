@@ -42,6 +42,7 @@ def load_pack(path: str | Path) -> Pack:
     manifest_path = root / "manifest.yaml"
     if not manifest_path.is_file():
         raise PackError(f"pack requires manifest.yaml: {root}")
+    Pack(root, {}).resolve("manifest.yaml")
     try:
         manifest = yaml.safe_load(manifest_path.read_text()) or {}
     except yaml.YAMLError as exc:
@@ -78,6 +79,8 @@ def discover_packs(examples_root: str | Path) -> dict[str, Pack]:
         return packs
     for child in sorted(root.iterdir()):
         if child.is_dir() and (child / "manifest.yaml").is_file():
+            if child.resolve().parent != root.resolve():
+                raise PackError(f"pack path is outside the configured examples root: {child}")
             pack = load_pack(child)
             if pack.pack_id in packs:
                 raise PackError(f"duplicate pack id: {pack.pack_id}")

@@ -38,3 +38,12 @@ def test_domain_queries_return_rows(pack_id, query_id):
     rows = run_named_query(pack, query_id)
     assert rows
     assert evaluate_query(pack, query_id)["passed"] is True
+
+
+@pytest.mark.parametrize("pack,query_id", [
+    (pack, query_id)
+    for pack in discover_packs(ROOT / "examples").values()
+    for query_id in pack.manifest["queries"]
+], ids=lambda item: item.pack_id if hasattr(item, "pack_id") else item)
+def test_every_named_query_matches_its_fixture(pack, query_id):
+    assert evaluate_query(pack, query_id)["passed"] is True

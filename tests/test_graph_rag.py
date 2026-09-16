@@ -217,7 +217,7 @@ def test_run_graph_query_requires_list():
 
 
 def test_parse_args_with_cli(monkeypatch):
-    monkeypatch.setattr("sys.argv", ["graph_rag.py", "--query", "Who works on Alpha?"])
+    monkeypatch.setattr("sys.argv", ["graph_rag.py", "--allow-experimental-cypher", "--query", "Who works on Alpha?"])
     args = graph_rag.parse_args()
     assert args.query == "Who works on Alpha?"
 

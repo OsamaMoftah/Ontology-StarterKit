@@ -3,7 +3,7 @@
 This catalogue turns common strategy and transformation work into small ontology
 slices that can be tested with a client team. Each case starts with a decision,
 then defines the entities, evidence and review gate needed to make the output
-defensible. The examples use synthetic data and do not represent client work.
+reviewable. The examples use synthetic data and do not represent client work.
 
 | Workstream | Client question | Ontology slice | Evidence and review gate | Useful measure |
 |---|---|---|---|---|
@@ -27,12 +27,12 @@ defensible. The examples use synthetic data and do not represent client work.
 3. Register source owners, licenses, versions, access controls and retention rules.
 4. Load a synthetic or de-identified fixture and add SHACL constraints for required fields.
 5. Run named queries and compare them with an expert-reviewed expected fixture.
-6. Record unsupported claims, conflicts, false merges and unresolved terms as first-class work.
+6. Record unsupported claims, conflicts, false merges and unresolved terms as tracked work.
 7. Pilot against a baseline task, then hand over the model, mappings, evaluation set and maintenance owner.
 
 The flagship [`consulting-evidence-room`](../../examples/consulting-evidence-room/README.md)
 pack demonstrates an evidence register with a supported claim and an explicitly
-unsupported claim. It is intentionally small enough to review in a workshop.
+unsupported claim. It is small enough to review in a workshop.
 
 ## What a consulting deliverable contains
 
@@ -50,4 +50,3 @@ AI use cases](https://www.mckinsey.com/industries/life-sciences/our-insights/gen
 and [Strategy&'s health and pharma practice](https://www.strategyand.pwc.com/gx/en/industries/health-pharma.html).
 These sources motivate the problem areas; they are not evidence of adoption or
 performance by this starter kit.
-

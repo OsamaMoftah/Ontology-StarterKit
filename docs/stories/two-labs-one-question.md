@@ -12,5 +12,7 @@ the biology was true; that remained a scientist's responsibility.
 
 Use the [life-science pack](../../examples/life-science-annotations/README.md)
 and its [annotation visual](../../media/exports/infographic-life-science-evidence.svg).
+The pack currently links annotations to products, processes, and references;
+species filtering and cross-lab reconciliation are not implemented.
 The fixture is GO-inspired teaching data, not a redistributed database extract,
 and it must never be used for diagnosis or treatment.

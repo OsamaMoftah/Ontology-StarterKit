@@ -8,7 +8,7 @@ def test_build_answer_includes_only_declared_evidence_ids():
         allowed_evidence_ids={"ex:Maya", "ex:Aurora", "ex:Alpha"},
         data_version="hello-ontology@0.2.0",
     )
-    assert result.status == "supported"
+    assert result.status == "unverified"
     assert result.evidence_ids == ("ex:Maya", "ex:Aurora")
     assert result.data_version == "hello-ontology@0.2.0"
 
@@ -37,7 +37,7 @@ def test_build_answer_requires_supporting_assertion_paths_when_provided():
     result = build_answer(
         "Maya Chen", ["ex:Maya"], {"ex:Maya"}, "demo@1", evidence_paths={"ex:Maya": ("ex:Maya", "ex:name")}
     )
-    assert result.status == "supported"
+    assert result.status == "unverified"
     assert result.support_paths == (("ex:Maya", "ex:name"),)
     abstained = build_answer("Maya Chen", ["ex:Maya"], {"ex:Maya"}, "demo@1", evidence_paths={})
     assert abstained.status == "insufficient-evidence"
