@@ -193,3 +193,10 @@ gate is still open.
 - GitHub API verification: `is_template=true`, `default_branch=main`, and hosted issue-form/config, citation, contribution, and reporting files present.
 - `scripts/verify_chowlk_conversion.py --live`: hosted Chowlk conversion returned no diagram errors and an empty semantic diff against the checked-in RDF contract.
 - `scripts/check_review_register.py`: five external-review entries and ten sourced historical claims are present and machine-checked. Scientific, editorial, consultancy, and domain-expert sign-offs remain explicitly awaiting named reviewers; no approval is implied by the automated checks.
+
+### Final verification at `8692365` — 2026-09-17
+
+- Hosted governance, ontology validation, Python 3.10/3.11/3.12 tests, and locked core/optional environments all passed on GitHub Actions.
+- Local verification after the final fixes: 157 tests passed, two opt-in Neo4j tests skipped, 87.64% package coverage; Ruff, mypy, lock freshness, lesson, MCP isolation, wheel, visual/link, review-register, and live Chowlk checks passed.
+- The current checkout could not rerun Neo4j because the Docker daemon was unavailable. The earlier Enterprise/Community evidence above remains historical evidence from this branch, not a fresh run at this commit.
+- U10, U13, U24, U25, and U26 remain awaiting named external reviewers; U23 remains deferred pending demand and a maintainer.

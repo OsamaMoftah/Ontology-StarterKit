@@ -89,5 +89,5 @@
 
 - [x] Run core, optional, MCP, wheel, visual, link, type, lint, and audit checks; the Neo4j service rerun is blocked here because the Docker daemon is unavailable.
 - [x] Mark each U01–U26 item implemented, verified, partial, or externally blocked with evidence.
-- [ ] Confirm hosted CI and preserve `v0.2.0`.
+- [x] Confirm hosted CI and preserve `v0.2.0`.
 - [x] Commit `docs: publish final upgrade evidence matrix`.
