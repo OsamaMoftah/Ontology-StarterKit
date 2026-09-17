@@ -1,0 +1,17 @@
+id: https://ontology-starterkit.dev/linkml/zero-max
+name: zero_max_linkml
+prefixes:
+  linkml: https://w3id.org/linkml/
+  local: https://ontology-starterkit.dev/linkml/zero-max/
+imports:
+  - linkml:types
+default_prefix: local
+classes:
+  Person:
+    slots:
+      - alias
+slots:
+  alias:
+    range: string
+    multivalued: true
+    maximum_cardinality: 0

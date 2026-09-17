@@ -75,11 +75,14 @@ from ontology_starterkit.linkml import build_linkml_schema
 print(build_linkml_schema("hello", {"Person": ["name"]}))
 ```
 
-The reviewed environment pins the full resolved core and optional dependency
-graphs in `requirements/core.lock` and `requirements/optional.lock`. The
-universal locks `requirements/core.universal.lock` and
-`requirements/optional.universal.lock` carry platform and interpreter markers
-for supported Python 3.10–3.12 environments. Verify or regenerate them with:
+The canonical reproducible install artifacts are the Python-version-specific
+locks: `requirements/core-py310.lock`, `core-py311.lock`, and
+`core-py312.lock`, plus the matching optional locks. The universal locks
+`requirements/core.universal.lock` and `requirements/optional.universal.lock`
+carry cross-platform markers for supported Python 3.10–3.12 environments.
+The generic `core.lock` and `optional.lock` files are retained as legacy
+Python 3.11 compatibility artifacts and are not the freshness-checked install
+contract. Verify or regenerate the canonical locks with:
 
 ```bash
 python scripts/regenerate_locks.py
@@ -87,8 +90,9 @@ python scripts/regenerate_locks.py --write
 ```
 
 The full optional generator check is `python scripts/verify_linkml_generator.py`.
-It runs `gen-json-schema --top-class Person --closed` and verifies the checked-in
-valid and invalid fixtures.
+It runs `gen-json-schema --top-class Person --closed` and independently verifies
+the valid, cardinality-only invalid, enum-only invalid, and zero-maximum
+fixtures.
 
 `ontology_starterkit.extraction` provides a model-independent extraction
 contract and reviewed alias resolution; it intentionally does not call an LLM
