@@ -37,18 +37,31 @@ def build_linkml_schema(
         rendered_classes[class_name] = {"slots": values}
         slots.update(values)
     specs = slot_specs or {}
+    undeclared = sorted(set(specs) - slots)
+    if undeclared:
+        raise ValueError(f"slot_specs contains undeclared slot(s): {', '.join(undeclared)}")
     rendered_slots: dict[str, dict[str, object]] = {}
     for slot in sorted(slots):
         spec = dict(specs.get(slot, {}))
         rendered: dict[str, object] = {"range": str(spec.pop("range", "string"))}
+        required_supplied = "required" in spec
         if "required" in spec:
             rendered["required"] = bool(spec.pop("required"))
         if "identifier" in spec:
             rendered["identifier"] = bool(spec.pop("identifier"))
-        if "minimum_cardinality" in spec:
-            rendered["minimum_cardinality"] = int(cast(int, spec.pop("minimum_cardinality")))
-        if "maximum_cardinality" in spec:
-            rendered["maximum_cardinality"] = int(cast(int, spec.pop("maximum_cardinality")))
+        minimum = _cardinality(spec.pop("minimum_cardinality"), slot, "minimum") if "minimum_cardinality" in spec else None
+        maximum = _cardinality(spec.pop("maximum_cardinality"), slot, "maximum") if "maximum_cardinality" in spec else None
+        if minimum is not None and maximum is not None and minimum > maximum:
+            raise ValueError(f"minimum cardinality cannot exceed maximum for {slot}")
+        if minimum is not None:
+            rendered["minimum_cardinality"] = minimum
+        if maximum is not None:
+            rendered["maximum_cardinality"] = maximum
+        if minimum is not None or maximum is not None:
+            if maximum is None or maximum > 1:
+                rendered["multivalued"] = True
+            if minimum is not None and minimum > 0 and not required_supplied:
+                rendered["required"] = True
         if "enum" in spec:
             enum_values = cast(object, spec.pop("enum"))
             if not isinstance(enum_values, (list, tuple)) or not enum_values:
@@ -75,3 +88,9 @@ def build_linkml_schema(
     if enums:
         payload["enums"] = enums
     return yaml.safe_dump(payload, sort_keys=False)
+
+
+def _cardinality(value: object, slot: str, bound: str) -> int:
+    if isinstance(value, bool) or not isinstance(value, int) or value < 0:
+        raise ValueError(f"{bound} cardinality for {slot} must be a non-negative integer")
+    return value

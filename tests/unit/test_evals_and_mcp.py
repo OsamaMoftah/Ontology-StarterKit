@@ -1,5 +1,6 @@
 from pathlib import Path
 import multiprocessing
+import shutil
 import time
 import pytest
 
@@ -32,6 +33,39 @@ def test_mcp_pure_tools_are_json_safe():
     assert not multiprocessing.active_children()
 
 
+def test_mcp_drains_a_genuinely_large_result_before_reaping_worker(tmp_path):
+    source = ROOT / "examples/hello-ontology"
+    path = tmp_path / "large-ontology"
+    shutil.copytree(source, path)
+    rows = [
+        f'ex:Person{i} a ex:Person ; ex:name "Person {i:05d} with a deliberately large name" .'
+        for i in range(4_000)
+    ]
+    (path / "data/valid.ttl").write_text(
+        "@prefix ex: <https://ontology-starterkit.dev/hello/> .\n"
+        "@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .\n"
+        'ex:Maya a ex:Person ; ex:name "Maya Chen"^^xsd:string ; ex:manages ex:Aurora .\n'
+        'ex:Aurora a ex:Team ; ex:name "Team Aurora"^^xsd:string ; ex:worksOn ex:Alpha .\n'
+        'ex:Alpha a ex:Project ; ex:name "Alpha Project"^^xsd:string .\n'
+        + "\n".join(rows)
+        + "\n",
+        encoding="utf-8",
+    )
+
+    result = run_query_tool(path, "people", max_rows=10_000, max_bytes=10_000_000, timeout_seconds=10)
+
+    assert len(result["rows"]) == 4_001
+    assert len(str(result["rows"]).encode("utf-8")) > 64_000
+    assert not multiprocessing.active_children()
+
+
+def test_mcp_reaps_worker_after_response_rejection():
+    path = ROOT / "examples/hello-ontology"
+    with pytest.raises(PackError, match="exceeds 1 bytes"):
+        run_query_tool(path, "manager", max_bytes=1)
+    assert not multiprocessing.active_children()
+
+
 def test_mcp_query_limits_and_arguments_are_enforced():
     import pytest
 
@@ -42,6 +76,7 @@ def test_mcp_query_limits_and_arguments_are_enforced():
         run_query_tool(path, "manager", max_bytes=1)
     with pytest.raises(PackError, match="unknown named query"):
         run_query_tool(path, "does-not-exist")
+    assert not multiprocessing.active_children()
     with pytest.raises(PackError, match="deadline"):
         run_query_tool(path, "manager", timeout_seconds=0.000001)
 

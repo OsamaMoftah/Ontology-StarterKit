@@ -9,7 +9,9 @@ annotated-doc==0.0.5
 html5rdf==1.2.1
     # via rdflib
 importlib-metadata==9.0.1
-    # via pyshacl
+    # via
+    #   -r requirements/core.in
+    #   pyshacl
 markdown-it-py==4.2.0
     # via rich
 mdurl==0.1.2

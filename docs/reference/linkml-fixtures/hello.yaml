@@ -11,6 +11,7 @@ classes:
     slots:
       - id
       - status
+      - aliases
 slots:
   id:
     identifier: true
@@ -19,6 +20,10 @@ slots:
   status:
     range: StatusEnum
     required: true
+  aliases:
+    range: string
+    multivalued: true
+    maximum_cardinality: 3
 enums:
   StatusEnum:
     permissible_values:

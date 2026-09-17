@@ -55,9 +55,31 @@ def test_verified_answer_requires_actual_graph_paths():
     assert result.status == "supported"
     assert result.graph_path_valid is True
     assert result.source_records == (("claim-1", "crm-7"),)
-    assert result.source_support == "reviewed"
+    assert result.source_support == "unverified"
+    assert result.source_span_valid is False
     missing = build_verified_answer("Maya", ["claim-1"], graph, {"claim-1": ()}, "demo@1")
     assert missing.status == "insufficient-evidence"
+
+
+def test_build_verified_answer_never_infers_review_from_fabricated_source_metadata():
+    graph = Graph()
+    triple = (URIRef("urn:claim"), URIRef("urn:supports"), URIRef("urn:evidence"))
+    graph.add(triple)
+
+    result = build_verified_answer(
+        "the claim",
+        ["claim-1"],
+        graph,
+        {"claim-1": (triple,)},
+        "demo@1",
+        source_records={"claim-1": "fabricated-record"},
+        source_spans={"claim-1": "missing-document@0:999999"},
+    )
+
+    assert result.status == "supported"
+    assert result.graph_path_valid is True
+    assert result.source_support == "unverified"
+    assert result.source_span_valid is False
 
 
 def test_assess_answer_separates_path_validity_from_source_support():

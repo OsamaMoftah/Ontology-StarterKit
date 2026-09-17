@@ -185,7 +185,12 @@ def build_verified_answer(
     source_records: Mapping[str, str] | None = None,
     source_spans: Mapping[str, str] | None = None,
 ) -> AnswerRecord:
-    """Build a supported record only after graph-path verification."""
+    """Build a supported record after graph-path verification.
+
+    Source metadata is recorded for downstream review, but it is deliberately
+    not treated as reviewed evidence. Callers that have an explicit source
+    review state and document-span validation should use :func:`assess_answer`.
+    """
     citations = tuple(dict.fromkeys(evidence_ids))
     verified = set(verify_graph_paths(graph, graph_paths))
     if not citations or not set(citations).issubset(verified):
@@ -204,7 +209,7 @@ def build_verified_answer(
         answer=answer.strip(), evidence_ids=citations, data_version=data_version,
         status="supported", support_paths=tuple(tuple(str(part) for triple in graph_paths[item] for part in triple) for item in citations),
         assertion_ids=citations, source_records=records, source_spans=spans,
-        graph_path_valid=True, source_support="reviewed" if len(records) == len(citations) and len(spans) == len(citations) else "unverified",
+        graph_path_valid=True, source_support="unverified",
     )
 
 

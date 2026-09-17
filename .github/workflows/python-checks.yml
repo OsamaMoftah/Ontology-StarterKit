@@ -23,7 +23,14 @@ jobs:
       - name: Install package and development tools
         run: |
           python -m pip install --upgrade pip
-          pip install -e '.[dev,graphrag,mcp,linkml]'
+          python -m pip install uv==0.10.10
+          LOCK_VERSION="${{ matrix.python-version }}"
+          LOCK_VERSION="${LOCK_VERSION//./}"
+          uv pip install --system -r "requirements/optional-py${LOCK_VERSION}.lock"
+          uv pip install --system -e . --no-deps
+          python -m pip install 'pytest-cov>=5,<8' 'ruff>=0.8,<1' 'mypy>=1.10,<2'
+      - name: Verify universal lock freshness
+        run: python scripts/regenerate_locks.py
       - name: Lint
         run: ruff check .
       - name: Type check
@@ -55,5 +62,36 @@ jobs:
       - name: Audit optional integration dependencies
         if: matrix.python-version == '3.11'
         run: |
-          pip install -e '.[graphrag]' pip-audit
+          pip install pip-audit
           pip-audit -r src/integrations/langchain/kg-rag/requirements.txt
+      - name: Verify LinkML generator from the locked optional environment
+        if: matrix.python-version == '3.11'
+        run: python scripts/verify_linkml_generator.py
+
+  locked-environments:
+    name: locked-${{ matrix.profile }}-${{ matrix.python-version }}
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ['3.10', '3.11', '3.12']
+        profile: [core, optional]
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+      - name: Set up Python
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Install selected locked environment
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install uv==0.10.10
+          LOCK_VERSION="${{ matrix.python-version }}"
+          LOCK_VERSION="${LOCK_VERSION//./}"
+          uv pip install --system -r "requirements/${{ matrix.profile }}-py${LOCK_VERSION}.lock"
+          uv pip install --system -e . --no-deps
+      - name: Validate core runtime
+        run: ontokit packs
+      - name: Verify optional LinkML generator
+        if: matrix.profile == 'optional'
+        run: python scripts/verify_linkml_generator.py

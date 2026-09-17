@@ -54,6 +54,8 @@ def load_pack(path: str | Path) -> Pack:
         raise PackError(f"invalid manifest YAML: {manifest_path}") from exc
     if not isinstance(manifest, dict):
         raise PackError("manifest must be a mapping")
+    if not manifest.get("id"):
+        raise PackError("manifest requires fields: id")
     if not isinstance(manifest["id"], str) or not re.fullmatch(r"[a-z0-9][a-z0-9-]+", manifest["id"]):
         raise PackError("manifest id must be a lowercase kebab-case string")
     if "version" in manifest and (not isinstance(manifest["version"], str) or not _SUPPORTED_MANIFEST_VERSION.fullmatch(manifest["version"])):
@@ -78,7 +80,11 @@ def load_pack(path: str | Path) -> Pack:
     query_ids = set(manifest["queries"])
     expected_ids = set(manifest["expected"])
     if query_ids != expected_ids:
-        raise PackError(f"query/expected IDs differ; missing expected={sorted(query_ids - expected_ids)}")
+        raise PackError(
+            "query/expected IDs differ; "
+            f"missing expected={sorted(query_ids - expected_ids)}; "
+            f"missing query={sorted(expected_ids - query_ids)}"
+        )
     try:
         questions = yaml.safe_load(Pack(root, manifest).resolve(str(manifest["questions"])).read_text()) or []
     except yaml.YAMLError as exc:

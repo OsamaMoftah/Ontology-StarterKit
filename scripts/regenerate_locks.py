@@ -1,8 +1,9 @@
-"""Regenerate the universal dependency locks for all supported platforms."""
+"""Regenerate universal and supported-Python dependency locks."""
 
 from __future__ import annotations
 
 import argparse
+from collections.abc import Callable
 from pathlib import Path
 import subprocess
 import tempfile
@@ -12,6 +13,15 @@ TARGETS = {
     "core": (Path("requirements/core.in"), Path("requirements/core.universal.lock")),
     "optional": (Path("requirements/optional.in"), Path("requirements/optional.universal.lock")),
 }
+SUPPORTED_PYTHON_VERSIONS = ("3.10", "3.11", "3.12")
+
+
+def versioned_targets() -> dict[str, tuple[Path, Path, str]]:
+    return {
+        f"{name}-py{version.replace('.', '')}": (source, Path(f"requirements/{name}-py{version.replace('.', '')}.lock"), version)
+        for name, (source, _) in TARGETS.items()
+        for version in SUPPORTED_PYTHON_VERSIONS
+    }
 
 
 def render(root: Path, name: str, output: Path) -> None:
@@ -30,22 +40,43 @@ def render(root: Path, name: str, output: Path) -> None:
     )
 
 
+def render_versioned(root: Path, source: Path, destination: Path, version: str, output: Path) -> None:
+    subprocess.run(
+        [
+            "uv", "pip", "compile", str(source), "--python-version", version,
+            "--custom-compile-command", f"uv pip compile {source} --python-version {version} --output-file {destination}",
+            "--output-file", str(output),
+        ],
+        cwd=root,
+        check=True,
+        stdout=subprocess.PIPE,
+        text=True,
+    )
+
+
+def verify_one(root_path: Path, destination: Path, render_fn: Callable[..., None], *render_args: object) -> None:
+    with tempfile.NamedTemporaryFile(prefix="lock-", suffix=".lock") as temporary:
+        temporary_path = Path(temporary.name)
+    try:
+        render_fn(root_path, *render_args, temporary_path)
+        expected = (root_path / destination).read_bytes()
+        actual = temporary_path.read_bytes()
+        if actual != expected:
+            raise AssertionError(f"{destination} is stale; run python scripts/regenerate_locks.py --write")
+    finally:
+        temporary_path.unlink(missing_ok=True)
+
+
 def verify(root: str | Path = ".") -> dict[str, object]:
     root_path = Path(root).resolve()
     checked: list[str] = []
     for name, (_, destination) in TARGETS.items():
-        with tempfile.NamedTemporaryFile(prefix=f"{name}-lock-", suffix=".lock") as temporary:
-            temporary_path = Path(temporary.name)
-        try:
-            render(root_path, name, temporary_path)
-            expected = (root_path / destination).read_bytes()
-            actual = temporary_path.read_bytes()
-            if actual != expected:
-                raise AssertionError(f"{destination} is stale; run python scripts/regenerate_locks.py")
-            checked.append(str(destination))
-        finally:
-            temporary_path.unlink(missing_ok=True)
-    return {"checked": checked, "universal": True}
+        verify_one(root_path, destination, render, name)
+        checked.append(str(destination))
+    for name, (source, destination, version) in versioned_targets().items():
+        verify_one(root_path, destination, render_versioned, source, destination, version)
+        checked.append(str(destination))
+    return {"checked": checked, "universal": True, "python_versions": list(SUPPORTED_PYTHON_VERSIONS)}
 
 
 def main() -> None:
@@ -56,7 +87,21 @@ def main() -> None:
     root = args.root.resolve()
     if args.write:
         for name, (_, destination) in TARGETS.items():
-            render(root, name, root / destination)
+            with tempfile.NamedTemporaryFile(prefix=f"{name}-lock-", suffix=".lock") as temporary:
+                temporary_path = Path(temporary.name)
+            try:
+                render(root, name, temporary_path)
+                temporary_path.replace(root / destination)
+            finally:
+                temporary_path.unlink(missing_ok=True)
+        for name, (source, destination, version) in versioned_targets().items():
+            with tempfile.NamedTemporaryFile(prefix=f"{name}-lock-", suffix=".lock") as temporary:
+                temporary_path = Path(temporary.name)
+            try:
+                render_versioned(root, source, destination, version, temporary_path)
+                temporary_path.replace(root / destination)
+            finally:
+                temporary_path.unlink(missing_ok=True)
     print(verify(root))
 
 

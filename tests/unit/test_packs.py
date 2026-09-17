@@ -19,11 +19,27 @@ def test_load_pack_requires_manifest(tmp_path):
         load_pack(tmp_path / "broken")
 
 
+def test_load_pack_reports_missing_required_id(tmp_path):
+    pack = tmp_path / "pack"
+    pack.mkdir()
+    (pack / "manifest.yaml").write_text("version: 0.2.0\n")
+    with pytest.raises(PackError, match="manifest requires fields: id"):
+        load_pack(pack)
+
+
 def test_load_pack_rejects_path_escape(tmp_path):
     pack = tmp_path / "pack"
     pack.mkdir()
     (pack / "manifest.yaml").write_text("id: demo\nontology: ../outside.ttl\n")
     with pytest.raises(PackError, match="path"):
+        load_pack(pack)
+
+
+def test_load_pack_rejects_non_string_manifest_path(tmp_path):
+    pack = tmp_path / "pack"
+    pack.mkdir()
+    (pack / "manifest.yaml").write_text("id: demo\nontology: [ontology.ttl]\n")
+    with pytest.raises(PackError, match="field must be a string: ontology"):
         load_pack(pack)
 
 
@@ -56,6 +72,20 @@ def test_load_pack_rejects_query_without_expected_fixture(tmp_path):
     (pack / "queries").mkdir()
     (pack / "queries/one.rq").write_text("SELECT * WHERE { ?s ?p ?o }")
     with pytest.raises(PackError, match="expected"):
+        load_pack(pack)
+
+
+def test_load_pack_reports_both_query_fixture_mismatch_directions(tmp_path):
+    import shutil
+    import yaml
+
+    pack = tmp_path / "hello"
+    shutil.copytree(ROOT / "examples/hello-ontology", pack)
+    manifest_path = pack / "manifest.yaml"
+    manifest = yaml.safe_load(manifest_path.read_text())
+    manifest["expected"]["extra"] = manifest["expected"]["manager"]
+    manifest_path.write_text(yaml.safe_dump(manifest, sort_keys=False))
+    with pytest.raises(PackError, match=r"missing expected=\[\].*missing query=\['extra'\]"):
         load_pack(pack)
 
 

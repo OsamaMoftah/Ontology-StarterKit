@@ -103,7 +103,7 @@ httpx2==2.13.0
     # via
     #   langsmith
     #   openai
-idna==3.19
+idna==3.20
     # via
     #   anyio
     #   httpx
@@ -113,7 +113,9 @@ idna==3.19
 imagesize==2.0.1
     # via sphinx
 importlib-metadata==9.0.1
-    # via pyshacl
+    # via
+    #   -r requirements/core.in
+    #   pyshacl
 iniconfig==2.3.0
     # via pytest
 isodate==0.7.2
@@ -184,7 +186,7 @@ langgraph-prebuilt==1.1.0
     # via langgraph
 langgraph-sdk==0.4.4
     # via langgraph
-langsmith==0.12.5
+langsmith==0.12.6
     # via
     #   langchain-classic
     #   langchain-core

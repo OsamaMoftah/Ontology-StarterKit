@@ -10,6 +10,7 @@ from __future__ import annotations
 import json
 import multiprocessing
 from pathlib import Path
+import queue
 import time
 from typing import Any
 
@@ -98,18 +99,38 @@ def run_query_tool(
         daemon=True,
     )
     process.start()
-    process.join(timeout=float(timeout_seconds))
+    deadline = time.monotonic() + float(timeout_seconds)
+    result: tuple[str, Any] | None = None
     try:
+        # Read the queue before joining the worker.  A multiprocessing.Queue
+        # uses a feeder thread and an OS pipe; joining first can deadlock when
+        # the worker's serialized result is larger than that pipe's buffer.
+        while result is None:
+            remaining = deadline - time.monotonic()
+            if remaining <= 0:
+                process.terminate()
+                process.join(timeout=2)
+                raise PackError("named query exceeded its MCP deadline")
+            try:
+                result = result_queue.get(timeout=min(remaining, 0.05))
+            except queue.Empty:
+                if process.is_alive():
+                    continue
+                break
+            except (EOFError, OSError):
+                break
+
+        remaining = max(0.0, deadline - time.monotonic())
+        process.join(timeout=remaining)
         if process.is_alive():
             process.terminate()
             process.join(timeout=2)
             raise PackError("named query exceeded its MCP deadline")
         if process.exitcode not in (0, None):
             raise PackError(f"named query worker exited with code {process.exitcode}")
-        try:
-            kind, payload = result_queue.get(timeout=1)
-        except Exception as exc:
-            raise PackError("named query worker returned no result") from exc
+        if result is None:
+            raise PackError("named query worker returned no result")
+        kind, payload = result
         if kind == "error":
             raise PackError(str(payload))
         rows = payload
