@@ -1,0 +1,2 @@
+PREFIX ex: <https://ontology-starterkit.dev/quality-supply/>
+SELECT ?change ?product ?state WHERE { ?change a ex:Change ; ex:affects ?product ; ex:reviewState ?state . ?product a ex:Product . }

@@ -1,0 +1,8 @@
+@prefix ex: <https://ontology-starterkit.dev/quality-supply/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+ex: a owl:Ontology ; owl:versionInfo "0.3.0" .
+ex:Change a owl:Class . ex:Product a owl:Class . ex:Site a owl:Class .
+ex:Supplier a owl:Class . ex:Material a owl:Class . ex:Process a owl:Class . ex:Method a owl:Class . ex:Filing a owl:Class . ex:ImpactReview a owl:Class . ex:IdentityMapping a owl:Class .
+ex:reviewState a owl:DatatypeProperty . ex:affects a owl:ObjectProperty .
+ex:uses a owl:ObjectProperty . ex:providedBy a owl:ObjectProperty . ex:usesProcess a owl:ObjectProperty . ex:usesMethod a owl:ObjectProperty . ex:locatedAt a owl:ObjectProperty . ex:hasFiling a owl:ObjectProperty .
+ex:name a owl:DatatypeProperty . ex:dueDate a owl:DatatypeProperty . ex:sourceLabel a owl:DatatypeProperty . ex:mappingState a owl:DatatypeProperty .

@@ -5,3 +5,8 @@ The small YAML files beside this README are editorial briefs (the renderer does 
 records the question, audience, and claim that the drawing must teach. Keep the
 wording in the spec and the text equivalent in `docs/learn/infographics.md` in
 sync when changing an illustration.
+
+The consulting suite has six separate compositions: value chain, evidence room,
+pilot scorecard, claim-to-source trace, identity crosswalk, and quality/supply
+change impact. The three latter briefs are rendered by named functions in
+`scripts/render_infographics.py` and have dedicated 390px exports.

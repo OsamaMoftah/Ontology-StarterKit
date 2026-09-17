@@ -1,5 +1,5 @@
 PREFIX ex: <https://ontology-starterkit.dev/consulting/>
-SELECT ?claim ?text ?evidenceStatus WHERE {
-  ?claim a ex:Claim ; ex:text ?text .
+SELECT ?claim ?text ?evidenceStatus ?reviewState WHERE {
+  ?claim a ex:Claim ; ex:text ?text ; ex:reviewState ?reviewState .
   BIND(IF(EXISTS { ?claim ex:supportedBy ?evidence }, "has-evidence", "no-evidence") AS ?evidenceStatus)
 }

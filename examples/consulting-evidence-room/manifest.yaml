@@ -13,6 +13,8 @@ queries:
   sourced: queries/sourced.rq
   claim-status: queries/claim-status.rq
   evidence-room: queries/evidence-room.rq
+  review-queue: queries/review-queue.rq
+  conflicts: queries/conflicts.rq
 expected:
   unsupported: expected/unsupported.json
   assets: expected/assets.json
@@ -21,8 +23,13 @@ expected:
   sourced: expected/sourced.json
   claim-status: expected/claim-status.json
   evidence-room: expected/evidence-room.json
+  review-queue: expected/review-queue.json
+  conflicts: expected/conflicts.json
 invalid:
   - data/invalid/missing-source.ttl
+  - data/invalid/stale-claim.ttl
+  - data/invalid/ambiguous-identity.ttl
+  - data/invalid/conflicting-source.ttl
 sources: sources.yaml
 diagram: model.mmd
 license: CC0-1.0 synthetic teaching data

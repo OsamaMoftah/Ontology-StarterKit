@@ -1,0 +1,5 @@
+PREFIX ex: <https://ontology-starterkit.dev/consulting/>
+SELECT ?claim ?text ?reviewState WHERE {
+  ?claim a ex:Claim ; ex:text ?text ; ex:reviewState ?reviewState .
+  FILTER (?reviewState IN ("conflicting", "stale"))
+}

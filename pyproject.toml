@@ -39,3 +39,4 @@ packages = ["src/ontology_starterkit"]
 testpaths = ["tests"]
 addopts = "-q"
 pythonpath = ["src", "."]
+markers = ["integration: requires an explicitly enabled external service"]

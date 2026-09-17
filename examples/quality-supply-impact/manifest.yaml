@@ -1,0 +1,24 @@
+id: quality-supply-impact
+title: Synthetic quality and supply change impact
+version: 0.3.0
+ontology: ontology.ttl
+shapes: shapes.ttl
+data: data/valid.ttl
+questions: questions.yaml
+queries:
+  impact: queries/impact.rq
+  dependencies: queries/dependencies.rq
+  review-states: queries/review-states.rq
+  stale: queries/stale.rq
+  impact-path: queries/impact-path.rq
+expected:
+  impact: expected/impact.json
+  dependencies: expected/dependencies.json
+  review-states: expected/review-states.json
+  stale: expected/stale.json
+  impact-path: expected/impact-path.json
+invalid:
+  - data/invalid/missing-review-state.ttl
+sources: sources.yaml
+diagram: model.mmd
+license: CC0-1.0 synthetic teaching data

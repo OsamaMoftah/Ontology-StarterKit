@@ -1,0 +1,15 @@
+- id: impact
+  question: Which products are affected by a change and what review state applies?
+  query: queries/impact.rq
+- id: dependencies
+  question: Which suppliers provide materials used by affected products?
+  query: queries/dependencies.rq
+- id: review-states
+  question: Which impact reviews are suggested, under review, or approved?
+  query: queries/review-states.rq
+- id: stale
+  question: Which impact reviews have passed their due date?
+  query: queries/stale.rq
+- id: impact-path
+  question: Which product, site, supplier, material, process, method, and filing lie on the change-impact path?
+  query: queries/impact-path.rq

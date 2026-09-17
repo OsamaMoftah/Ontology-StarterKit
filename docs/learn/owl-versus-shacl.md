@@ -16,3 +16,7 @@ pyshacl -s examples/hello-ontology/shapes.ttl examples/hello-ontology/data/inval
 ```
 
 The first should conform and the second should fail. Neither result establishes that the fictional facts are true in the world.
+
+## Try, break, explain
+
+Run both `pyshacl` commands above and compare their exit codes. Deliberately remove the target class from the invalid fixture; the strengthened pack validator should report that no declared SHACL target is covered instead of passing vacuously. A SHACL failure identifies a data-quality problem against the supplied shape; it does not infer a missing fact.

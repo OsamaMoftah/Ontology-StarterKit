@@ -1,6 +1,14 @@
 - id: go-guidance
   title: Gene Ontology annotation guidance
-  version: 2026-09-16
+  version: 2025-01-01
   url: https://www.geneontology.org/docs/go-annotations/
   license: See upstream terms
   note: This pack uses synthetic terms and records; it does not redistribute GO data.
+  retrieved: 2026-09-16
+  checksum: synthetic-fixture-no-external-bytes
+- id: external-identifiers
+  title: Gene Ontology and Evidence Ontology identifier conventions
+  version: 2025-01-01
+  url: https://www.ebi.ac.uk/ols4/ontologies/go
+  license: Upstream terms and usage conditions apply; this pack stores identifiers only
+  kind: identifier-reference

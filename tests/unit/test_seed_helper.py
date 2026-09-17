@@ -1,6 +1,6 @@
 from rdflib import BNode, Literal, URIRef
 
-from scripts.seed_neo4j import _local_uri, term_payload
+from scripts.seed_neo4j import _local_uri, graph_delta, term_payload
 
 
 def test_seed_helper_accepts_only_local_uris():
@@ -16,3 +16,11 @@ def test_seed_helper_preserves_rdf_term_kinds():
     assert literal["value"] == "42"
     assert literal["datatype"].endswith("integer")
     assert term_payload(BNode("b1"))["kind"] == "blank-node"
+
+
+def test_graph_delta_removes_stale_triples():
+    from rdflib import Graph
+    previous = Graph().parse(data="<urn:s> <urn:p> <urn:o> .", format="turtle")
+    current = Graph().parse(data="<urn:s> <urn:p> <urn:n> .", format="turtle")
+    added, removed = graph_delta(previous, current)
+    assert len(added) == 1 and len(removed) == 1

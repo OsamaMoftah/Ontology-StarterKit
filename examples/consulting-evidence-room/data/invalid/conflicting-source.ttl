@@ -1,0 +1,7 @@
+@prefix ex: <https://ontology-starterkit.dev/consulting/> .
+ex:AssetA a ex:Asset ; ex:name "Fictional Asset A" ; ex:forIndication ex:IndicationA .
+ex:IndicationA a ex:Indication ; ex:name "Fictional indication A" .
+ex:SourceOld a ex:Source ; ex:name "Old packet" ; ex:sourceVersion "v1" ; ex:publishedOn "2025-01-01" ; ex:retrievedOn "2026-09-01" .
+ex:SourceNew a ex:Source ; ex:name "New packet" ; ex:publishedOn "2026-08-01" ; ex:retrievedOn "2026-09-01" .
+ex:EvidenceOld a ex:EvidenceRecord ; ex:fromSource ex:SourceOld ; ex:sourceSpan "p. 1" .
+ex:ClaimConflict a ex:Claim ; ex:about ex:AssetA ; ex:supportedBy ex:EvidenceOld ; ex:text "Conflicting source records need review." ; ex:reviewState "conflicting" ; ex:reviewer "R. Singh" ; ex:reviewedOn "2026-09-03" .

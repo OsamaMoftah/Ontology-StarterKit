@@ -5,8 +5,13 @@ from __future__ import annotations
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
+import re
 
 import yaml
+
+
+_SUPPORTED_MANIFEST_VERSION = re.compile(r"^0\.\d+\.\d+$")
+_REQUIRED_FIELDS = ("id", "title", "version", "ontology", "shapes", "data", "questions", "queries", "expected", "sources", "diagram", "license")
 
 
 class PackError(ValueError):
@@ -47,14 +52,23 @@ def load_pack(path: str | Path) -> Pack:
         manifest = yaml.safe_load(manifest_path.read_text()) or {}
     except yaml.YAMLError as exc:
         raise PackError(f"invalid manifest YAML: {manifest_path}") from exc
-    if not isinstance(manifest, dict) or not manifest.get("id"):
-        raise PackError("manifest requires a non-empty id")
+    if not isinstance(manifest, dict):
+        raise PackError("manifest must be a mapping")
+    if not manifest.get("id"):
+        raise PackError("manifest requires fields: id")
+    if not isinstance(manifest["id"], str) or not re.fullmatch(r"[a-z0-9][a-z0-9-]+", manifest["id"]):
+        raise PackError("manifest id must be a lowercase kebab-case string")
+    if "version" in manifest and (not isinstance(manifest["version"], str) or not _SUPPORTED_MANIFEST_VERSION.fullmatch(manifest["version"])):
+        raise PackError("manifest version is unsupported; use a 0.x.y version")
     for field in ("ontology", "shapes", "questions", "data", "sources", "diagram"):
         value = manifest.get(field)
         if value:
             if not isinstance(value, str):
                 raise PackError(f"manifest field must be a string: {field}")
             Pack(root, manifest).resolve(value)
+    missing = [field for field in _REQUIRED_FIELDS if not manifest.get(field)]
+    if missing:
+        raise PackError(f"manifest requires fields: {', '.join(missing)}")
     for field in ("queries", "expected"):
         values = manifest.get(field, {})
         if not isinstance(values, dict):
@@ -63,6 +77,22 @@ def load_pack(path: str | Path) -> Pack:
             if not isinstance(query_id, str) or not isinstance(value, str):
                 raise PackError(f"manifest {field} entries must be string pairs")
             Pack(root, manifest).resolve(value)
+    query_ids = set(manifest["queries"])
+    expected_ids = set(manifest["expected"])
+    if query_ids != expected_ids:
+        raise PackError(
+            "query/expected IDs differ; "
+            f"missing expected={sorted(query_ids - expected_ids)}; "
+            f"missing query={sorted(expected_ids - query_ids)}"
+        )
+    try:
+        questions = yaml.safe_load(Pack(root, manifest).resolve(str(manifest["questions"])).read_text()) or []
+    except yaml.YAMLError as exc:
+        raise PackError("questions file is not valid YAML") from exc
+    if not isinstance(questions, list) or not all(isinstance(item, dict) and item.get("id") and item.get("query") for item in questions):
+        raise PackError("questions must be a list of records with id and query")
+    if {str(item["id"]) for item in questions} != query_ids:
+        raise PackError("questions IDs must match manifest query IDs")
     invalid = manifest.get("invalid", [])
     if not isinstance(invalid, list) or not all(isinstance(value, str) for value in invalid):
         raise PackError("manifest field must be a list of paths: invalid")

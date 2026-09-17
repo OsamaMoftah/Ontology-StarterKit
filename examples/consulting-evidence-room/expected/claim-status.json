@@ -2,11 +2,25 @@
   {
     "claim": "https://ontology-starterkit.dev/consulting/Claim1",
     "text": "Asset A has a reviewed target hypothesis.",
-    "evidenceStatus": "has-evidence"
+    "evidenceStatus": "has-evidence",
+    "reviewState": "supported"
   },
   {
     "claim": "https://ontology-starterkit.dev/consulting/Claim2",
     "text": "Asset A has an unsupported commercial claim.",
-    "evidenceStatus": "no-evidence"
+    "evidenceStatus": "no-evidence",
+    "reviewState": "unknown"
+  },
+  {
+    "claim": "https://ontology-starterkit.dev/consulting/Claim3",
+    "text": "Asset A's target is validated by every source.",
+    "evidenceStatus": "no-evidence",
+    "reviewState": "conflicting"
+  },
+  {
+    "claim": "https://ontology-starterkit.dev/consulting/Claim4",
+    "text": "Asset A has a current launch date.",
+    "evidenceStatus": "no-evidence",
+    "reviewState": "stale"
   }
 ]

@@ -7,8 +7,46 @@ silently inventing entities or identifiers.
 
 from __future__ import annotations
 
+import re
 import unicodedata
+from dataclasses import asdict, dataclass
 from collections.abc import Iterable, Mapping
+
+
+@dataclass(frozen=True)
+class ExtractionCandidate:
+    text: str
+    start: int
+    end: int
+    class_id: str
+    source_id: str
+    model: str
+    confidence: float
+
+    def as_dict(self) -> dict[str, object]:
+        return asdict(self)
+
+
+def extract_candidates(source: str, allowed_terms: Mapping[str, str], *, source_id: str, model: str = "deterministic-rule-v1") -> list[ExtractionCandidate]:
+    """Extract exact mentions from a reviewed vocabulary without inference."""
+    candidates: list[ExtractionCandidate] = []
+    for phrase, class_id in sorted(allowed_terms.items(), key=lambda item: (-len(item[0]), item[0])):
+        for match in re.finditer(re.escape(phrase), source, re.IGNORECASE):
+            candidates.append(ExtractionCandidate(match.group(0), match.start(), match.end(), class_id, source_id, model, 1.0))
+    return sorted(candidates, key=lambda item: (item.start, item.end, item.class_id))
+
+
+def validate_candidates(source: str, candidates: Iterable[ExtractionCandidate], allowed_classes: set[str]) -> list[str]:
+    """Return validation errors for class IDs, exact spans, and confidence."""
+    errors: list[str] = []
+    for candidate in candidates:
+        if candidate.class_id not in allowed_classes:
+            errors.append(f"unsupported class: {candidate.class_id}")
+        if not (0 <= candidate.start < candidate.end <= len(source)) or source[candidate.start:candidate.end] != candidate.text:
+            errors.append(f"invalid source span for: {candidate.text}")
+        if not 0 <= candidate.confidence <= 1:
+            errors.append(f"invalid confidence for: {candidate.text}")
+    return errors
 
 
 def normalize_identifier(value: str) -> str:

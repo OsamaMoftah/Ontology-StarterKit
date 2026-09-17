@@ -48,6 +48,10 @@ The repo is opinionated:
 - [Visual assets](assets/README.md)
 - [Infographic lessons](docs/learn/infographics.md)
 - [Fictional workshop stories](docs/stories/README.md)
+- [Generated ontology references and authoring guide](docs/reference/authoring.md)
+- [LinkML workflow and adapter decision](docs/reference/linkml.md)
+- [Additional adapter and hybrid retrieval decision](docs/reference/adapter-decision.md)
+- [Quality/supply change-impact pack](examples/quality-supply-impact/README.md)
 
 ## Quick Start
 
@@ -123,7 +127,7 @@ Ontology-StarterKit/
 
 ## Project Positioning
 
-This is a starter kit, not a framework. The offline examples run in the test suite; the Neo4j and LLM examples need their services and credentials.
+This is a starter kit, not a framework. The offline examples run in the test suite; the Neo4j and LLM examples need their services and credentials. The default query path is manifest-declared named queries. Generated Cypher remains an explicitly opted-in experiment until a live, database-enforced read-only and cancellation benchmark passes.
 
 Read the [independent review and remaining upgrade work](docs/reviews/2026-09-16-luna-review.md) for the delivery status against the original plan.
 

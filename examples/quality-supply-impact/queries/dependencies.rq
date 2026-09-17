@@ -1,0 +1,2 @@
+PREFIX ex: <https://ontology-starterkit.dev/quality-supply/>
+SELECT ?product ?material ?supplier WHERE { ?product a ex:Product ; ex:uses ?material . ?material a ex:Material . ?supplier ex:providedBy ?material . }

@@ -1,0 +1,67 @@
+version: 1
+purpose: "Track review gates without presenting automated checks as domain approval."
+entries:
+  - id: U10
+    area: life-science annotation semantics
+    reviewer_role: life-science ontology curator
+    status: awaiting-external-review
+    internal_checks:
+      - examples/life-science-annotations/manifest.yaml
+      - examples/life-science-annotations/queries/review-state.rq
+      - examples/life-science-annotations/data/invalid/conflicting-review.ttl
+    review_questions:
+      - Are GO:0008150, ECO:0000269, and NCBITaxon:9606 used with the intended scope?
+      - Does the fixture keep ontology terms, annotations, evidence, taxon, and review state distinct?
+      - Are synthetic records clearly separated from sourced records and licenses?
+    decision: "Automated identifier and SHACL checks pass; scientific sign-off is still required."
+  - id: U13
+    area: history and editorial sources
+    reviewer_role: technical editor with ontology and life-science history experience
+    status: awaiting-external-review
+    internal_checks:
+      - docs/history/source-register.yaml
+      - docs/history/timeline.md
+      - media/exports/ontology-history-timeline.svg
+    review_questions:
+      - Does each milestone have a source that supports the stated date and scope?
+      - Are controlled vocabularies, ontologies, knowledge graphs, and GraphRAG kept distinct?
+      - Are claims about business and life science framed as context rather than adoption claims?
+    decision: "Source links are mapped individually; an external editor should approve wording and emphasis."
+  - id: U24
+    area: life-science consultancy engagement design
+    reviewer_role: life-science consultancy engagement lead
+    status: awaiting-external-review
+    internal_checks:
+      - docs/consulting/use-cases.md
+      - docs/consulting/templates/README.md
+      - media/manifest.yaml
+    review_questions:
+      - Can a sponsor scope a pilot from each of the twelve cards without invented client evidence?
+      - Are access, licensing, freshness, review, escalation, and maintenance assumptions explicit?
+      - Do the visuals teach the same decision boundaries as the cards?
+    decision: "All twelve cards and seven operational templates are present; consultancy review remains open."
+  - id: U25
+    area: therapeutic-area evidence room
+    reviewer_role: evidence-synthesis or medical-affairs subject-matter expert
+    status: awaiting-external-review
+    internal_checks:
+      - examples/consulting-evidence-room/data/valid.ttl
+      - examples/consulting-evidence-room/expected/evidence-assessment.json
+      - scripts/build_decision_packet.py
+    review_questions:
+      - Are supported, conflicting, stale, unknown, and unsupported states clinically and operationally meaningful?
+      - Do source dates, versions, spans, and reviewer actions support a reproducible decision packet?
+    decision: "Synthetic evidence behavior is tested; subject-matter review is required before applied use."
+  - id: U26
+    area: quality and supply change impact
+    reviewer_role: quality, manufacturing, or supply-chain domain expert
+    status: awaiting-external-review
+    internal_checks:
+      - examples/quality-supply-impact/data/valid.ttl
+      - examples/quality-supply-impact/queries/impact-path.rq
+      - examples/quality-supply-impact/data/invalid/missing-review-state.ttl
+    review_questions:
+      - Are dependency paths and impact categories plausible for a regulated quality/supply workflow?
+      - Are suggested impacts, review decisions, and approved dispositions kept separate?
+      - Does the benchmark contain realistic false positives and incomplete dependencies?
+    decision: "Pack is implemented and reproducible; no domain expert is available in this checkout."

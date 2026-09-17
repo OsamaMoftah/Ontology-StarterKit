@@ -1,0 +1,20 @@
+{
+  "base": {
+    "build_months": 3,
+    "engineering_monthly": 15000,
+    "sme_monthly": 5000,
+    "infrastructure_monthly": 2000,
+    "maintenance_monthly": 4000,
+    "benefit_labels": ["hallucination_review", "data_wrangle", "compute", "feature_velocity"],
+    "monthly_benefits": [8000, 10000, 3000, 15000]
+  },
+  "no_payback": {
+    "build_months": 3,
+    "engineering_monthly": 15000,
+    "sme_monthly": 5000,
+    "infrastructure_monthly": 2000,
+    "maintenance_monthly": 4000,
+    "benefit_labels": ["measured_savings"],
+    "monthly_benefits": [1000]
+  }
+}

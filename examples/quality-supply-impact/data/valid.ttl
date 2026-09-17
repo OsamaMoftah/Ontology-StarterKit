@@ -1,0 +1,12 @@
+@prefix ex: <https://ontology-starterkit.dev/quality-supply/> .
+ex:Change1 a ex:Change ; ex:name "Supplier material substitution" ; ex:reviewState "under-review" ; ex:affects ex:ProductA .
+ex:ProductA a ex:Product ; ex:name "Synthetic Product A" ; ex:uses ex:MaterialA ; ex:usesProcess ex:ProcessA ; ex:usesMethod ex:MethodA ; ex:locatedAt ex:SiteA ; ex:hasFiling ex:FilingA .
+ex:SupplierA a ex:Supplier ; ex:name "Synthetic Supplier A" ; ex:providedBy ex:MaterialA .
+ex:MaterialA a ex:Material ; ex:name "Synthetic Material A" .
+ex:SiteA a ex:Site ; ex:name "Synthetic Site A" .
+ex:ProcessA a ex:Process ; ex:name "Synthetic blending process" .
+ex:MethodA a ex:Method ; ex:name "Synthetic assay method" .
+ex:FilingA a ex:Filing ; ex:name "Synthetic regional filing" .
+ex:Review1 a ex:ImpactReview ; ex:affects ex:ProductA ; ex:reviewState "under-review" ; ex:dueDate "2026-10-01" .
+ex:ReviewStale a ex:ImpactReview ; ex:affects ex:ProductA ; ex:reviewState "under-review" ; ex:dueDate "2026-01-01" .
+ex:Mapping1 a ex:IdentityMapping ; ex:sourceLabel "Supplier A" ; ex:mappingState "ambiguous" .

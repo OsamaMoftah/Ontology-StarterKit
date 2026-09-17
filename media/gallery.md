@@ -20,6 +20,10 @@ asset answers one question and links back to an editable source.
 | [Consulting value chain](exports/consulting-value-chain.svg) | Decision handoffs | [spec](source/infographics/consulting-value-chain.yaml) |
 | [Consulting evidence room](exports/consulting-evidence-room.svg) | Review states | [spec](source/infographics/consulting-evidence-room.yaml) |
 | [Consulting pilot scorecard](exports/consulting-pilot-scorecard.svg) | Value and limits | [spec](source/infographics/consulting-pilot-scorecard.yaml) |
+| [Claim to source](exports/consulting-claim-to-source.svg) | Evidence span and review decision | [spec](source/infographics/consulting-claim-to-source.yaml) |
+| [Identity crosswalk](exports/consulting-identity-crosswalk.svg) | Reconciliation queue and reversible mapping | [spec](source/infographics/consulting-identity-crosswalk.yaml) |
+| [Quality/supply impact](exports/consulting-quality-impact.svg) | Change dependencies and disposition gate | [spec](source/infographics/consulting-quality-impact.yaml) |
+| [Ontology history timeline](exports/ontology-history-timeline.svg) | Sourced business, life-science, standards, and AI lanes | [renderer](../scripts/render_history_timeline.py) |
 
 ![Evidence reconciliation studio](source/illustrations/evidence-reconciliation-studio.png)
 

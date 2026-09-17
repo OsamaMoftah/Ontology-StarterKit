@@ -11,3 +11,9 @@ ex:aboutProcess a owl:ObjectProperty ; rdfs:domain ex:Annotation ; rdfs:range ex
 ex:supportedBy a owl:ObjectProperty ; rdfs:domain ex:Annotation ; rdfs:range ex:EvidenceRecord .
 ex:name a owl:DatatypeProperty ; rdfs:range rdfs:Literal .
 ex:reference a owl:DatatypeProperty ; rdfs:range rdfs:Literal .
+ex:externalId a owl:DatatypeProperty ; rdfs:range rdfs:Literal .
+ex:evidenceCode a owl:DatatypeProperty ; rdfs:range rdfs:Literal .
+ex:taxon a owl:DatatypeProperty ; rdfs:range rdfs:Literal .
+ex:reviewState a owl:DatatypeProperty ; rdfs:range rdfs:Literal .
+ex:sourceVersion a owl:DatatypeProperty ; rdfs:range rdfs:Literal .
+ex:retrievedOn a owl:DatatypeProperty ; rdfs:range rdfs:Literal .

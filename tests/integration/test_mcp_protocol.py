@@ -29,6 +29,32 @@ def test_stdio_pack_tools():
                 result = await session.call_tool('query', {'pack_path': 'hello-ontology', 'query_id': 'manager'})
                 assert not result.isError
                 assert result.structuredContent['rows']
+                result = await session.call_tool('query', {'pack_path': 'hello-ontology', 'query_id': 'manager', 'max_bytes': 1})
+                assert result.isError
+                result = await session.call_tool('query', {'pack_path': 'hello-ontology', 'query_id': 'does-not-exist'})
+                assert result.isError
+                result = await session.call_tool('query', {'pack_path': 'hello-ontology', 'query_id': 'manager', 'timeout_seconds': 0.000001})
+                assert result.isError
+                result = await session.call_tool('query', {'pack_path': 'hello-ontology', 'query_id': 'manager', 'max_rows': 'many'})
+                assert result.isError
                 result = await session.call_tool('validate', {'pack_path': '/tmp'})
                 assert result.isError
+    asyncio.run(asyncio.wait_for(exercise(), timeout=20))
+
+
+def test_stdio_symlink_escape_is_rejected(tmp_path):
+    link = tmp_path / 'escape'
+    link.symlink_to(ROOT / 'examples' / 'hello-ontology', target_is_directory=True)
+
+    async def exercise():
+        params = StdioServerParameters(command=sys.executable, args=[
+            '-c', 'from ontology_starterkit.mcp_server import serve; import sys; serve(sys.argv[1])',
+            str(tmp_path),
+        ])
+        async with stdio_client(params) as (read, write):
+            async with ClientSession(read, write) as session:
+                await session.initialize()
+                result = await session.call_tool('validate', {'pack_path': 'escape'})
+                assert result.isError
+
     asyncio.run(asyncio.wait_for(exercise(), timeout=20))

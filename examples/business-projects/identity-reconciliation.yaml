@@ -1,0 +1,15 @@
+mapping_version: "2026-09-16.v1"
+reviewer: "synthetic-reviewer"
+approved_on: "2026-09-16"
+field: "team"
+aliases:
+  "Aurora Team": "https://ontology-starterkit.dev/business/TeamAurora"
+  "Aurora": "https://ontology-starterkit.dev/business/TeamAurora"
+  "aurora": "https://ontology-starterkit.dev/business/TeamAurora-legacy"
+records:
+  - id: crm-001
+    team: "Aurora Team"
+  - id: hr-002
+    team: "Aurora"
+  - id: legacy-003
+    team: "Unknown Team"

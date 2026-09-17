@@ -1,0 +1,12 @@
+@prefix ex: <https://ontology-starterkit.dev/quality-supply/> .
+@prefix sh: <http://www.w3.org/ns/shacl#> . @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+ex:ChangeShape a sh:NodeShape ; sh:targetClass ex:Change ; sh:property [ sh:path ex:name ; sh:datatype xsd:string ; sh:minCount 1 ] ; sh:property [ sh:path ex:reviewState ; sh:in ( "suggested" "under-review" "approved" ) ; sh:minCount 1 ; sh:maxCount 1 ] .
+ex:ProductShape a sh:NodeShape ; sh:targetClass ex:Product ; sh:property [ sh:path ex:name ; sh:datatype xsd:string ; sh:minCount 1 ] .
+ex:ImpactShape a sh:NodeShape ; sh:targetClass ex:ImpactReview ; sh:property [ sh:path ex:affects ; sh:class ex:Product ; sh:minCount 1 ] ; sh:property [ sh:path ex:reviewState ; sh:in ( "suggested" "under-review" "approved" ) ; sh:minCount 1 ] .
+ex:SupplyShape a sh:NodeShape ; sh:targetClass ex:Supplier ; sh:property [ sh:path ex:name ; sh:datatype xsd:string ; sh:minCount 1 ] ; sh:property [ sh:path ex:providedBy ; sh:class ex:Material ; sh:minCount 1 ] .
+ex:MaterialShape a sh:NodeShape ; sh:targetClass ex:Material ; sh:property [ sh:path ex:name ; sh:datatype xsd:string ; sh:minCount 1 ] .
+ex:SiteShape a sh:NodeShape ; sh:targetClass ex:Site ; sh:property [ sh:path ex:name ; sh:datatype xsd:string ; sh:minCount 1 ] .
+ex:ProcessShape a sh:NodeShape ; sh:targetClass ex:Process ; sh:property [ sh:path ex:name ; sh:datatype xsd:string ; sh:minCount 1 ] .
+ex:MethodShape a sh:NodeShape ; sh:targetClass ex:Method ; sh:property [ sh:path ex:name ; sh:datatype xsd:string ; sh:minCount 1 ] .
+ex:FilingShape a sh:NodeShape ; sh:targetClass ex:Filing ; sh:property [ sh:path ex:name ; sh:datatype xsd:string ; sh:minCount 1 ] .
+ex:MappingShape a sh:NodeShape ; sh:targetClass ex:IdentityMapping ; sh:property [ sh:path ex:sourceLabel ; sh:datatype xsd:string ; sh:minCount 1 ] ; sh:property [ sh:path ex:mappingState ; sh:in ( "approved" "ambiguous" "rejected" ) ; sh:minCount 1 ] .

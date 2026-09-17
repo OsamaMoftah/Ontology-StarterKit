@@ -1,0 +1,2 @@
+PREFIX ex: <https://ontology-starterkit.dev/life-science/>
+SELECT ?annotation ?annotationState ?evidenceState WHERE { ?annotation a ex:Annotation ; ex:reviewState ?annotationState ; ex:supportedBy ?evidence . ?evidence ex:reviewState ?evidenceState . }

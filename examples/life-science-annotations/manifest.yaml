@@ -11,14 +11,20 @@ queries:
   processes: queries/processes.rq
   annotations: queries/annotations.rq
   references: queries/references.rq
+  species: queries/species.rq
+  review-state: queries/review-state.rq
 expected:
   evidence: expected/evidence.json
   products: expected/products.json
   processes: expected/processes.json
   annotations: expected/annotations.json
   references: expected/references.json
+  species: expected/species.json
+  review-state: expected/review-state.json
 invalid:
   - data/invalid/missing-reference.ttl
+  - data/invalid/missing-taxon.ttl
+  - data/invalid/conflicting-review.ttl
 sources: sources.yaml
 diagram: model.mmd
 license: CC0-1.0 synthetic teaching data

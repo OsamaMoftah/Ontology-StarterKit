@@ -19,3 +19,9 @@
 - id: evidence-room
   question: Which claim paths reach a source?
   query: queries/evidence-room.rq
+- id: review-queue
+  question: Which claims require a reviewer action, and why?
+  query: queries/review-queue.rq
+- id: conflicts
+  question: Which claims have contradictory or stale review states?
+  query: queries/conflicts.rq

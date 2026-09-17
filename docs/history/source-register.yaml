@@ -1,0 +1,52 @@
+version: 1
+claims:
+  - id: history-mesh-1960
+    document: docs/history/timeline.md
+    lane: life-science
+    claim: MeSH gives biomedical indexing a shared vocabulary in 1960.
+    source: https://www.nlm.nih.gov/mesh/introduction.html
+  - id: history-gruber-1993
+    document: docs/history/ontology-in-business.md
+    lane: business
+    claim: Gruber's 1993 wording is a widely cited description of computational ontology.
+    source: https://tomgruber.org/writing/ontolingua-kaj-1993/
+  - id: history-go
+    document: docs/history/ontology-in-life-sciences.md
+    lane: life-science
+    claim: Gene Ontology coordinates shared biological descriptions and began in the late 1990s.
+    source: https://www.geneontology.org/docs/ontology-documentation/
+  - id: history-rdf
+    document: docs/history/timeline.md
+    lane: standards
+    claim: RDF 1.1 defines a graph data model for linked statements.
+    source: https://www.w3.org/TR/rdf11-concepts/
+  - id: history-owl
+    document: docs/history/timeline.md
+    lane: standards
+    claim: OWL 2 supplies formal ontology semantics for the Semantic Web.
+    source: https://www.w3.org/TR/owl2-overview/
+  - id: history-obo
+    document: docs/history/ontology-in-life-sciences.md
+    lane: life-science
+    claim: OBO Foundry describes coordinated evolution of interoperable biomedical ontologies.
+    source: https://www.nature.com/articles/nbt1346
+  - id: history-schema
+    document: docs/history/ontology-in-business.md
+    lane: business
+    claim: Schema.org launched as a shared web vocabulary in 2011.
+    source: https://search.googleblog.com/2011/06/introducing-schemaorg-search-engines.html
+  - id: history-prov
+    document: docs/history/ontology-in-business.md
+    lane: business
+    claim: PROV-O provides a provenance vocabulary.
+    source: https://www.w3.org/TR/2013/REC-prov-o-20130430/
+  - id: history-primekg
+    document: docs/history/ontology-in-life-sciences.md
+    lane: life-science
+    claim: PrimeKG was published as a multimodal precision-medicine knowledge graph in 2023.
+    source: https://www.nature.com/articles/s41597-023-01960-3
+  - id: history-graphrag
+    document: docs/history/ontology-in-ai.md
+    lane: ai
+    claim: Microsoft published GraphRAG work in 2024.
+    source: https://www.microsoft.com/en-us/research/blog/graphrag-unlocking-llm-discovery-on-narrative-private-data/

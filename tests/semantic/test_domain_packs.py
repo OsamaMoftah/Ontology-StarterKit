@@ -12,7 +12,7 @@ ROOT = Path(__file__).resolve().parents[2]
 
 def test_all_domain_packs_have_valid_and_invalid_fixtures():
     packs = discover_packs(ROOT / "examples")
-    assert {"business-projects", "life-science-annotations", "consulting-evidence-room"} <= set(packs)
+    assert {"business-projects", "life-science-annotations", "consulting-evidence-room", "quality-supply-impact"} <= set(packs)
     for pack in packs.values():
         assert validate_pack(pack).conforms is True
         assert pack.manifest.get("invalid")
@@ -26,12 +26,14 @@ def test_domain_packs_have_a_real_competency_question_set():
     assert len(packs["business-projects"].manifest["queries"]) >= 5
     assert len(packs["life-science-annotations"].manifest["queries"]) >= 5
     assert len(packs["consulting-evidence-room"].manifest["queries"]) >= 7
+    assert len(packs["quality-supply-impact"].manifest["queries"]) >= 4
 
 
 @pytest.mark.parametrize("pack_id,query_id", [
     ("business-projects", "owner"),
     ("life-science-annotations", "evidence"),
     ("consulting-evidence-room", "unsupported"),
+    ("quality-supply-impact", "impact"),
 ])
 def test_domain_queries_return_rows(pack_id, query_id):
     pack = discover_packs(ROOT / "examples")[pack_id]

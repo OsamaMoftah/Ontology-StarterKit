@@ -1,0 +1,5 @@
+@prefix ex: <https://ontology-starterkit.dev/life-science/> .
+ex:ProteinA a ex:GeneProduct ; ex:name "Synthetic protein A" .
+ex:ProcessA a ex:BiologicalProcess ; ex:name "Synthetic stress response" ; ex:externalId "GO:0008150" .
+ex:Evidence1 a ex:EvidenceRecord ; ex:reference "PMID:00000000" ; ex:evidenceCode "ECO:0000269" ; ex:sourceVersion "GOA-synthetic-2025.01" ; ex:retrievedOn "2026-09-16" ; ex:reviewState "needs-review" .
+ex:Annotation1 a ex:Annotation ; ex:annotates ex:ProteinA ; ex:aboutProcess ex:ProcessA ; ex:supportedBy ex:Evidence1 ; ex:reviewState "needs-review" .
