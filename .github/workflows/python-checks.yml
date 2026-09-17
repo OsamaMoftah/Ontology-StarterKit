@@ -29,8 +29,8 @@ jobs:
           uv pip install --system -r "requirements/optional-py${LOCK_VERSION}.lock"
           uv pip install --system -e . --no-deps
           python -m pip install 'pytest-cov>=5,<8' 'ruff>=0.8,<1' 'mypy>=1.10,<2'
-      - name: Verify universal lock freshness
-        run: python scripts/regenerate_locks.py
+      - name: Verify versioned lock freshness
+        run: python scripts/regenerate_locks.py --versioned-only --python-platform x86_64-unknown-linux-gnu
       - name: Lint
         run: ruff check .
       - name: Type check
