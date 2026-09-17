@@ -5,7 +5,8 @@ The optional LinkML path is deliberately small: `build_linkml_schema` emits a re
 Build the fixture from Python and compare it with [`linkml-fixtures/hello.yaml`](linkml-fixtures/hello.yaml). When the full LinkML toolchain is installed, exercise the generator and fixture split in a clean environment:
 
 ```bash
-uv pip install --system -r requirements/optional-py311.lock
+PYTHON_LOCK_VERSION=311  # use 310, 311, or 312 for the active interpreter
+uv pip install --system -r "requirements/optional-py${PYTHON_LOCK_VERSION}.lock"
 python scripts/verify_linkml_generator.py
 ```
 

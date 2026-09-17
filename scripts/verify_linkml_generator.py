@@ -11,13 +11,13 @@ import tempfile
 
 
 def _require_error(errors: list[object], *, validator: str, path: list[str], fixture: Path) -> None:
-    if not any(getattr(error, "validator", None) == validator and list(getattr(error, "path", ())) == path for error in errors):
-        details = [
-            (getattr(error, "validator", None), list(getattr(error, "path", ())))
-            for error in errors
-        ]
+    details = [
+        (getattr(error, "validator", None), list(getattr(error, "path", ())))
+        for error in errors
+    ]
+    if details != [(validator, path)]:
         raise AssertionError(
-            f"{fixture} did not produce {validator} at {path}; observed {details}"
+            f"{fixture} did not produce exactly {validator} at {path}; observed {details}"
         )
 
 
@@ -38,7 +38,7 @@ def verify(
     """Generate JSON Schema and prove each invalid fixture's failure mode."""
     executable = shutil.which("gen-json-schema")
     if executable is None:
-        raise RuntimeError("gen-json-schema is not installed; install requirements/optional-py311.lock first")
+        raise RuntimeError("gen-json-schema is not installed; install the matching requirements/optional-py*.lock first")
     try:
         import yaml
         from jsonschema import Draft202012Validator
@@ -75,10 +75,6 @@ def verify(
         path=["status"],
         fixture=invalid_enum_path,
     )
-    if any(getattr(error, "validator", None) == "enum" for error in invalid_cardinality_errors):
-        raise AssertionError(f"cardinality fixture also failed enum validation: {invalid_cardinality_path}")
-    if any(getattr(error, "validator", None) == "maxItems" for error in invalid_enum_errors):
-        raise AssertionError(f"enum fixture also failed cardinality validation: {invalid_enum_path}")
     if zero_missing_errors or zero_empty_errors:
         raise AssertionError(
             "zero-maximum schema rejected a missing or empty collection: "

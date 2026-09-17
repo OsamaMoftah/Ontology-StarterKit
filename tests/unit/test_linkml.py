@@ -4,8 +4,10 @@ import subprocess
 import sys
 from pathlib import Path
 import yaml
+from jsonschema.exceptions import ValidationError
 
 from ontology_starterkit.linkml import build_linkml_schema
+from scripts.verify_linkml_generator import _require_error
 
 ROOT = Path(__file__).resolve().parents[2]
 
@@ -81,6 +83,18 @@ def test_linkml_generator_verifies_cardinality_and_enum_failures_separately():
         text=True,
     )
     assert result.returncode == 0, result.stderr or result.stdout
+
+
+def test_linkml_generator_verifier_rejects_unexpected_validation_errors():
+    expected = ValidationError("too many aliases", validator="maxItems", path=["aliases"])
+    unexpected = ValidationError("unknown status", validator="enum", path=["status"])
+    with pytest.raises(AssertionError, match="exactly"):
+        _require_error(
+            [expected, unexpected],
+            validator="maxItems",
+            path=["aliases"],
+            fixture=ROOT / "invalid.yaml",
+        )
 
 
 def test_linkml_rejects_slot_specs_for_undeclared_slots():
