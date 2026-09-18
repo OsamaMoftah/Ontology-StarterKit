@@ -475,7 +475,7 @@ uvicorn==0.53.0
     # via mcp
 watchdog==6.0.0
     # via linkml
-wcwidth==0.8.3
+wcwidth==0.8.4
     # via prettytable
 webcolors==25.10.0
     # via jsonschema
