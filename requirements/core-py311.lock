@@ -37,7 +37,7 @@ shellingham==1.5.4
     # via typer
 typer==0.27.2
     # via -r requirements/core.in
-wcwidth==0.8.3
+wcwidth==0.8.4
     # via prettytable
 zipp==4.1.0
     # via importlib-metadata

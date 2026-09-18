@@ -58,7 +58,7 @@ def build_linkml_schema(
         if maximum is not None:
             rendered["maximum_cardinality"] = maximum
         if minimum is not None or maximum is not None:
-            if maximum is None or maximum > 1:
+            if maximum is None or maximum != 1:
                 rendered["multivalued"] = True
             if minimum is not None and minimum > 0 and not required_supplied:
                 rendered["required"] = True

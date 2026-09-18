@@ -1,7 +1,15 @@
 import pytest
+import shutil
+import subprocess
+import sys
+from pathlib import Path
 import yaml
+from jsonschema.exceptions import ValidationError
 
 from ontology_starterkit.linkml import build_linkml_schema
+from scripts.verify_linkml_generator import _require_error
+
+ROOT = Path(__file__).resolve().parents[2]
 
 
 def test_linkml_scaffold_is_deterministic_and_contains_classes():
@@ -44,6 +52,49 @@ def test_linkml_keeps_zero_to_one_cardinality_single_valued():
     alias = yaml.safe_load(schema)["slots"]["alias"]
     assert alias["maximum_cardinality"] == 1
     assert "multivalued" not in alias
+
+
+def test_linkml_renders_zero_maximum_as_an_empty_collection():
+    schema = build_linkml_schema(
+        "hello", {"Person": ["alias"]},
+        slot_specs={"alias": {"maximum_cardinality": 0}},
+    )
+    alias = yaml.safe_load(schema)["slots"]["alias"]
+    assert alias["maximum_cardinality"] == 0
+    assert alias["multivalued"] is True
+
+
+def test_linkml_generator_verifies_cardinality_and_enum_failures_separately():
+    if shutil.which("gen-json-schema") is None:
+        pytest.skip("gen-json-schema is not installed")
+    result = subprocess.run(
+        [
+            sys.executable,
+            str(ROOT / "scripts/verify_linkml_generator.py"),
+            "--schema", str(ROOT / "docs/reference/linkml-fixtures/hello.yaml"),
+            "--valid", str(ROOT / "docs/reference/linkml-fixtures/valid.yaml"),
+            "--invalid-cardinality", str(ROOT / "docs/reference/linkml-fixtures/invalid.yaml"),
+            "--invalid-enum", str(ROOT / "docs/reference/linkml-fixtures/invalid-enum.yaml"),
+            "--zero-max-schema", str(ROOT / "docs/reference/linkml-fixtures/zero-max.yaml"),
+        ],
+        cwd=ROOT,
+        check=False,
+        capture_output=True,
+        text=True,
+    )
+    assert result.returncode == 0, result.stderr or result.stdout
+
+
+def test_linkml_generator_verifier_rejects_unexpected_validation_errors():
+    expected = ValidationError("too many aliases", validator="maxItems", path=["aliases"])
+    unexpected = ValidationError("unknown status", validator="enum", path=["status"])
+    with pytest.raises(AssertionError, match="exactly"):
+        _require_error(
+            [expected, unexpected],
+            validator="maxItems",
+            path=["aliases"],
+            fixture=ROOT / "invalid.yaml",
+        )
 
 
 def test_linkml_rejects_slot_specs_for_undeclared_slots():
