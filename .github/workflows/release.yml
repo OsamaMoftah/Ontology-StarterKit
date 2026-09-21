@@ -20,7 +20,7 @@ jobs:
       - run: pytest -q --cov=src/ontology_starterkit --cov-fail-under=80
       - run: python -m build
       - name: Upload distribution artifacts
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: ontology-starterkit-${{ github.ref_name }}
           path: dist/*
